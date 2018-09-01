@@ -1,18 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+	<!-- Name Label -->
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/name_label"
+		android:paddingLeft="10dip"
+		android:paddingRight="10dip"
+		android:paddingTop="10dip"
+		android:textSize="17dip"/>
 
-</android.support.constraint.ConstraintLayout>
+	<!-- Input Name -->
+	<EditText
+		android:id="@+id/name"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:layout_marginBottom="15dip"
+		android:singleLine="true"/>
+
+	<!-- Price Label -->
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/surname_label"
+		android:paddingLeft="10dip"
+		android:paddingRight="10dip"
+		android:paddingTop="10dip"
+		android:textSize="17dip"/>
+
+	<!-- Input Price -->
+	<EditText android:id="@+id/surname"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:layout_marginBottom="15dip"
+		android:singleLine="true"
+		android:inputType="text"/>
+
+	<!-- Description Label -->
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="Description"
+		android:paddingLeft="10dip"
+		android:paddingRight="10dip"
+		android:paddingTop="10dip"
+		android:textSize="17dip"/>
+
+	<!-- Input description -->
+	<EditText android:id="@+id/description"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:layout_marginBottom="15dip"
+		android:gravity="top"/>
+
+	<!-- Button Create Product -->
+	<Button android:id="@+id/createUser"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/create_user_btn"/>
+
+</LinearLayout>

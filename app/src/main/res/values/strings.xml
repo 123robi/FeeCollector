@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">FeeCollector</string>
+    <string name="app_name">Fee Collector</string>
+    <string name="create_user_btn">Create User</string>
+    <string name="description_label">Description</string>
+    <string name="name_label">Name</string>
+    <string name="surname_label">Surname</string>
 </resources>
