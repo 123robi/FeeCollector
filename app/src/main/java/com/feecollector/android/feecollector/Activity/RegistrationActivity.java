@@ -9,13 +9,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
-import com.feecollector.android.feecollector.MainActivity;
+import com.feecollector.android.feecollector.LoginActivity;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-	private String TAG = MainActivity.class.getSimpleName();
+	private String TAG = LoginActivity.class.getSimpleName();
 
 	private EditText inputName;
 	private EditText inputSurname;

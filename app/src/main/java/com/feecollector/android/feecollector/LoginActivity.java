@@ -5,13 +5,8 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -26,9 +21,9 @@ import com.feecollector.android.feecollector.Activity.RegistrationActivity;
 
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-	private String TAG = MainActivity.class.getSimpleName();
+	private String TAG = LoginActivity.class.getSimpleName();
 
 
 
@@ -64,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
 		signUp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-				MainActivity.this.startActivity(intent);
-				MainActivity.this.finish();
+				Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+				LoginActivity.this.startActivity(intent);
+				LoginActivity.this.finish();
 			}
 		});
 

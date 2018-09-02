@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.feecollector.android.feecollector.Activity.RegistrationActivity;
-import com.feecollector.android.feecollector.MainActivity;
+import com.feecollector.android.feecollector.LoginActivity;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
@@ -92,7 +90,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 		if (s.equals("true")) {
 			Toast.makeText(context, R.string.successful_registration,Toast.LENGTH_LONG).show();
 			Activity activity = (Activity)context;
-			Intent intent = new Intent(activity, MainActivity.class);
+			Intent intent = new Intent(activity, LoginActivity.class);
 			activity.startActivity(intent);
 			activity.finish();
 		}
