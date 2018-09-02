@@ -1,10 +1,17 @@
 package com.feecollector.android.feecollector.BackgroundTasks;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.feecollector.android.feecollector.Activity.RegistrationActivity;
+import com.feecollector.android.feecollector.MainActivity;
+import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
 
@@ -24,9 +31,12 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 
 	private Context context;
 	private User user;
-	public CreateNewUser(Context context, User user) {
+	private ProgressBar progressBar;
+
+	public CreateNewUser(Context context, User user, ProgressBar progressBar) {
 		this.context = context;
 		this.user = user;
+		this.progressBar = progressBar;
 	}
 
 	@Override
@@ -72,7 +82,19 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 	}
 
 	@Override
+	protected void onPreExecute() {
+		progressBar.setVisibility(View.VISIBLE);
+	}
+
+	@Override
 	protected void onPostExecute(String s) {
-		Toast.makeText(context,s,Toast.LENGTH_LONG).show();
+		progressBar.setVisibility(View.INVISIBLE);
+		if (s.equals("true")) {
+			Toast.makeText(context, R.string.successful_registration,Toast.LENGTH_LONG).show();
+			Activity activity = (Activity)context;
+			Intent intent = new Intent(activity, MainActivity.class);
+			activity.startActivity(intent);
+			activity.finish();
+		}
 	}
 }

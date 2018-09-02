@@ -4,49 +4,6 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical" >
 
-	<!-- Name Label -->
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/name_label"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:textSize="17dip"/>
-
-	<!-- Input Name -->
-	<EditText
-		android:id="@+id/name"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="5dip"
-		android:layout_marginBottom="15dip"
-		android:singleLine="true"/>
-
-	<!-- Price Label -->
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/surname_label"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:textSize="17dip"/>
-
-	<!-- Input Price -->
-	<EditText android:id="@+id/surname"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="5dip"
-		android:layout_marginBottom="15dip"
-		android:singleLine="true"
-		android:inputType="text"/>
-
-	<!-- Button Create Product -->
-	<Button android:id="@+id/createUser"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/create_user_btn"/>
-
 	<com.facebook.login.widget.LoginButton
 		android:id="@+id/login_button"
 		android:layout_width="wrap_content"
@@ -54,5 +11,28 @@
 		android:layout_gravity="center_horizontal"
 		android:layout_marginTop="30dp"
 		android:layout_marginBottom="30dp" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginBottom="30dp"
+		android:gravity="bottom|center"
+		android:visibility="visible">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/sign_up_text"
+			android:textColor="@android:color/black" />
+
+		<TextView
+			android:id="@+id/signUp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/sign_up_link"
+			android:textColor="@android:color/black"
+			android:textStyle="bold"
+			android:layout_marginStart="2dp" />
+	</LinearLayout>
 
 </LinearLayout>

@@ -5,7 +5,11 @@
     <string name="surname_label">Surname</string>
     <string name="facebook_app_id">513037572471782</string>
     <string name="facebook_login_protocol">fb513037572471782</string>
+    <string name="sign_up_text">Don not have an account?</string>
+    <string name="sign_up_link">Sign up</string>
 
 	<!--ERRORS-->
 	<string name="error_field_required">This field is required</string>
+    <!--Toast Messages-->
+    <string name="successful_registration">You have been successfully registered</string>
 </resources>

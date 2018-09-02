@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -19,8 +22,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
-import com.feecollector.android.feecollector.User.Entity.User;
+import com.feecollector.android.feecollector.Activity.RegistrationActivity;
 
 import org.json.JSONObject;
 
@@ -28,12 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
 	private String TAG = MainActivity.class.getSimpleName();
 
-	private EditText inputName;
-	private EditText inputSurname;
-	private Button createUserbtn;
-	private Context context;
+
 
 	private LoginButton loginButton;
+	private TextView signUp;
+
+
+	private Context context;
 	private CallbackManager callbackManager;
 
 	@Override
@@ -50,24 +53,22 @@ public class MainActivity extends AppCompatActivity {
 
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
 		if(isLoggedIn) {
 			Log.d("LOGED IN!!!" ,"ASDASD");
 		}
-		inputName = findViewById(R.id.name);
-		inputSurname = findViewById(R.id.surname);
-		createUserbtn = findViewById(R.id.createUser);
-
-		createUserbtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				User user = new User(inputName.getText().toString(),inputSurname.getText().toString());
-				if(attemptToRegister()) {
-					new CreateNewUser(context,user).execute();
-				}
-			}
-		});
 
 		loginButton = findViewById(R.id.login_button);
+		signUp = findViewById(R.id.signUp);
+
+		signUp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+				MainActivity.this.startActivity(intent);
+				MainActivity.this.finish();
+			}
+		});
 
 		callbackManager = CallbackManager.Factory.create();
 
@@ -99,32 +100,5 @@ public class MainActivity extends AppCompatActivity {
 
 			}
 		});
-	}
-
-	private boolean attemptToRegister() {
-		inputName.setError(null);
-		inputSurname.setError(null);
-
-		String username = inputName.getText().toString();
-		String password = inputSurname.getText().toString();
-
-		boolean cancel = false;
-		View focusView = null;
-
-		if (TextUtils.isEmpty(username)) {
-			inputName.setError(getString(R.string.error_field_required));
-			focusView = inputName;
-			cancel = true;
-		} else if (TextUtils.isEmpty(password)) {
-			inputSurname.setError(getString(R.string.error_field_required),null);
-			focusView = inputSurname;
-			cancel = true;
-		}
-
-		if (cancel) {
-			focusView.requestFocus();
-			return false;
-		}else
-			return true;
 	}
 }
