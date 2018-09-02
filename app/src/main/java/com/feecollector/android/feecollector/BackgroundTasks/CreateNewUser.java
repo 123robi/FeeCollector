@@ -42,8 +42,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
 			String post_data = URLEncoder.encode("name","UTF-8") + "=" +URLEncoder.encode(user.getName(),"UTF-8")+ "&"
-					+URLEncoder.encode("surname","UTF-8") + "=" +URLEncoder.encode(user.getSurname(),"UTF-8")+ "&"
-					+URLEncoder.encode("description","UTF-8") + "=" +URLEncoder.encode(user.getDescription(),"UTF-8");
+					+URLEncoder.encode("surname","UTF-8") + "=" +URLEncoder.encode(user.getSurname(),"UTF-8");
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();

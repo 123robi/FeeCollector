@@ -41,27 +41,18 @@
 		android:singleLine="true"
 		android:inputType="text"/>
 
-	<!-- Description Label -->
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="Description"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:textSize="17dip"/>
-
-	<!-- Input description -->
-	<EditText android:id="@+id/description"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="5dip"
-		android:layout_marginBottom="15dip"
-		android:gravity="top"/>
-
 	<!-- Button Create Product -->
 	<Button android:id="@+id/createUser"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/create_user_btn"/>
+
+	<com.facebook.login.widget.LoginButton
+		android:id="@+id/login_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="30dp"
+		android:layout_marginBottom="30dp" />
 
 </LinearLayout>

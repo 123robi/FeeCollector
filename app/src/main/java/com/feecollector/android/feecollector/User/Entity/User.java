@@ -1,19 +1,16 @@
 package com.feecollector.android.feecollector.User.Entity;
 
-import android.content.ContentValues;
 
 import java.util.Date;
 
 public class User {
 	String name;
 	String surname;
-	String description;
 	Date created_at, updated_at;
 
-	public User(String name, String surname, String description) {
+	public User(String name, String surname) {
 		this.name = name;
 		this.surname = surname;
-		this.description = description;
 		this.created_at = new Date();
 	}
 
@@ -31,14 +28,6 @@ public class User {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Date getCreated_at() {
