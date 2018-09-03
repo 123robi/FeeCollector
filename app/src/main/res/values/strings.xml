@@ -14,6 +14,7 @@
 
     <!--ERRORS-->
     <string name="error_field_required">This field is required</string>
+    <string name="error_email_validation">Email format is wrong.</string>
     <!--Toast Messages-->
     <string name="successful_registration">You have been successfully registered</string>
     <string name="successful_login">You have been logged in</string>

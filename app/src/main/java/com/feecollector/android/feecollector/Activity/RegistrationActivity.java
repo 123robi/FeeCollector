@@ -3,6 +3,7 @@ package com.feecollector.android.feecollector.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +64,10 @@ public class RegistrationActivity extends AppCompatActivity {
 			cancel = true;
 		} else if (TextUtils.isEmpty(email)) {
 			inputEmail.setError(getString(R.string.error_field_required),null);
+			focusView = inputEmail;
+			cancel = true;
+		} else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+			inputEmail.setError(getString(R.string.error_email_validation),null);
 			focusView = inputEmail;
 			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
