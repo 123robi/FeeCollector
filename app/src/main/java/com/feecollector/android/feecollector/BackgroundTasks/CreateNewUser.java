@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.feecollector.android.feecollector.Activity.LoginActivity;
+import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
@@ -44,7 +45,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 	@Override
 	protected String doInBackground(String... strings) {
 		try {
-			URL url = new URL("https://feecollector.000webhostapp.com/FeeCollector/register.php");
+			URL url = new URL(AppConfig.URL_REGISTER);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);

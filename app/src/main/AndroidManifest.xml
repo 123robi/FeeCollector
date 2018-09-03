@@ -23,9 +23,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".Activity.RegistrationActivity">
-
-        </activity>
+        <activity android:name=".Activity.RegistrationActivity"></activity>
+        <activity android:name=".Activity.DashboardActivity"></activity>
     </application>
 
 </manifest>

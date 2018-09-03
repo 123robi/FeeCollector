@@ -47,7 +47,7 @@
 		android:paddingRight="10dip"
 		android:paddingTop="10dip"
 		android:textSize="17sp"
-		android:labelFor="@+id/email"/>
+		android:labelFor="@+id/password"/>
 
 	<EditText android:id="@+id/password"
 		android:layout_width="fill_parent"
