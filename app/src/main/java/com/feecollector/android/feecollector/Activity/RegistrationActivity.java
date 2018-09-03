@@ -17,7 +17,8 @@ public class RegistrationActivity extends AppCompatActivity {
 	private String TAG = LoginActivity.class.getSimpleName();
 
 	private EditText inputName;
-	private EditText inputSurname;
+	private EditText inputEmail;
+	private EditText inputPassword;
 	private Button createUserbtn;
 	private ProgressBar progressBar;
 
@@ -27,42 +28,48 @@ public class RegistrationActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_registration);
 
 		inputName = findViewById(R.id.name);
-		inputSurname = findViewById(R.id.surname);
+		inputEmail = findViewById(R.id.email);
+		inputPassword = findViewById(R.id.password);
+
 		createUserbtn = findViewById(R.id.createUser);
 		progressBar = findViewById(R.id.pb_loading_indicator);
 
 		createUserbtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				User user = new User(inputName.getText().toString(),inputSurname.getText().toString());
+				User user = new User(inputName.getText().toString(),inputEmail.getText().toString(), inputPassword.getText().toString());
 				if(attemptToRegister()) {
 					new CreateNewUser(RegistrationActivity.this,user, progressBar).execute();
 				}
 			}
 		});
-
 	}
 
 	private boolean attemptToRegister() {
 		inputName.setError(null);
-		inputSurname.setError(null);
+		inputEmail.setError(null);
+		inputPassword.setError(null);
 
-		String username = inputName.getText().toString();
-		String password = inputSurname.getText().toString();
+		String name = inputName.getText().toString();
+		String email = inputEmail.getText().toString();
+		String password = inputPassword.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
-		if (TextUtils.isEmpty(username)) {
+		if (TextUtils.isEmpty(name)) {
 			inputName.setError(getString(R.string.error_field_required));
 			focusView = inputName;
 			cancel = true;
+		} else if (TextUtils.isEmpty(email)) {
+			inputEmail.setError(getString(R.string.error_field_required),null);
+			focusView = inputEmail;
+			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
-			inputSurname.setError(getString(R.string.error_field_required),null);
-			focusView = inputSurname;
+			inputPassword.setError(getString(R.string.error_field_required),null);
+			focusView = inputPassword;
 			cancel = true;
 		}
-
 		if (cancel) {
 			focusView.requestFocus();
 			return false;

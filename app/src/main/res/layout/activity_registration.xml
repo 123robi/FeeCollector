@@ -25,20 +25,37 @@
 
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/surname_label"
+		android:text="@string/email_label"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
 		android:paddingTop="10dip"
 		android:textSize="17sp"
-		android:labelFor="@+id/surname"/>
+		android:labelFor="@+id/email"/>
 
-	<EditText android:id="@+id/surname"
+	<EditText android:id="@+id/email"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_margin="5dip"
 		android:layout_marginBottom="15dip"
 		android:singleLine="true"
-		android:inputType="text"/>
+		android:inputType="textEmailAddress"/>
+
+	<TextView android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/password_label"
+		android:paddingLeft="10dip"
+		android:paddingRight="10dip"
+		android:paddingTop="10dip"
+		android:textSize="17sp"
+		android:labelFor="@+id/email"/>
+
+	<EditText android:id="@+id/password"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:layout_marginBottom="15dip"
+		android:singleLine="true"
+		android:inputType="textPassword"/>
 
 	<Button android:id="@+id/createUser"
 		android:layout_width="fill_parent"

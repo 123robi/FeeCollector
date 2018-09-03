@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -12,6 +13,9 @@ import com.feecollector.android.feecollector.Activity.LoginActivity;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -40,7 +44,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 	@Override
 	protected String doInBackground(String... strings) {
 		try {
-			URL url = new URL("https://feecollector.000webhostapp.com/FeeCollector/addUser.php");
+			URL url = new URL("https://feecollector.000webhostapp.com/FeeCollector/register.php");
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);
@@ -50,7 +54,8 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
 			String post_data = URLEncoder.encode("name","UTF-8") + "=" +URLEncoder.encode(user.getName(),"UTF-8")+ "&"
-					+URLEncoder.encode("surname","UTF-8") + "=" +URLEncoder.encode(user.getSurname(),"UTF-8");
+					+URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(user.getEmail(),"UTF-8")+ "&"
+					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(user.getPassword(),"UTF-8");
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();
@@ -87,12 +92,20 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 	@Override
 	protected void onPostExecute(String s) {
 		progressBar.setVisibility(View.INVISIBLE);
-		if (s.equals("true")) {
-			Toast.makeText(context, R.string.successful_registration,Toast.LENGTH_LONG).show();
-			Activity activity = (Activity)context;
-			Intent intent = new Intent(activity, LoginActivity.class);
-			activity.startActivity(intent);
-			activity.finish();
+		JSONObject object = null;
+		try {
+			object = new JSONObject(s);
+			if(!object.getBoolean("error")) {
+				Toast.makeText(context, R.string.successful_registration,Toast.LENGTH_LONG).show();
+				Activity activity = (Activity)context;
+				Intent intent = new Intent(activity, LoginActivity.class);
+				activity.startActivity(intent);
+				activity.finish();
+			} else {
+				Toast.makeText(context, object.getString("error_msg"),Toast.LENGTH_LONG).show();
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 	}
 }
