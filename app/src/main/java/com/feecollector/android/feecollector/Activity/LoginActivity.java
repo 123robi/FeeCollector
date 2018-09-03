@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector;
+package com.feecollector.android.feecollector.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.feecollector.android.feecollector.Activity.RegistrationActivity;
+import com.feecollector.android.feecollector.R;
 
 import org.json.JSONObject;
 

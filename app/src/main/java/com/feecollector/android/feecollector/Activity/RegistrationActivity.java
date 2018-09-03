@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
-import com.feecollector.android.feecollector.LoginActivity;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 

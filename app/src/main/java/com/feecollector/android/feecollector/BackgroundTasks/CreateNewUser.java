@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.feecollector.android.feecollector.LoginActivity;
+import com.feecollector.android.feecollector.Activity.LoginActivity;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
