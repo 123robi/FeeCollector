@@ -6,13 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.feecollector.android.feecollector.Activity.DashboardActivity;
-import com.feecollector.android.feecollector.Activity.LoginActivity;
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
 
 import org.json.JSONException;
@@ -30,7 +31,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class CheckCredentials extends AsyncTask<String, String, String> {
 	@SuppressLint("StaticFieldLeak")
@@ -42,7 +42,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 	public CheckCredentials(Context context, ProgressBar progressBar) {
 		this.context = context;
 		this.progressBar = progressBar;
-		sp = context.getSharedPreferences(AppConfig.NAME_IN_STRING, MODE_PRIVATE);
+		sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
 	}
 
 	@Override
@@ -101,6 +101,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 			if(!object.getBoolean("error")) {
 				sp.edit().putBoolean(AppConfig.IS_LOGGED,true).apply();
 				Toast.makeText(context, R.string.successful_login,Toast.LENGTH_LONG).show();
+				TokenSaver.setToken(context,true);
 				Activity activity = (Activity)context;
 				Intent intent = new Intent(activity, DashboardActivity.class);
 				activity.startActivity(intent);

@@ -6,4 +6,8 @@ public class AppConfig {
 
 	public static String NAME_IN_STRING = "login";
 	public static String IS_LOGGED = "isLogged";
+    public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
+    public static final String NUMERIC = "0123456789";
+    public static final String SPECIAL_CHARS = "!@#$%^&*_=+-/";
 }

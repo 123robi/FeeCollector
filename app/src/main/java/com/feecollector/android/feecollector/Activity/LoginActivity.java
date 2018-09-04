@@ -3,6 +3,7 @@ package com.feecollector.android.feecollector.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,9 +24,16 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.BackgroundTasks.CheckCredentials;
+import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
+import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
+import com.feecollector.android.feecollector.User.Entity.User;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.security.SecureRandom;
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,12 +62,12 @@ public class LoginActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		sp = getSharedPreferences(AppConfig.NAME_IN_STRING, MODE_PRIVATE);
+		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-		if( isLoggedIn || sp.getBoolean(AppConfig.IS_LOGGED,true)) {
+		if( isLoggedIn || TokenSaver.getToken(this)) {
 			Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 			LoginActivity.this.startActivity(intent);
 			LoginActivity.this.finish();
@@ -120,5 +128,15 @@ public class LoginActivity extends AppCompatActivity {
 
 			}
 		});
+	}
+
+	public static String generatePassword(int len, String dic) {
+		SecureRandom random = new SecureRandom();
+		String result = "";
+		for (int i = 0; i < len; i++) {
+			int index = random.nextInt(dic.length());
+			result += dic.charAt(index);
+		}
+		return result;
 	}
 }
