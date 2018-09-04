@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,15 +34,13 @@ import java.net.URLEncoder;
 
 
 public class CheckCredentials extends AsyncTask<String, String, String> {
-	@SuppressLint("StaticFieldLeak")
-	private Context context;
-	@SuppressLint("StaticFieldLeak")
-	private ProgressBar progressBar;
+	private WeakReference<Context> context;
+	private WeakReference<ProgressBar> progressBar;
 
 	private SharedPreferences sp;
 	public CheckCredentials(Context context, ProgressBar progressBar) {
-		this.context = context;
-		this.progressBar = progressBar;
+		this.context = new WeakReference<>(context);
+		this.progressBar = new WeakReference<>(progressBar);
 		sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
 	}
 
@@ -89,25 +88,25 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 
 	@Override
 	protected void onPreExecute() {
-		progressBar.setVisibility(View.VISIBLE);
+		progressBar.get().setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	protected void onPostExecute(String s) {
-		progressBar.setVisibility(View.INVISIBLE);
+		progressBar.get().setVisibility(View.INVISIBLE);
 		JSONObject object = null;
 		try {
 			object = new JSONObject(s);
 			if(!object.getBoolean("error")) {
 				sp.edit().putBoolean(AppConfig.IS_LOGGED,true).apply();
-				Toast.makeText(context, R.string.successful_login,Toast.LENGTH_LONG).show();
-				TokenSaver.setToken(context,true);
-				Activity activity = (Activity)context;
+				Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
+				TokenSaver.setToken(context.get(),true);
+				Activity activity = (Activity)context.get();
 				Intent intent = new Intent(activity, DashboardActivity.class);
 				activity.startActivity(intent);
 				activity.finish();
 			} else {
-				Toast.makeText(context, object.getString("error_msg"),Toast.LENGTH_LONG).show();
+				Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

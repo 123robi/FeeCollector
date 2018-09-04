@@ -40,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
 			public void onClick(View v) {
 				User user = new User(inputName.getText().toString(),inputEmail.getText().toString(), inputPassword.getText().toString());
 				if(attemptToRegister()) {
-					new CreateNewUser(RegistrationActivity.this,user, progressBar).execute();
+					new CreateNewUser(RegistrationActivity.this,user, progressBar, false).execute();
 				}
 			}
 		});

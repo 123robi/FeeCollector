@@ -67,7 +67,8 @@ public class LoginActivity extends AppCompatActivity {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-		if( isLoggedIn || TokenSaver.getToken(this)) {
+		Log.d("ASDASD",TokenSaver.getToken(LoginActivity.this) + "");
+		if( isLoggedIn || TokenSaver.getToken(LoginActivity.this)) {
 			Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 			LoginActivity.this.startActivity(intent);
 			LoginActivity.this.finish();
@@ -77,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
 
 		loginButton = findViewById(R.id.login_button);
 		loginButton_facebook = findViewById(R.id.login_button_facebook);
+		loginButton_facebook.setReadPermissions(Arrays.asList(
+				"public_profile", "email", "user_birthday", "user_friends"));
 		signUp = findViewById(R.id.signUp);
 		progressBar = findViewById(R.id.pb_loading_indicator);
 
@@ -107,13 +110,20 @@ public class LoginActivity extends AppCompatActivity {
 						new GraphRequest.GraphJSONObjectCallback() {
 							@Override
 							public void onCompleted(JSONObject object, GraphResponse response) {
+								User user = null;
+								try {
+									user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+								new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
 								Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 								LoginActivity.this.startActivity(intent);
 								LoginActivity.this.finish();
 							}
 						});
 				Bundle parameters = new Bundle();
-				parameters.putString("fields", "first_name");
+				parameters.putString("fields", "name,email");
 				request.setParameters(parameters);
 				request.executeAsync();
 			}

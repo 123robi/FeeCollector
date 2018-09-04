@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,14 +33,16 @@ import java.net.URLEncoder;
 
 public class CreateNewUser extends AsyncTask<String, String, String>{
 
-	private Context context;
+    private final WeakReference<Context> context;
+    private final WeakReference<ProgressBar> progressBar;
 	private User user;
-	private ProgressBar progressBar;
+	private boolean facebookLogin;
 
-	public CreateNewUser(Context context, User user, ProgressBar progressBar) {
-		this.context = context;
+	public CreateNewUser(Context context, User user, ProgressBar progressBar, boolean facebookLogin) {
+		this.context = new WeakReference<>(context);
 		this.user = user;
-		this.progressBar = progressBar;
+		this.progressBar = new WeakReference<>(progressBar);
+		this.facebookLogin = facebookLogin;
 	}
 
 	@Override
@@ -87,23 +90,27 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 
 	@Override
 	protected void onPreExecute() {
-		progressBar.setVisibility(View.VISIBLE);
+		progressBar.get().setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	protected void onPostExecute(String s) {
-		progressBar.setVisibility(View.INVISIBLE);
+		progressBar.get().setVisibility(View.INVISIBLE);
 		JSONObject object = null;
 		try {
 			object = new JSONObject(s);
 			if(!object.getBoolean("error")) {
-				Toast.makeText(context, R.string.successful_registration,Toast.LENGTH_LONG).show();
-				Activity activity = (Activity)context;
+				Toast.makeText(context.get(), R.string.successful_registration,Toast.LENGTH_LONG).show();
+				Activity activity = (Activity)context.get();
 				Intent intent = new Intent(activity, LoginActivity.class);
 				activity.startActivity(intent);
 				activity.finish();
 			} else {
-				Toast.makeText(context, object.getString("error_msg"),Toast.LENGTH_LONG).show();
+				if(!facebookLogin) {
+					Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
+				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
