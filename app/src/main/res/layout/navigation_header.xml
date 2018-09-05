@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:gravity="center_horizontal"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+    android:background="@color/colorPrimaryDark">
 <de.hdodenhof.circleimageview.CircleImageView
     android:id="@+id/header_profile_pic"
     android:layout_width="120dp"
@@ -15,12 +16,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/header_username"
-        android:textColor="@color/darkgrey"
+        android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         />
     <TextView
         android:id="@+id/header_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/darkgrey"/>
+        android:textColor="@color/white"/>
 </LinearLayout>

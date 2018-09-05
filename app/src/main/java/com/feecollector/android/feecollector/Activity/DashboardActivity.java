@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -36,7 +37,6 @@ public class DashboardActivity extends AppCompatActivity {
 	private TextView header_email;
 	private ImageView header_picture;
 	private JSONObject respone;
-	private JSONObject profile_pic_data, profile_pic_url;
 	private SharedPreferences sp;
 
 	@Override
@@ -94,6 +94,7 @@ public class DashboardActivity extends AppCompatActivity {
 	}
 
 	private void setUserProfile(String jsondata) {
+		JSONObject pic_data, pic_url = null;
 		if (jsondata == null || jsondata.equals("")){
 			return;
 		}
@@ -101,9 +102,10 @@ public class DashboardActivity extends AppCompatActivity {
 			respone = new JSONObject(jsondata);
 			header_username.setText(respone.get("name").toString());
 			header_email.setText(respone.get("email").toString());
-			profile_pic_data = new JSONObject(respone.get("picture").toString());
-			profile_pic_url = new JSONObject(profile_pic_data.getString("data"));
-			Picasso.with(this).load(profile_pic_url.getString("url")).into(header_picture);
+			pic_data = new JSONObject(respone.get("picture").toString());
+			pic_url = new JSONObject(pic_data.getString("data"));
+			Picasso.with(this).load(pic_url.getString("url")).into(header_picture);
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
