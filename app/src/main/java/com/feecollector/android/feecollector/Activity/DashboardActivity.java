@@ -3,38 +3,57 @@ package com.feecollector.android.feecollector.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DashboardActivity extends AppCompatActivity {
-
-	private Button logout;
 
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle toggle;
 	private NavigationView navigationView;
+	private TextView header_username;
+	private TextView header_email;
+	private ImageView header_picture;
+	private JSONObject respone;
+	private JSONObject profile_pic_data, profile_pic_url;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
-		/**
-		 * Navigation bar configuration
-		 */
+		setNavigationBar();
+		String jsonData = getIntent().getStringExtra("jsondata");
+		setUserProfile(jsonData);
+
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(toggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void setNavigationBar() {
 		drawerLayout = findViewById(R.id.activity_dashboard);
 		toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
 		drawerLayout.addDrawerListener(toggle);
@@ -57,14 +76,27 @@ public class DashboardActivity extends AppCompatActivity {
 				return true;
 			}
 		});
+		View header = LayoutInflater.from(this).inflate(R.layout.navigation_header,null);
+		navigationView.addHeaderView(header);
 
+		header_username = header.findViewById(R.id.header_username);
+		header_email = header.findViewById(R.id.header_email);
+		header_picture = header.findViewById(R.id.header_profile_pic);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if(toggle.onOptionsItemSelected(item)) {
-			return true;
+	private void setUserProfile(String jsondata) {
+		if (jsondata == null || jsondata.equals("")){
+			return;
 		}
-		return super.onOptionsItemSelected(item);
+		try {
+			respone = new JSONObject(jsondata);
+			header_username.setText(respone.get("name").toString());
+			header_email.setText(respone.get("email").toString());
+			profile_pic_data = new JSONObject(respone.get("picture").toString());
+			profile_pic_url = new JSONObject(profile_pic_data.getString("data"));
+			Picasso.with(this).load(profile_pic_url.getString("url")).into(header_picture);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 }

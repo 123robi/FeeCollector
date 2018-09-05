@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-		Log.d("ASDASD",TokenSaver.getToken(LoginActivity.this) + "");
 		if( isLoggedIn || TokenSaver.getToken(LoginActivity.this)) {
 			Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 			LoginActivity.this.startActivity(intent);
@@ -104,28 +103,7 @@ public class LoginActivity extends AppCompatActivity {
 		loginButton_facebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
-				AccessToken accessToken = AccessToken.getCurrentAccessToken();
-				GraphRequest request = GraphRequest.newMeRequest(
-						accessToken,
-						new GraphRequest.GraphJSONObjectCallback() {
-							@Override
-							public void onCompleted(JSONObject object, GraphResponse response) {
-								User user = null;
-								try {
-									user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
-								} catch (JSONException e) {
-									e.printStackTrace();
-								}
-								new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
-								Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-								LoginActivity.this.startActivity(intent);
-								LoginActivity.this.finish();
-							}
-						});
-				Bundle parameters = new Bundle();
-				parameters.putString("fields", "name,email");
-				request.setParameters(parameters);
-				request.executeAsync();
+				getUserInfo(loginResult);
 			}
 
 			@Override
@@ -138,6 +116,32 @@ public class LoginActivity extends AppCompatActivity {
 
 			}
 		});
+	}
+
+	private void getUserInfo(LoginResult loginResult) {
+		AccessToken accessToken = AccessToken.getCurrentAccessToken();
+		GraphRequest request = GraphRequest.newMeRequest(
+				accessToken,
+				new GraphRequest.GraphJSONObjectCallback() {
+					@Override
+					public void onCompleted(JSONObject object, GraphResponse response) {
+						User user = null;
+						try {
+							user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
+						Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+						intent.putExtra("jsondata",object.toString());
+						LoginActivity.this.startActivity(intent);
+						LoginActivity.this.finish();
+					}
+				});
+		Bundle parameters = new Bundle();
+		parameters.putString("fields", "id, name, email, picture.width(120).height(120)");
+		request.setParameters(parameters);
+		request.executeAsync();
 	}
 
 	public static String generatePassword(int len, String dic) {
