@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
 	private CallbackManager callbackManager;
 
-	//Keep user signed in
 	private SharedPreferences sp;
 
 	@Override
@@ -133,7 +132,8 @@ public class LoginActivity extends AppCompatActivity {
 						}
 						new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
 						Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-						intent.putExtra("jsondata",object.toString());
+						intent.putExtra(AppConfig.FACEBOOK_DETAILS,object.toString());
+						sp.edit().putString(AppConfig.FACEBOOK_DETAILS, object.toString()).apply();
 						LoginActivity.this.startActivity(intent);
 						LoginActivity.this.finish();
 					}

@@ -1,6 +1,8 @@
 package com.feecollector.android.feecollector.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
 import com.squareup.picasso.Picasso;
@@ -34,14 +37,20 @@ public class DashboardActivity extends AppCompatActivity {
 	private ImageView header_picture;
 	private JSONObject respone;
 	private JSONObject profile_pic_data, profile_pic_url;
+	private SharedPreferences sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
+		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		setNavigationBar();
-		String jsonData = getIntent().getStringExtra("jsondata");
-		setUserProfile(jsonData);
+		String jsonData = getIntent().getStringExtra(AppConfig.FACEBOOK_DETAILS);
+		if (!(jsonData == null || jsonData.equals(""))) {
+			setUserProfile(jsonData);
+		} else {
+			setUserProfile(sp.getString(AppConfig.FACEBOOK_DETAILS, ""));
+		}
 
 	}
 

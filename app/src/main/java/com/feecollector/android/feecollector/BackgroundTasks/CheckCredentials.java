@@ -37,11 +37,9 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 	private WeakReference<Context> context;
 	private WeakReference<ProgressBar> progressBar;
 
-	private SharedPreferences sp;
 	public CheckCredentials(Context context, ProgressBar progressBar) {
 		this.context = new WeakReference<>(context);
 		this.progressBar = new WeakReference<>(progressBar);
-		sp = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
 	}
 
 	@Override
@@ -98,7 +96,6 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 		try {
 			object = new JSONObject(s);
 			if(!object.getBoolean("error")) {
-				sp.edit().putBoolean(AppConfig.IS_LOGGED,true).apply();
 				Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
 				TokenSaver.setToken(context.get(),true);
 				Activity activity = (Activity)context.get();
