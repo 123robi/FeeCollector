@@ -49,8 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
 	private CallbackManager callbackManager;
 
-	private SharedPreferences sp;
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -61,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
@@ -127,13 +124,14 @@ public class LoginActivity extends AppCompatActivity {
 						User user = null;
 						try {
 							user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+							user.setFacebook_json(object.toString());
+							Log.d("USER", user.toString());
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
 						new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
 						Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 						intent.putExtra(AppConfig.FACEBOOK_DETAILS,object.toString());
-						sp.edit().putString(AppConfig.FACEBOOK_DETAILS, object.toString()).apply();
 						LoginActivity.this.startActivity(intent);
 						LoginActivity.this.finish();
 					}

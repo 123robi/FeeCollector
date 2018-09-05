@@ -43,15 +43,14 @@ public class DashboardActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
-		sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		setNavigationBar();
+
 		String jsonData = getIntent().getStringExtra(AppConfig.FACEBOOK_DETAILS);
 		if (!(jsonData == null || jsonData.equals(""))) {
 			setUserProfile(jsonData);
 		} else {
-			setUserProfile(sp.getString(AppConfig.FACEBOOK_DETAILS, ""));
-		}
 
+		}
 	}
 
 	@Override

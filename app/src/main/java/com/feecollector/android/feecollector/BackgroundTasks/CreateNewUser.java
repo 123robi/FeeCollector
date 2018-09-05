@@ -44,7 +44,6 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 		this.progressBar = new WeakReference<>(progressBar);
 		this.facebookLogin = facebookLogin;
 	}
-
 	@Override
 	protected String doInBackground(String... strings) {
 		try {
@@ -59,7 +58,8 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 
 			String post_data = URLEncoder.encode("name","UTF-8") + "=" +URLEncoder.encode(user.getName(),"UTF-8")+ "&"
 					+URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(user.getEmail(),"UTF-8")+ "&"
-					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(user.getPassword(),"UTF-8");
+					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(user.getPassword(),"UTF-8")+ "&"
+					+URLEncoder.encode("facebook_json","UTF-8") + "=" +URLEncoder.encode(user.getFacebook_json(),"UTF-8");
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();

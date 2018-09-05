@@ -4,18 +4,18 @@ package com.feecollector.android.feecollector.User.Entity;
 import java.util.Date;
 
 public class User {
-	String name;
-	String surname;
-	String email;
-	String password;
-	Date created_at, updated_at;
+	private String name;
+	private String email;
+	private String password;
+	private Date created_at, updated_at;
+	private String facebook_json;
 
 	public User(String name, String email, String password) {
 		this.name = name;
-		this.surname = surname;
 		this.email = email;
 		this.password = password;
 		this.created_at = new Date();
+		this.facebook_json = null;
 	}
 
 	public String getName() {
@@ -24,14 +24,6 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
 	}
 
 	public String getEmail() {
@@ -64,5 +56,18 @@ public class User {
 
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
+	}
+
+	public String getFacebook_json() {
+		return facebook_json;
+	}
+
+	public void setFacebook_json(String facebook_json) {
+		this.facebook_json = facebook_json;
+	}
+
+	@Override
+	public String toString() {
+		return "" + getEmail() + " " + getName() + " " + getFacebook_json();
 	}
 }
