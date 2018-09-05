@@ -33,8 +33,8 @@ import java.net.URLEncoder;
 
 public class CreateNewUser extends AsyncTask<String, String, String>{
 
-    private final WeakReference<Context> context;
-    private final WeakReference<ProgressBar> progressBar;
+	private final WeakReference<Context> context;
+	private final WeakReference<ProgressBar> progressBar;
 	private User user;
 	private boolean facebookLogin;
 

@@ -103,7 +103,7 @@ public class DashboardActivity extends AppCompatActivity {
 			header_email.setText(respone.get("email").toString());
 			pic_data = new JSONObject(respone.get("picture").toString());
 			pic_url = new JSONObject(pic_data.getString("data"));
-			Picasso.with(this).load(pic_url.getString("url")).into(header_picture);
+			Picasso.get().load(pic_url.getString("url")).into(header_picture);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

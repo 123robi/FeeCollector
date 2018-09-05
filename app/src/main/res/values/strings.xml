@@ -1,26 +1,26 @@
 <resources>
-    <string name="app_name">Fee Collector</string>
-    <string name="create_user_btn">Create User</string>
-    <string name="name_label">Name</string>
-    <string name="facebook_app_id">513037572471782</string>
-    <string name="facebook_login_protocol">fb513037572471782</string>
-    <string name="sign_up_link">Sign up</string>
+	<string name="app_name">Fee Collector</string>
+	<string name="create_user_btn">Create User</string>
+	<string name="name_label">Name</string>
+	<string name="facebook_app_id">513037572471782</string>
+	<string name="facebook_login_protocol">fb513037572471782</string>
+	<string name="sign_up_link">Sign up</string>
 
-    <!--Login Page-->
-    <string name="sign_in">Sign in</string>
-    <string name="sign_up_text">Don not have an account?</string>
-    <string name="email_label">Email</string>
-    <string name="password_label">Password</string>
+	<!--Login Page-->
+	<string name="sign_in">Sign in</string>
+	<string name="sign_up_text">Don not have an account?</string>
+	<string name="email_label">Email</string>
+	<string name="password_label">Password</string>
 
-    <!--Dashboard Page-->
-    <string name="logout">Log out</string>
-    <string name="open">Open</string>
-    <string name="close">Close</string>
-    <!--ERRORS-->
-    <string name="error_field_required">This field is required</string>
-    <string name="error_email_validation">Email format is wrong.</string>
+	<!--Dashboard Page-->
+	<string name="logout">Log out</string>
+	<string name="open">Open</string>
+	<string name="close">Close</string>
+	<!--ERRORS-->
+	<string name="error_field_required">This field is required</string>
+	<string name="error_email_validation">Email format is wrong.</string>
 
-    <!--Toast Messages-->
-    <string name="successful_registration">You have been successfully registered</string>
-    <string name="successful_login">You have been logged in</string>
+	<!--Toast Messages-->
+	<string name="successful_registration">You have been successfully registered</string>
+	<string name="successful_login">You have been logged in</string>
 </resources>
