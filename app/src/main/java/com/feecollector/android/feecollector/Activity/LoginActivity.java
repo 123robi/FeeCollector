@@ -126,7 +126,6 @@ public class LoginActivity extends AppCompatActivity {
 						try {
 							user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
 							user.setFacebook_json(object.toString());
-							Log.d("USER", user.toString());
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}

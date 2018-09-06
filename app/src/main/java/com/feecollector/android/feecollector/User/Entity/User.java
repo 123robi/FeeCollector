@@ -15,7 +15,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.created_at = new Date();
-		this.facebook_json = null;
+		this.facebook_json = "null";
 	}
 
 	public String getName() {

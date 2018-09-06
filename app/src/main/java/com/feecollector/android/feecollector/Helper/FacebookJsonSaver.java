@@ -9,7 +9,7 @@ public class FacebookJsonSaver {
 
 	public static String getJson(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(FACEBOOK_JSON, Context.MODE_PRIVATE);
-		return prefs.getString(TOKEN_KEY, "null");
+		return prefs.getString(TOKEN_KEY, null);
 	}
 
 	public static void setJson(Context c, String json) {

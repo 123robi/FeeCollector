@@ -1,14 +1,12 @@
 package com.feecollector.android.feecollector.Activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,20 +33,23 @@ public class DashboardActivity extends AppCompatActivity {
 	private TextView header_email;
 	private ImageView header_picture;
 	private JSONObject respone;
-	private SharedPreferences sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
-		setNavigationBar();
 
 		String jsonData = getIntent().getStringExtra(AppConfig.FACEBOOK_DETAILS);
 		if (!(jsonData == null || jsonData.equals(""))) {
-			Log.d("JSON", jsonData);
+			initialize();
+			setNavigationView();
 			setUserProfile(jsonData);
-		} else {
+		} else if(!(FacebookJsonSaver.getJson(DashboardActivity.this) == null)){
+			initialize();
+			setNavigationView();
 			setUserProfile(FacebookJsonSaver.getJson(DashboardActivity.this));
+		} else {
+			initialize();
 		}
 	}
 
@@ -59,8 +60,7 @@ public class DashboardActivity extends AppCompatActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	private void setNavigationBar() {
+	private void initialize() {
 		drawerLayout = findViewById(R.id.activity_dashboard);
 		toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
 		drawerLayout.addDrawerListener(toggle);
@@ -86,6 +86,8 @@ public class DashboardActivity extends AppCompatActivity {
 				return true;
 			}
 		});
+	}
+	private void setNavigationView() {
 		View header = LayoutInflater.from(this).inflate(R.layout.navigation_header,null);
 		navigationView.addHeaderView(header);
 

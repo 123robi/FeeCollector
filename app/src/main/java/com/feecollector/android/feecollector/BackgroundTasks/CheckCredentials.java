@@ -103,7 +103,6 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 				TokenSaver.setToken(context.get(),true);
 				Activity activity = (Activity)context.get();
 				Intent intent = new Intent(activity, DashboardActivity.class);
-				FacebookJsonSaver.setJson(context.get(),email);
 				intent.putExtra("email",email);
 				activity.startActivity(intent);
 				activity.finish();
