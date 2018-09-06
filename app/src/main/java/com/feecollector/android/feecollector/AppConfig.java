@@ -2,6 +2,7 @@ package com.feecollector.android.feecollector;
 
 public class AppConfig {
 	public static final String FACEBOOK_DETAILS = "jsondata";
+	public static final String URL_GET_FACEBOOK_JSON = "https://feecollector.000webhostapp.com/FeeCollector/getFacebookJson.php";
 	public static String URL_LOGIN = "https://feecollector.000webhostapp.com/FeeCollector/login.php";
 	public static String URL_REGISTER = "https://feecollector.000webhostapp.com/FeeCollector/register.php";
 
