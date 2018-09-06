@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
 
@@ -36,6 +37,7 @@ import java.net.URLEncoder;
 public class CheckCredentials extends AsyncTask<String, String, String> {
 	private WeakReference<Context> context;
 	private WeakReference<ProgressBar> progressBar;
+	private String email;
 
 	public CheckCredentials(Context context, ProgressBar progressBar) {
 		this.context = new WeakReference<>(context);
@@ -44,6 +46,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 
 	@Override
 	protected String doInBackground(String... strings) {
+		email = strings[0];
 		try {
 			URL url = new URL(AppConfig.URL_LOGIN);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -54,7 +57,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 			OutputStream outputStream = httpURLConnection.getOutputStream();
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-			String post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(strings[0],"UTF-8")+ "&"
+			String post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
 					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(strings[1],"UTF-8");
 
 			bufferedWriter.write(post_data);
@@ -100,6 +103,8 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 				TokenSaver.setToken(context.get(),true);
 				Activity activity = (Activity)context.get();
 				Intent intent = new Intent(activity, DashboardActivity.class);
+				FacebookJsonSaver.setJson(context.get(),email);
+				intent.putExtra("email",email);
 				activity.startActivity(intent);
 				activity.finish();
 			} else {

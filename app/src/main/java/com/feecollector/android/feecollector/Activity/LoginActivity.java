@@ -25,6 +25,7 @@ import com.facebook.login.widget.LoginButton;
 import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.BackgroundTasks.CheckCredentials;
 import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
+import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
@@ -131,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 						}
 						new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
 						Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+						FacebookJsonSaver.setJson(LoginActivity.this, object.toString());
 						intent.putExtra(AppConfig.FACEBOOK_DETAILS,object.toString());
 						LoginActivity.this.startActivity(intent);
 						LoginActivity.this.finish();

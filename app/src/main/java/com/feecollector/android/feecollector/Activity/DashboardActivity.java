@@ -2,7 +2,6 @@ package com.feecollector.android.feecollector.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,14 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
 import com.squareup.picasso.Picasso;
@@ -47,9 +45,10 @@ public class DashboardActivity extends AppCompatActivity {
 
 		String jsonData = getIntent().getStringExtra(AppConfig.FACEBOOK_DETAILS);
 		if (!(jsonData == null || jsonData.equals(""))) {
+			Log.d("JSON", jsonData);
 			setUserProfile(jsonData);
 		} else {
-
+			setUserProfile(FacebookJsonSaver.getJson(DashboardActivity.this));
 		}
 	}
 
@@ -76,7 +75,10 @@ public class DashboardActivity extends AppCompatActivity {
 					if(AccessToken.getCurrentAccessToken() != null) {
 						LoginManager.getInstance().logOut();
 					}
+					//claring SharedPReferences after logout
+					FacebookJsonSaver.clear(DashboardActivity.this);
 					TokenSaver.setToken(DashboardActivity.this,false);
+
 					Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
 					startActivity(intent);
 					finish();
