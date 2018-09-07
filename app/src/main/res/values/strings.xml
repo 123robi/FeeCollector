@@ -23,4 +23,5 @@
 	<!--Toast Messages-->
 	<string name="successful_registration">You have been successfully registered</string>
 	<string name="successful_login">You have been logged in</string>
+    <string name="connection_warning">Please check your connection</string>
 </resources>

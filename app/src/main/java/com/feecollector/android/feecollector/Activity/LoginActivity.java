@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -26,6 +27,7 @@ import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.BackgroundTasks.CheckCredentials;
 import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
 import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
+import com.feecollector.android.feecollector.Helper.InternetConnection;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
@@ -82,7 +84,11 @@ public class LoginActivity extends AppCompatActivity {
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new CheckCredentials(LoginActivity.this,progressBar).execute(email_login.getText().toString(), password_login.getText().toString());
+				if(InternetConnection.getInstance(LoginActivity.this).isOnline()){
+					new CheckCredentials(LoginActivity.this,progressBar).execute(email_login.getText().toString(), password_login.getText().toString());
+				} else {
+					Toast.makeText(LoginActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 
@@ -98,9 +104,9 @@ public class LoginActivity extends AppCompatActivity {
 		callbackManager = CallbackManager.Factory.create();
 
 		loginButton_facebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-			@Override
+				@Override
 			public void onSuccess(LoginResult loginResult) {
-				getUserInfo(loginResult);
+					getUserInfo(loginResult);
 			}
 
 			@Override
@@ -110,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
 
 			@Override
 			public void onError(FacebookException error) {
-
+				Toast.makeText(LoginActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
 			}
 		});
 	}
@@ -135,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
 						intent.putExtra(AppConfig.FACEBOOK_DETAILS,object.toString());
 						LoginActivity.this.startActivity(intent);
 						LoginActivity.this.finish();
+
 					}
 				});
 		Bundle parameters = new Bundle();

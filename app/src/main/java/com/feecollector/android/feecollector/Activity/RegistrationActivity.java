@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
+import com.feecollector.android.feecollector.Helper.InternetConnection;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
@@ -39,8 +41,10 @@ public class RegistrationActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				User user = new User(inputName.getText().toString(),inputEmail.getText().toString(), inputPassword.getText().toString());
-				if(attemptToRegister()) {
+				if(attemptToRegister() && InternetConnection.getInstance(RegistrationActivity.this).isOnline()) {
 					new CreateNewUser(RegistrationActivity.this,user, progressBar, false).execute();
+				} else {
+					Toast.makeText(RegistrationActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
 				}
 			}
 		});
