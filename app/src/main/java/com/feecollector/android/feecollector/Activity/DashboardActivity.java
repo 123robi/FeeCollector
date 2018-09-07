@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ public class DashboardActivity extends AppCompatActivity {
 	private TextView header_email;
 	private ImageView header_picture;
 	private JSONObject respone;
+	private Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +77,14 @@ public class DashboardActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	private void initialize() {
+		toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+
+
 		drawerLayout = findViewById(R.id.activity_dashboard);
-		toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
+		toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
 		drawerLayout.addDrawerListener(toggle);
 		toggle.syncState();
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		navigationView = findViewById(R.id.nav_view);
 		navigationViewListener();
