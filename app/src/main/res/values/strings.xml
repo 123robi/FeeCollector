@@ -12,10 +12,14 @@
 	<string name="email_label">Email</string>
 	<string name="password_label">Password</string>
 
-	<!--Dashboard Page-->
+	<!--Navigation Menu-->
 	<string name="logout">Log out</string>
+	<string name="settings">Settings</string>
+
+	<!--Dashboard Page-->
 	<string name="open">Open</string>
 	<string name="close">Close</string>
+
 	<!--ERRORS-->
 	<string name="error_field_required">This field is required</string>
 	<string name="error_email_validation">Email format is wrong.</string>
@@ -24,4 +28,7 @@
 	<string name="successful_registration">You have been successfully registered</string>
 	<string name="successful_login">You have been logged in</string>
     <string name="connection_warning">Please check your connection</string>
+
+	<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

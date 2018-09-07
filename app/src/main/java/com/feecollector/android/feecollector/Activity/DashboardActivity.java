@@ -3,6 +3,8 @@ package com.feecollector.android.feecollector.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.DashboardActivityFragment.SettingsFragment;
 import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
@@ -38,18 +41,29 @@ public class DashboardActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
+		initialize();
+		/*if (savedInstanceState == null) {
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+					new SettingsFragment()).commit();
+			navigationView.setCheckedItem(R.id.settings);
+		}*/
 
 		String jsonData = getIntent().getStringExtra(AppConfig.FACEBOOK_DETAILS);
 		if (!(jsonData == null || jsonData.equals(""))) {
-			initialize();
 			setNavigationView();
 			setUserProfile(jsonData);
 		} else if(!(FacebookJsonSaver.getJson(DashboardActivity.this) == null)){
-			initialize();
 			setNavigationView();
 			setUserProfile(FacebookJsonSaver.getJson(DashboardActivity.this));
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+			drawerLayout.closeDrawer(GravityCompat.START);
 		} else {
-			initialize();
+			super.onBackPressed();
 		}
 	}
 
@@ -68,25 +82,9 @@ public class DashboardActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		navigationView = findViewById(R.id.nav_view);
-		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-			@Override
-			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-				if(item.getItemId() == R.id.log_out) {
-					if(AccessToken.getCurrentAccessToken() != null) {
-						LoginManager.getInstance().logOut();
-					}
-					//claring SharedPReferences after logout
-					FacebookJsonSaver.clear(DashboardActivity.this);
-					TokenSaver.setToken(DashboardActivity.this,false);
-
-					Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-					startActivity(intent);
-					finish();
-				}
-				return true;
-			}
-		});
+		navigationViewListener();
 	}
+
 	private void setNavigationView() {
 		View header = LayoutInflater.from(this).inflate(R.layout.navigation_header,null);
 		navigationView.addHeaderView(header);
@@ -112,5 +110,33 @@ public class DashboardActivity extends AppCompatActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void navigationViewListener() {
+		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+			@Override
+			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+				int id = item.getItemId();
+				if(id == R.id.log_out) {
+					if(AccessToken.getCurrentAccessToken() != null) {
+						LoginManager.getInstance().logOut();
+					}
+					//claring SharedPReferences after logout
+					FacebookJsonSaver.clear(DashboardActivity.this);
+					TokenSaver.setToken(DashboardActivity.this,false);
+
+					Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+					startActivity(intent);
+					finish();
+				} else if(id == R.id.settings) {
+					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+							new SettingsFragment()).commit();
+				}
+
+				drawerLayout.closeDrawer(GravityCompat.START);
+
+				return true;
+			}
+		});
 	}
 }
