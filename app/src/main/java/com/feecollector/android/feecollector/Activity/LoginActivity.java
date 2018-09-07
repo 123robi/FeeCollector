@@ -1,13 +1,9 @@
 package com.feecollector.android.feecollector.Activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,7 +58,13 @@ public class LoginActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		checkIfLogged();
+		initialize();
+		buttonListeners();
+	}
 
+
+	private void checkIfLogged() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
@@ -71,6 +73,9 @@ public class LoginActivity extends AppCompatActivity {
 			LoginActivity.this.startActivity(intent);
 			LoginActivity.this.finish();
 		}
+	}
+
+	private void initialize() {
 		email_login = findViewById(R.id.email_login);
 		password_login = findViewById(R.id.password_login);
 
@@ -78,9 +83,14 @@ public class LoginActivity extends AppCompatActivity {
 		loginButton_facebook = findViewById(R.id.login_button_facebook);
 		loginButton_facebook.setReadPermissions(Arrays.asList(
 				"public_profile", "email", "user_birthday", "user_friends"));
-		signUp = findViewById(R.id.signUp);
-		progressBar = findViewById(R.id.pb_loading_indicator);
+		callbackManager = CallbackManager.Factory.create();
 
+		signUp = findViewById(R.id.signUp);
+
+		progressBar = findViewById(R.id.pb_loading_indicator);
+	}
+
+	private void buttonListeners() {
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -101,12 +111,10 @@ public class LoginActivity extends AppCompatActivity {
 			}
 		});
 
-		callbackManager = CallbackManager.Factory.create();
-
 		loginButton_facebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-				@Override
+			@Override
 			public void onSuccess(LoginResult loginResult) {
-					getUserInfo(loginResult);
+				getUserInfo(loginResult);
 			}
 
 			@Override
@@ -136,12 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 							e.printStackTrace();
 						}
 						new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
-						Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-						FacebookJsonSaver.setJson(LoginActivity.this, object.toString());
-						intent.putExtra(AppConfig.FACEBOOK_DETAILS,object.toString());
-						LoginActivity.this.startActivity(intent);
-						LoginActivity.this.finish();
-
+						toDashboard(object);
 					}
 				});
 		Bundle parameters = new Bundle();
@@ -150,7 +153,15 @@ public class LoginActivity extends AppCompatActivity {
 		request.executeAsync();
 	}
 
-	public static String generatePassword(int len, String dic) {
+	private void toDashboard(JSONObject object) {
+		Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+		FacebookJsonSaver.setJson(LoginActivity.this, object.toString());
+		intent.putExtra(AppConfig.FACEBOOK_DETAILS,object.toString());
+		LoginActivity.this.startActivity(intent);
+		LoginActivity.this.finish();
+	}
+
+	private String generatePassword(int len, String dic) {
 		SecureRandom random = new SecureRandom();
 		String result = "";
 		for (int i = 0; i < len; i++) {

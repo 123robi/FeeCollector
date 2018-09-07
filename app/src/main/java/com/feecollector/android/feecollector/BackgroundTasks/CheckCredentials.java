@@ -96,11 +96,15 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 	protected void onPostExecute(String s) {
 		progressBar.get().setVisibility(View.INVISIBLE);
 		JSONObject object = null;
+
 		try {
 			object = new JSONObject(s);
-			if(!object.getBoolean("error")) {
+
+			if (!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
+
 				TokenSaver.setToken(context.get(),true);
+
 				Activity activity = (Activity)context.get();
 				Intent intent = new Intent(activity, DashboardActivity.class);
 				intent.putExtra("email",email);
@@ -109,6 +113,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 			} else {
 				Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 			}
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

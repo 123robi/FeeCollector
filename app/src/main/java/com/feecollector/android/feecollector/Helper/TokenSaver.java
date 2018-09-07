@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class TokenSaver {
-	private final static String IS_LOGGED = "com.feecollector.android.IS_LOGGED";
-	private final static String TOKEN_KEY = "com.feecollector.android.TOKEN_KEY";
+	private final static String IS_LOGGED = "IS_LOGGED";
+	private final static String TOKEN_KEY = "TOKEN_KEY";
 
 	public static boolean getToken(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(IS_LOGGED, Context.MODE_PRIVATE);

@@ -29,14 +29,20 @@ public class RegistrationActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registration);
+		initialize();
+		buttonListeners();
+	}
 
+	private void initialize() {
 		inputName = findViewById(R.id.name);
 		inputEmail = findViewById(R.id.email);
 		inputPassword = findViewById(R.id.password);
 
 		createUserbtn = findViewById(R.id.createUser);
 		progressBar = findViewById(R.id.pb_loading_indicator);
+	}
 
+	private void buttonListeners() {
 		createUserbtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
