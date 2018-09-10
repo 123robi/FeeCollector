@@ -142,4 +142,10 @@ public class DashboardActivity extends AppCompatActivity {
 			return true;
 		});
 	}
+
+	@Override
+	protected void onResume() {
+		navigationView.setCheckedItem(R.id.dashboard);
+		super.onResume();
+	}
 }
