@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.Activity.LoginActivity;
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
@@ -109,6 +111,10 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 				if(!facebookLogin) {
 					Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				} else {
+					Intent intent = new Intent(context.get(), DashboardActivity.class);
+					FacebookJsonSaver.setJson(context.get(), user.getFacebook_json());
+					intent.putExtra(AppConfig.FACEBOOK_DETAILS,user.getFacebook_json());
+					context.get().startActivity(intent);
 					Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
 				}
 			}

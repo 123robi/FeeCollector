@@ -114,6 +114,10 @@ public class LoginActivity extends AppCompatActivity {
 		loginButton_facebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
+				//Remove button so noone can click on it anymore
+				if(loginButton_facebook.getVisibility() == View.VISIBLE) {
+					loginButton_facebook.setVisibility(View.INVISIBLE);
+				}
 				getUserInfo(loginResult);
 			}
 
@@ -133,32 +137,20 @@ public class LoginActivity extends AppCompatActivity {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		GraphRequest request = GraphRequest.newMeRequest(
 				accessToken,
-				new GraphRequest.GraphJSONObjectCallback() {
-					@Override
-					public void onCompleted(JSONObject object, GraphResponse response) {
-						User user = null;
-						try {
-							user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
-							user.setFacebook_json(object.toString());
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-						new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
-						toDashboard(object);
+				(object, response) -> {
+					User user = null;
+					try {
+						user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+						user.setFacebook_json(object.toString());
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
+					new CreateNewUser(LoginActivity.this,user, progressBar,true).execute();
 				});
 		Bundle parameters = new Bundle();
 		parameters.putString("fields", "id, name, email, picture.width(120).height(120)");
 		request.setParameters(parameters);
 		request.executeAsync();
-	}
-
-	private void toDashboard(JSONObject object) {
-		Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-		FacebookJsonSaver.setJson(LoginActivity.this, object.toString());
-		intent.putExtra(AppConfig.FACEBOOK_DETAILS,object.toString());
-		LoginActivity.this.startActivity(intent);
-		LoginActivity.this.finish();
 	}
 
 	private String generatePassword(int len, String dic) {
