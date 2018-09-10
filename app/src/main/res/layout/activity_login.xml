@@ -2,61 +2,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical" >
-	<TextView android:layout_width="fill_parent"
+	android:orientation="vertical">
+
+	<TextView
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:labelFor="@+id/email_login"
+		android:paddingLeft="10dip"
+		android:paddingRight="10dip"
+		android:paddingTop="10dip"
 		android:text="@string/email_label"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:textSize="17sp"
-		android:labelFor="@+id/email_login"/>
+		android:textSize="17sp" />
 
-	<EditText android:id="@+id/email_login"
+	<EditText
+		android:id="@+id/email_login"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_margin="5dip"
 		android:layout_marginBottom="15dip"
-		android:singleLine="true"
-		android:inputType="textEmailAddress"/>
+		android:inputType="textEmailAddress"
+		android:singleLine="true" />
 
-	<TextView android:layout_width="fill_parent"
+	<TextView
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
+		android:labelFor="@+id/password_login"
+		android:paddingLeft="10dip"
+		android:paddingRight="10dip"
+		android:paddingTop="10dip"
 		android:text="@string/password_label"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:textSize="17sp"
-		android:labelFor="@+id/password_login"/>
+		android:textSize="17sp" />
 
-	<EditText android:id="@+id/password_login"
+	<EditText
+		android:id="@+id/password_login"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_margin="5dip"
 		android:layout_marginBottom="15dip"
-		android:singleLine="true"
-		android:inputType="textPassword"/>
+		android:inputType="textPassword"
+		android:singleLine="true" />
 
-	<Button android:id="@+id/login_button"
+	<Button
+		android:id="@+id/login_button"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/sign_in"/>
+		android:text="@string/sign_in" />
 
 	<ProgressBar
+		android:id="@+id/pb_loading_indicator"
 		android:layout_width="42dp"
 		android:layout_height="42dp"
-		android:id="@+id/pb_loading_indicator"
 		android:layout_gravity="center"
-		android:visibility="invisible"
-		/>
+		android:visibility="invisible" />
 
 	<com.facebook.login.widget.LoginButton
 		android:id="@+id/login_button_facebook"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
-		android:layout_marginTop="30dp"
-		android:layout_marginBottom="30dp" />
+		android:layout_marginBottom="30dp"
+		android:layout_marginTop="30dp" />
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -75,11 +80,11 @@
 			android:id="@+id/signUp"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_marginLeft="4dp"
+			android:layout_marginStart="4dp"
 			android:text="@string/sign_up_link"
 			android:textColor="@android:color/black"
-			android:textStyle="bold"
-			android:layout_marginStart="4dp"
-			android:layout_marginLeft="4dp" />
+			android:textStyle="bold" />
 	</LinearLayout>
 
 </LinearLayout>

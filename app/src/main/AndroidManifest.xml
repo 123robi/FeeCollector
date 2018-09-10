@@ -27,10 +27,10 @@
 		<activity android:name=".Activity.RegistrationActivity" />
 		<activity
 			android:name=".Activity.DashboardActivity"
-			android:theme="@style/AppTheme.NoActionBar" />
-		<activity
-			android:name=".SettingsActivity"
-			android:label="@string/title_activity_settings"></activity>
+			android:theme="@style/AppTheme.NoActionBar">
+		</activity>
+		<activity android:name=".Activity.SettingsActivity"
+			android:theme="@style/AppTheme.NoActionBar">></activity>
 	</application>
 
 </manifest>

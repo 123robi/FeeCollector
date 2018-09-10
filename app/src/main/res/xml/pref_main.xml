@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:key="asdasd">
+	<Preference android:title="@string/change_password" >
+		<!--<intent-->
+			<!--android:action="dashboard_activity"/>-->
+	</Preference>
+	<SwitchPreference
+		android:defaultValue="true"
+		android:key="notification"
+		android:title="@string/notification" />
+</PreferenceScreen>

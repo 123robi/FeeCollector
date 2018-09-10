@@ -1,9 +1,9 @@
 package com.feecollector.android.feecollector.Activity;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.DashboardActivityFragment.SettingsFragment;
 import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
 import com.feecollector.android.feecollector.R;
@@ -80,13 +79,13 @@ public class DashboardActivity extends AppCompatActivity {
 		toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-
 		drawerLayout = findViewById(R.id.activity_dashboard);
 		toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
 		drawerLayout.addDrawerListener(toggle);
 		toggle.syncState();
 
 		navigationView = findViewById(R.id.nav_view);
+		navigationView.setCheckedItem(R.id.dashboard);
 		navigationViewListener();
 	}
 
@@ -118,30 +117,29 @@ public class DashboardActivity extends AppCompatActivity {
 	}
 
 	private void navigationViewListener() {
-		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-			@Override
-			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-				int id = item.getItemId();
-				if(id == R.id.log_out) {
-					if(AccessToken.getCurrentAccessToken() != null) {
-						LoginManager.getInstance().logOut();
-					}
-					//claring SharedPReferences after logout
-					FacebookJsonSaver.clear(DashboardActivity.this);
-					TokenSaver.setToken(DashboardActivity.this,false);
+		navigationView.setNavigationItemSelectedListener(item -> {
+				FragmentManager fragmentManager = getFragmentManager();
+			int id = item.getItemId();
 
-					Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-					startActivity(intent);
-					finish();
-				} else if(id == R.id.settings) {
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-							new SettingsFragment()).commit();
+			if(id == R.id.log_out) {
+				if(AccessToken.getCurrentAccessToken() != null) {
+					LoginManager.getInstance().logOut();
 				}
+				//claring SharedPReferences after logout
+				FacebookJsonSaver.clear(DashboardActivity.this);
+				TokenSaver.setToken(DashboardActivity.this,false);
 
-				drawerLayout.closeDrawer(GravityCompat.START);
-
-				return true;
+				Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+				startActivity(intent);
+				finish();
+			} else if(id == R.id.settings) {
+				Intent intent = new Intent(DashboardActivity .this, SettingsActivity.class);
+				startActivity(intent);
 			}
+
+			drawerLayout.closeDrawer(GravityCompat.START);
+
+			return true;
 		});
 	}
 }
