@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
+import com.feecollector.android.feecollector.Helper.UserSaver;
 import com.feecollector.android.feecollector.R;
 
 import org.json.JSONException;
@@ -100,7 +101,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 
 		try {
 			object = new JSONObject(s);
-
+			Log.d("JSON", object + "JSON");
 			if (!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
 
@@ -108,6 +109,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 
 				Activity activity = (Activity)context.get();
 				Intent intent = new Intent(activity, DashboardActivity.class);
+				UserSaver.setUser(context.get(),object.getString("user"));
 				intent.putExtra("email",email);
 				activity.startActivity(intent);
 				activity.finish();

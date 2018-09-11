@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +19,9 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
+import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
+import com.feecollector.android.feecollector.Helper.UserSaver;
 import com.feecollector.android.feecollector.R;
 import com.squareup.picasso.Picasso;
 
@@ -37,25 +38,23 @@ public class DashboardActivity extends AppCompatActivity {
 	private ImageView header_picture;
 	private JSONObject respone;
 	private Toolbar toolbar;
+	private JsonObjectConverter converter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		initialize();
+		converter = new JsonObjectConverter(UserSaver.getUser(this));
 		/*if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 					new SettingsFragment()).commit();
 			navigationView.setCheckedItem(R.id.settings);
 		}*/
-
-		String jsonData = getIntent().getStringExtra(AppConfig.FACEBOOK_DETAILS);
+		String jsonData = converter.getString("facebook_json");
 		if (!(jsonData == null || jsonData.equals(""))) {
 			setNavigationView();
 			setUserProfile(jsonData);
-		} else if(!(FacebookJsonSaver.getJson(DashboardActivity.this) == null)){
-			setNavigationView();
-			setUserProfile(FacebookJsonSaver.getJson(DashboardActivity.this));
 		}
 	}
 
@@ -126,7 +125,7 @@ public class DashboardActivity extends AppCompatActivity {
 					LoginManager.getInstance().logOut();
 				}
 				//claring SharedPReferences after logout
-				FacebookJsonSaver.clear(DashboardActivity.this);
+				UserSaver.clearUser(this);
 				TokenSaver.setToken(DashboardActivity.this,false);
 
 				Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);

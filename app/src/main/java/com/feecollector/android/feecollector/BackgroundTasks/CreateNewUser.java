@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.Activity.LoginActivity;
 import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.Helper.FacebookJsonSaver;
+import com.feecollector.android.feecollector.Helper.UserSaver;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
@@ -61,7 +61,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 			String post_data = URLEncoder.encode("name","UTF-8") + "=" +URLEncoder.encode(user.getName(),"UTF-8")+ "&"
 					+URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(user.getEmail(),"UTF-8")+ "&"
 					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(user.getPassword(),"UTF-8")+ "&"
-					+URLEncoder.encode("facebook_json","UTF-8") + "=" +URLEncoder.encode("default","UTF-8");
+					+URLEncoder.encode("facebook_json","UTF-8") + "=" +URLEncoder.encode(user.getFacebook_json(),"UTF-8");
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();
@@ -101,6 +101,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 		JSONObject object = null;
 		try {
 			object = new JSONObject(s);
+			Log.d("JSON", object.getString("user"));
 			if(!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successful_registration,Toast.LENGTH_LONG).show();
 				Activity activity = (Activity)context.get();
@@ -112,7 +113,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 					Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				} else {
 					Intent intent = new Intent(context.get(), DashboardActivity.class);
-					FacebookJsonSaver.setJson(context.get(), user.getFacebook_json());
+					UserSaver.setUser(context.get(), object.getString("user"));
 					intent.putExtra(AppConfig.FACEBOOK_DETAILS,user.getFacebook_json());
 					context.get().startActivity(intent);
 					Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
