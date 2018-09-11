@@ -2,9 +2,9 @@ package com.feecollector.android.feecollector.Activity;
 
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v7.widget.Toolbar;
 
+import com.feecollector.android.feecollector.Fragment.SettingsFragment.MainPreferenceFragment;
 import com.feecollector.android.feecollector.R;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -17,18 +17,7 @@ public class SettingsActivity extends PreferenceActivity {
 		toolbar = findViewById(R.id.back_action_bar);
 		toolbar.setTitle(R.string.settings);
 		toolbar.setNavigationOnClickListener(view -> onBackPressed());
-		getFragmentManager().beginTransaction().replace(R.id.content,new MyPreferenceFragment()).commit();
 
+		getFragmentManager().beginTransaction().replace(R.id.content,new MainPreferenceFragment()).commit();
 	}
-
-	public static class MyPreferenceFragment extends PreferenceFragment
-	{
-		@Override
-		public void onCreate(final Bundle savedInstanceState)
-		{
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_main);
-		}
-	}
-
 }
