@@ -8,9 +8,11 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.BackgroundTasks.ChangePassword;
 import com.feecollector.android.feecollector.R;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -18,6 +20,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	private EditText inputPassword;
 	private EditText inputPasswordCheck;
 	private Button button;
+	private ProgressBar progressBar;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,7 +29,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
-				Toast.makeText(this, "YAYAYAYYA", Toast.LENGTH_LONG).show();
+				new ChangePassword(this, progressBar).execute("test@gmail.com", "test");
 			}
 		});
 	}
@@ -38,6 +42,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		button = findViewById(R.id.confirmButton);
 		inputPassword = findViewById(R.id.password_change);
 		inputPasswordCheck = findViewById(R.id.password_change_check);
+		progressBar = findViewById(R.id.pb_loading_indicator);
 	}
 	private boolean attemptToRegister() {
 		inputPasswordCheck.setError(null);
