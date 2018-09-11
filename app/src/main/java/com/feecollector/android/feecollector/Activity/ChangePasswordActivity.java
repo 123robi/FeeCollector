@@ -19,6 +19,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	private Toolbar toolbar;
 	private EditText inputPassword;
 	private EditText inputPasswordCheck;
+	private EditText inputcurrentPassword;
 	private Button button;
 	private ProgressBar progressBar;
 
@@ -29,7 +30,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
-				new ChangePassword(this, progressBar).execute(inputPassword.getText().toString());
+				new ChangePassword(this, progressBar, inputcurrentPassword).execute(inputPassword.getText().toString(), inputcurrentPassword.getText().toString());
 			}
 		});
 	}
@@ -42,19 +43,27 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		button = findViewById(R.id.confirmButton);
 		inputPassword = findViewById(R.id.password_change);
 		inputPasswordCheck = findViewById(R.id.password_change_check);
+		inputcurrentPassword = findViewById(R.id.current_password);
 		progressBar = findViewById(R.id.pb_loading_indicator);
 	}
 	private boolean attemptToRegister() {
+		inputcurrentPassword.setError(null);
 		inputPasswordCheck.setError(null);
 		inputPassword.setError(null);
 
+		String currentPassword = inputcurrentPassword.getText().toString();
 		String password = inputPassword.getText().toString();
 		String passwordCheck = inputPasswordCheck.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
-		if (TextUtils.isEmpty(password)) {
+		if (TextUtils.isEmpty(currentPassword)) {
+			inputcurrentPassword.setError(getString(R.string.error_field_required),null);
+			focusView = inputcurrentPassword;
+			cancel = true;
+		}
+		else if (TextUtils.isEmpty(password)) {
 			inputPassword.setError(getString(R.string.error_field_required),null);
 			focusView = inputPassword;
 			cancel = true;

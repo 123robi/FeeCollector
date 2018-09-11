@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -34,17 +35,21 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 	private WeakReference<ProgressBar> progressBar;
 	private String email, password;
 	private JsonObjectConverter converter;
+	private String currentPassword;
+	private WeakReference<EditText> current_password_input;
 
-	public ChangePassword(Context context, ProgressBar progressBar) {
+	public ChangePassword(Context context, ProgressBar progressBar, EditText current_password_input) {
 		this.context = new WeakReference<>(context);
 		this.progressBar = new WeakReference<>(progressBar);
 		this.converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(context));
+		this.current_password_input = new WeakReference<>(current_password_input);
 	}
 
 	@Override
 	protected String doInBackground(String... strings) {
 		email = converter.getString("email");
 		password = strings[0];
+		currentPassword = strings[1];
 		try {
 			URL url = new URL(AppConfig.URL_CHANGE_PASSWORD);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -56,7 +61,8 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
 			String post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
-					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8");
+					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8")+ "&"
+					+URLEncoder.encode("current_password","UTF-8") + "=" +URLEncoder.encode(currentPassword,"UTF-8");
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();
@@ -99,7 +105,9 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 			if (!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successfull_change_of_password,Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
+				current_password_input.get().setError(context.get().getString(R.string.error_current_password_not_match), null);
+				View focusView = current_password_input.get();
+				focusView.requestFocus();
 			}
 
 		} catch (JSONException e) {

@@ -12,6 +12,7 @@
 	<string name="email_label">Email</string>
 	<string name="password_label">Password</string>
 	<string name="password_label_check">Repeat password</string>
+	<string name="current_password">Current Password</string>
 
 	<!--Navigation Menu-->
 	<string name="logout">Log out</string>
@@ -31,6 +32,7 @@
 	<string name="error_email_validation">Email format is wrong.</string>
 	<string name="error_pass_too_short">Password should contain at least 5 characters</string>
 	<string name="error_password_not_match">Passwords should match</string>
+	<string name="error_current_password_not_match">Password is incorrect</string>
 
 	<!--Toast Messages-->
 	<string name="successful_registration">You have been successfully registered</string>
