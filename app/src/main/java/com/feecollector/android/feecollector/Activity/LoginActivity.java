@@ -22,7 +22,7 @@ import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.BackgroundTasks.CheckCredentials;
 import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
 import com.feecollector.android.feecollector.Helper.InternetConnection;
-import com.feecollector.android.feecollector.Helper.TokenSaver;
+import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
 
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-		if( isLoggedIn || TokenSaver.getToken(LoginActivity.this)) {
+		if( isLoggedIn || SharedPreferencesSaver.getToken(LoginActivity.this)) {
 			Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 			LoginActivity.this.startActivity(intent);
 			LoginActivity.this.finish();

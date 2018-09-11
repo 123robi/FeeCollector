@@ -14,8 +14,7 @@ import android.widget.Toast;
 
 import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.Helper.TokenSaver;
-import com.feecollector.android.feecollector.Helper.UserSaver;
+import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
 
 import org.json.JSONException;
@@ -105,11 +104,11 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 			if (!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
 
-				TokenSaver.setToken(context.get(),true);
+				SharedPreferencesSaver.setToken(context.get(),true);
 
 				Activity activity = (Activity)context.get();
 				Intent intent = new Intent(activity, DashboardActivity.class);
-				UserSaver.setUser(context.get(),object.getString("user"));
+				SharedPreferencesSaver.setUser(context.get(),object.getString("user"));
 				intent.putExtra("email",email);
 				activity.startActivity(intent);
 				activity.finish();

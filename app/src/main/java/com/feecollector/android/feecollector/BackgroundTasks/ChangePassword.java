@@ -8,11 +8,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
-import com.feecollector.android.feecollector.Helper.TokenSaver;
-import com.feecollector.android.feecollector.Helper.UserSaver;
+import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
 
 import org.json.JSONException;
@@ -40,7 +38,7 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 	public ChangePassword(Context context, ProgressBar progressBar) {
 		this.context = new WeakReference<>(context);
 		this.progressBar = new WeakReference<>(progressBar);
-		this.converter = new JsonObjectConverter(UserSaver.getUser(context));
+		this.converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(context));
 	}
 
 	@Override

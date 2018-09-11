@@ -20,8 +20,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
-import com.feecollector.android.feecollector.Helper.TokenSaver;
-import com.feecollector.android.feecollector.Helper.UserSaver;
+import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
 import com.squareup.picasso.Picasso;
 
@@ -45,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		initialize();
-		converter = new JsonObjectConverter(UserSaver.getUser(this));
+		converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
 		/*if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
 					new SettingsFragment()).commit();
@@ -125,8 +124,8 @@ public class DashboardActivity extends AppCompatActivity {
 					LoginManager.getInstance().logOut();
 				}
 				//claring SharedPReferences after logout
-				UserSaver.clearUser(this);
-				TokenSaver.setToken(DashboardActivity.this,false);
+				SharedPreferencesSaver.clearUser(this);
+				SharedPreferencesSaver.setToken(DashboardActivity.this,false);
 
 				Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
 				startActivity(intent);
