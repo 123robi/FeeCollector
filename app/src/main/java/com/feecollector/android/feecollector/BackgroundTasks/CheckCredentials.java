@@ -37,7 +37,7 @@ import java.net.URLEncoder;
 public class CheckCredentials extends AsyncTask<String, String, String> {
 	private WeakReference<Context> context;
 	private WeakReference<ProgressBar> progressBar;
-	private String email;
+	private String email, password;
 
 	public CheckCredentials(Context context, ProgressBar progressBar) {
 		this.context = new WeakReference<>(context);
@@ -47,6 +47,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 	@Override
 	protected String doInBackground(String... strings) {
 		email = strings[0];
+		password = strings[1];
 		try {
 			URL url = new URL(AppConfig.URL_LOGIN);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -58,7 +59,7 @@ public class CheckCredentials extends AsyncTask<String, String, String> {
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
 			String post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
-					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(strings[1],"UTF-8");
+					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8");
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();
