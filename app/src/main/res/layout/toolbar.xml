@@ -7,5 +7,4 @@
 	app:navigationIcon="?attr/homeAsUpIndicator"
 	android:background="@color/colorPrimary"
 	android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-	app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-	app:title="Settings"/>
+	app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
