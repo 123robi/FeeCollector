@@ -29,7 +29,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
-				new ChangePassword(this, progressBar).execute("test@gmail.com", "test");
+				new ChangePassword(this, progressBar).execute(inputPassword.getText().toString());
 			}
 		});
 	}

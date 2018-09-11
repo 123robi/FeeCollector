@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
 import com.feecollector.android.feecollector.Helper.TokenSaver;
+import com.feecollector.android.feecollector.Helper.UserSaver;
 import com.feecollector.android.feecollector.R;
 
 import org.json.JSONException;
@@ -33,16 +35,18 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 	private WeakReference<Context> context;
 	private WeakReference<ProgressBar> progressBar;
 	private String email, password;
+	private JsonObjectConverter converter;
 
 	public ChangePassword(Context context, ProgressBar progressBar) {
 		this.context = new WeakReference<>(context);
 		this.progressBar = new WeakReference<>(progressBar);
+		this.converter = new JsonObjectConverter(UserSaver.getUser(context));
 	}
 
 	@Override
 	protected String doInBackground(String... strings) {
-		email = strings[0];
-		password = strings[1];
+		email = converter.getString("email");
+		password = strings[0];
 		try {
 			URL url = new URL(AppConfig.URL_CHANGE_PASSWORD);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -95,7 +99,7 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 			object = new JSONObject(s);
 
 			if (!object.getBoolean("error")) {
-				Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
+				Toast.makeText(context.get(), R.string.successfull_change_of_password,Toast.LENGTH_LONG).show();
 			} else {
 				Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 			}
