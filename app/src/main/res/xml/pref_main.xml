@@ -3,8 +3,8 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:key="asdasd">
 	<Preference android:title="@string/change_password" >
-		<!--<intent-->
-			<!--android:action="dashboard_activity"/>-->
+		<intent
+			android:action="change_password"/>
 	</Preference>
 	<SwitchPreference
 		android:defaultValue="true"

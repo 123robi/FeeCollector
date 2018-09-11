@@ -27,10 +27,17 @@
 		<activity android:name=".Activity.RegistrationActivity" />
 		<activity
 			android:name=".Activity.DashboardActivity"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:theme="@style/AppTheme.NoActionBar"/>
+		<activity
+			android:name=".Activity.SettingsActivity"
+			android:theme="@style/AppTheme.NoActionBar" />
+		<activity android:name=".Activity.ChangePasswordActivity"
+			android:theme="@style/AppTheme.NoActionBar" >
+			<intent-filter>
+				<action android:name="change_password"/>
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
 		</activity>
-		<activity android:name=".Activity.SettingsActivity"
-			android:theme="@style/AppTheme.NoActionBar"></activity>
 	</application>
 
 </manifest>

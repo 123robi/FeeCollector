@@ -12,4 +12,6 @@ public class AppConfig {
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
 	public static final String NUMERIC = "0123456789";
 	public static final String SPECIAL_CHARS = "!@#$%^&*_=+-/";
+
+	public static final int PASSWORD_LENGTH = 5;
 }
