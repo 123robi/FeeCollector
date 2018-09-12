@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.BackgroundTasks.ChangePassword;
+import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -30,14 +31,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
 
-		facebook_login = getIntent().getBooleanExtra("facebook_registration", false);
+		facebook_login = SharedPreferencesSaver.getLogin(this);
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
 				if (facebook_login) {
-					new ChangePassword(this, progressBar, inputCurrentPassword, getIntent().getBooleanExtra("facebook_registration", false)).execute(inputPassword.getText().toString(), inputCurrentPassword.getText().toString());
+					new ChangePassword(this, progressBar, inputCurrentPassword, facebook_login).execute(inputPassword.getText().toString(), inputCurrentPassword.getText().toString());
 				} else {
-					new ChangePassword(this, progressBar, null, getIntent().getBooleanExtra("facebook_registration", false)).execute(inputPassword.getText().toString(), null);
+					new ChangePassword(this, progressBar, null, facebook_login).execute(inputPassword.getText().toString(), null);
 				}
 			}
 		});

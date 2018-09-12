@@ -121,7 +121,7 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 				} else {
 					Activity activity = (Activity)context.get();
 					Intent intent = new Intent(activity, ChangePasswordActivity.class);
-					intent.putExtra("facebook_registration", true);
+					SharedPreferencesSaver.setLogin(context.get(),true);
 					activity.startActivity(intent);
 					activity.finish();
 				}

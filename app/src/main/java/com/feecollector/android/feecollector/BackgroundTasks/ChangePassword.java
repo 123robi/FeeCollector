@@ -119,6 +119,7 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 			if (!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successfull_change_of_password,Toast.LENGTH_LONG).show();
 				if (facebookChange) {
+					SharedPreferencesSaver.setLogin(context.get(),false);
 					Activity activity = (Activity)context.get();
 					Intent intent = new Intent(activity, DashboardActivity.class);
 					activity.startActivity(intent);

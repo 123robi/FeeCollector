@@ -46,4 +46,7 @@
 
 	<!--Base texts-->
 	<string name="confirm">Confirm</string>
+
+	<!--Infomration header-->
+	<string name="information_addPassword">Since you have registered with facebook, we recommend you to set a password in case facebook login fails. Thanks! <u><b>Password Settings</b></u></string>
 </resources>

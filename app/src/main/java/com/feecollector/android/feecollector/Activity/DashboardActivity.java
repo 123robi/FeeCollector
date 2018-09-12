@@ -44,16 +44,14 @@ public class DashboardActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		initialize();
-		converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
-		/*if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-					new SettingsFragment()).commit();
-			navigationView.setCheckedItem(R.id.settings);
-		}*/
-		String jsonData = converter.getString("facebook_json");
-		if (!(jsonData == null || jsonData.equals(""))) {
-			setNavigationView();
-			setUserProfile(jsonData);
+		if (SharedPreferencesSaver.getUser(this) != null) {
+			converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
+
+			String jsonData = converter.getString("facebook_json");
+			if (!(jsonData == null || jsonData.equals(""))) {
+				setNavigationView();
+				setUserProfile(jsonData);
+			}
 		}
 	}
 
@@ -85,6 +83,17 @@ public class DashboardActivity extends AppCompatActivity {
 		navigationView = findViewById(R.id.nav_view);
 		navigationView.setCheckedItem(R.id.dashboard);
 		navigationViewListener();
+
+		if (!SharedPreferencesSaver.getLogin(this)) {
+			findViewById(R.id.information_header).setVisibility(View.GONE);
+		} else {
+			TextView textView = findViewById(R.id.information_body);
+			textView.setText(R.string.information_addPassword);
+			textView.setOnClickListener(view -> {
+				Intent intent = new Intent(DashboardActivity.this, ChangePasswordActivity.class);
+				startActivity(intent);
+			});
+		}
 	}
 
 	private void setNavigationView() {
@@ -131,7 +140,7 @@ public class DashboardActivity extends AppCompatActivity {
 				startActivity(intent);
 				finish();
 			} else if(id == R.id.settings) {
-				Intent intent = new Intent(DashboardActivity .this, SettingsActivity.class);
+				Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
 				startActivity(intent);
 			}
 
