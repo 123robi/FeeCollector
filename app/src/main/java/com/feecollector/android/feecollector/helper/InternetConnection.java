@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.Helper;
+package com.feecollector.android.feecollector.helper;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

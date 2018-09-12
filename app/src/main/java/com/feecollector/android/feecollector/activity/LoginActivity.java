@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.Activity;
+package com.feecollector.android.feecollector.activity;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -19,12 +19,12 @@ import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.BackgroundTasks.CheckCredentials;
-import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
-import com.feecollector.android.feecollector.Helper.InternetConnection;
-import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
+import com.feecollector.android.feecollector.backgroundTasks.CheckCredentials;
+import com.feecollector.android.feecollector.backgroundTasks.CreateNewUser;
+import com.feecollector.android.feecollector.helper.InternetConnection;
+import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
-import com.feecollector.android.feecollector.User.Entity.User;
+import com.feecollector.android.feecollector.User.entity.User;
 
 import org.json.JSONException;
 

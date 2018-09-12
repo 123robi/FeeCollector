@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.Fragment.SettingsFragment;
+package com.feecollector.android.feecollector.Fragment.settingsFragment;
 
 
 import android.os.Bundle;

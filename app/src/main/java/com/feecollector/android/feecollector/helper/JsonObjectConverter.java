@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.Helper;
+package com.feecollector.android.feecollector.helper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

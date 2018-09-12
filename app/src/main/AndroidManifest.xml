@@ -12,7 +12,7 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
-		<activity android:name=".Activity.LoginActivity">
+		<activity android:name=".activity.LoginActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 
@@ -24,14 +24,14 @@
 			android:name="com.facebook.sdk.ApplicationId"
 			android:value="@string/facebook_app_id" />
 
-		<activity android:name=".Activity.RegistrationActivity" />
+		<activity android:name=".activity.RegistrationActivity" />
 		<activity
-			android:name=".Activity.DashboardActivity"
+			android:name=".activity.DashboardActivity"
 			android:theme="@style/AppTheme.NoActionBar"/>
 		<activity
-			android:name=".Activity.SettingsActivity"
+			android:name=".activity.SettingsActivity"
 			android:theme="@style/AppTheme.NoActionBar" />
-		<activity android:name=".Activity.ChangePasswordActivity"
+		<activity android:name=".activity.ChangePasswordActivity"
 			android:theme="@style/AppTheme.NoActionBar" >
 			<intent-filter>
 				<action android:name="change_password"/>

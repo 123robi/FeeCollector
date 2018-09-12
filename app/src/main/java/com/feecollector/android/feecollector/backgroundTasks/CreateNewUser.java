@@ -1,22 +1,21 @@
-package com.feecollector.android.feecollector.BackgroundTasks;
+package com.feecollector.android.feecollector.backgroundTasks;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.feecollector.android.feecollector.Activity.ChangePasswordActivity;
-import com.feecollector.android.feecollector.Activity.DashboardActivity;
-import com.feecollector.android.feecollector.Activity.LoginActivity;
+import com.feecollector.android.feecollector.activity.ChangePasswordActivity;
+import com.feecollector.android.feecollector.activity.DashboardActivity;
+import com.feecollector.android.feecollector.activity.LoginActivity;
 import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
-import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
+import com.feecollector.android.feecollector.helper.JsonObjectConverter;
+import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
-import com.feecollector.android.feecollector.User.Entity.User;
+import com.feecollector.android.feecollector.User.entity.User;
 
 
 import org.json.JSONException;

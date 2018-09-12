@@ -1,10 +1,10 @@
-package com.feecollector.android.feecollector.Activity;
+package com.feecollector.android.feecollector.activity;
 
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import com.feecollector.android.feecollector.Fragment.SettingsFragment.MainPreferenceFragment;
+import com.feecollector.android.feecollector.Fragment.settingsFragment.MainPreferenceFragment;
 import com.feecollector.android.feecollector.R;
 
 public class SettingsActivity extends PreferenceActivity {

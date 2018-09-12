@@ -9,7 +9,7 @@
 	android:background="@color/colorPrimaryDark">
 	<TextView
 		android:id="@+id/information_body"
-		android:drawableLeft="@drawable/ic_priority_high"
+		android:drawableStart="@drawable/ic_priority_high"
 		android:drawableTint="@color/red"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"/>

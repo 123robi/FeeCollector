@@ -1,8 +1,7 @@
-package com.feecollector.android.feecollector.Activity;
+package com.feecollector.android.feecollector.activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +17,8 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
-import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
+import com.feecollector.android.feecollector.helper.JsonObjectConverter;
+import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
 import com.squareup.picasso.Picasso;
 

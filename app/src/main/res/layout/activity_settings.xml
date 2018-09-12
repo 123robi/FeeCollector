@@ -4,7 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	tools:context=".Activity.SettingsActivity">
+	tools:context=".activity.SettingsActivity">
 	<include android:id="@+id/back_action_bar" layout="@layout/toolbar"/>
 	<FrameLayout
 		android:layout_width="match_parent"
