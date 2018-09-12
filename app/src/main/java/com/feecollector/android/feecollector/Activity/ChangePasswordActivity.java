@@ -1,13 +1,15 @@
-package com.feecollector.android.feecollector.Activity.SettingsActions;
+package com.feecollector.android.feecollector.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.BackgroundTasks.ChangePassword;
@@ -18,7 +20,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	private EditText inputPassword;
 	private EditText inputPasswordCheck;
 	private EditText inputcurrentPassword;
-	private Button confirmButton;
+	private Button button;
 	private ProgressBar progressBar;
 
 	@Override
@@ -26,7 +28,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
 		initialize();
-		confirmButton.setOnClickListener(view -> {
+		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
 				new ChangePassword(this, progressBar, inputcurrentPassword).execute(inputPassword.getText().toString(), inputcurrentPassword.getText().toString());
 			}
@@ -38,7 +40,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		toolbar.setTitle(R.string.change_password);
 		toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
-		confirmButton = findViewById(R.id.confirmButton);
+		button = findViewById(R.id.confirmButton);
 		inputPassword = findViewById(R.id.password_change);
 		inputPasswordCheck = findViewById(R.id.password_change_check);
 		inputcurrentPassword = findViewById(R.id.current_password);

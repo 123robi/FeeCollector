@@ -6,10 +6,6 @@
 		<intent
 			android:action="change_password"/>
 	</Preference>
-	<Preference android:title="@string/change_email" >
-		<intent
-			android:action="change_email"/>
-	</Preference>
 	<SwitchPreference
 		android:defaultValue="true"
 		android:key="notification"

@@ -25,7 +25,6 @@
 
 	<!--Settings Page-->
 	<string name="change_password">Change Password</string>
-	<string name="change_email">Change Email</string>
 	<string name="notification">Notifications</string>
 
 	<!--ERRORS-->
