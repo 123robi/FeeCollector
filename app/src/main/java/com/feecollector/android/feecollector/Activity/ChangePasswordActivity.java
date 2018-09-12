@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.feecollector.android.feecollector.AppConfig;
@@ -19,7 +20,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	private Toolbar toolbar;
 	private EditText inputPassword;
 	private EditText inputPasswordCheck;
-	private EditText inputcurrentPassword;
+	private EditText inputCurrentPassword;
+	private TextView viewCurrentPassword;
 	private Button button;
 	private ProgressBar progressBar;
 
@@ -30,7 +32,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
-				new ChangePassword(this, progressBar, inputcurrentPassword).execute(inputPassword.getText().toString(), inputcurrentPassword.getText().toString());
+				new ChangePassword(this, progressBar, inputCurrentPassword, getIntent().getBooleanExtra("facebook_registration", false)).execute(inputPassword.getText().toString(), inputCurrentPassword.getText().toString());
 			}
 		});
 	}
@@ -43,16 +45,21 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		button = findViewById(R.id.confirmButton);
 		inputPassword = findViewById(R.id.password_change);
 		inputPasswordCheck = findViewById(R.id.password_change_check);
-		inputcurrentPassword = findViewById(R.id.current_password);
+		inputCurrentPassword = findViewById(R.id.current_password);
 		progressBar = findViewById(R.id.pb_loading_indicator);
+
+		if(getIntent().getBooleanExtra("facebook_registration", false)) {
+			findViewById(R.id.current_password_label).setVisibility(View.GONE);
+			inputCurrentPassword.setVisibility(View.GONE);
+		}
 	}
 
 	private boolean attemptToRegister() {
-		inputcurrentPassword.setError(null);
+		inputCurrentPassword.setError(null);
 		inputPasswordCheck.setError(null);
 		inputPassword.setError(null);
 
-		String currentPassword = inputcurrentPassword.getText().toString();
+		String currentPassword = inputCurrentPassword.getText().toString();
 		String password = inputPassword.getText().toString();
 		String passwordCheck = inputPasswordCheck.getText().toString();
 
@@ -60,8 +67,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		View focusView = null;
 
 		if (TextUtils.isEmpty(currentPassword)) {
-			inputcurrentPassword.setError(getString(R.string.error_field_required),null);
-			focusView = inputcurrentPassword;
+			inputCurrentPassword.setError(getString(R.string.error_field_required),null);
+			focusView = inputCurrentPassword;
 			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
 			inputPassword.setError(getString(R.string.error_field_required),null);

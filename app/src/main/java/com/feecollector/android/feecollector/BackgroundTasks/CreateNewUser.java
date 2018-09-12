@@ -9,9 +9,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.feecollector.android.feecollector.Activity.ChangePasswordActivity;
 import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.Activity.LoginActivity;
 import com.feecollector.android.feecollector.AppConfig;
+import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
 import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
 import com.feecollector.android.feecollector.R;
 import com.feecollector.android.feecollector.User.Entity.User;
@@ -107,13 +109,23 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 		JSONObject object = null;
 		try {
 			object = new JSONObject(s);
-			Log.d("JSON", object.getString("user"));
+			JsonObjectConverter converter = new JsonObjectConverter(object.getString("user"));
 			if(!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successful_registration,Toast.LENGTH_LONG).show();
-				Activity activity = (Activity)context.get();
-				Intent intent = new Intent(activity, LoginActivity.class);
-				activity.startActivity(intent);
-				activity.finish();
+				SharedPreferencesSaver.setUser(context.get(), object.getString("user"));
+				if(object.getJSONObject("user").isNull("facebook_json")) {
+					Activity activity = (Activity)context.get();
+					Intent intent = new Intent(activity, LoginActivity.class);
+					activity.startActivity(intent);
+					activity.finish();
+				} else {
+					Activity activity = (Activity)context.get();
+					Intent intent = new Intent(activity, ChangePasswordActivity.class);
+					intent.putExtra("facebook_registration", true);
+					activity.startActivity(intent);
+					activity.finish();
+				}
+
 			} else {
 				if(!facebookLogin) {
 					Toast.makeText(context.get(), object.getString("error_msg"),Toast.LENGTH_LONG).show();

@@ -37,12 +37,14 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 	private JsonObjectConverter converter;
 	private String currentPassword;
 	private WeakReference<EditText> current_password_input;
+	private boolean facebookChange;
 
-	public ChangePassword(Context context, ProgressBar progressBar, EditText current_password_input) {
+	public ChangePassword(Context context, ProgressBar progressBar, EditText current_password_input, boolean facebookChange) {
 		this.context = new WeakReference<>(context);
 		this.progressBar = new WeakReference<>(progressBar);
 		this.converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(context));
 		this.current_password_input = new WeakReference<>(current_password_input);
+		this.facebookChange = facebookChange;
 	}
 
 	@Override
@@ -52,6 +54,9 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 		currentPassword = strings[1];
 		try {
 			URL url = new URL(AppConfig.URL_CHANGE_PASSWORD);
+			if(facebookChange) {
+				url = new URL(AppConfig.URL_CHANGE_PASSWORD_FACEBOOK);
+			}
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setDoOutput(true);
@@ -63,6 +68,10 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 			String post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
 					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8")+ "&"
 					+URLEncoder.encode("current_password","UTF-8") + "=" +URLEncoder.encode(currentPassword,"UTF-8");
+			if(facebookChange) {
+				post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
+						+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8");
+			}
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();
