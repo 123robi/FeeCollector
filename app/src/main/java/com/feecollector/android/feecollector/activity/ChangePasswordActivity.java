@@ -35,7 +35,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
-				if (facebook_login) {
+				if (!facebook_login) {
 					new ChangePassword(this, progressBar, inputCurrentPassword, facebook_login).execute(inputPassword.getText().toString(), inputCurrentPassword.getText().toString());
 				} else {
 					new ChangePassword(this, progressBar, null, facebook_login).execute(inputPassword.getText().toString(), null);
