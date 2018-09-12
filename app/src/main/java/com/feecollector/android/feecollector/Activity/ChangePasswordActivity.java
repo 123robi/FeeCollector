@@ -46,6 +46,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		inputcurrentPassword = findViewById(R.id.current_password);
 		progressBar = findViewById(R.id.pb_loading_indicator);
 	}
+
 	private boolean attemptToRegister() {
 		inputcurrentPassword.setError(null);
 		inputPasswordCheck.setError(null);
@@ -62,12 +63,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 			inputcurrentPassword.setError(getString(R.string.error_field_required),null);
 			focusView = inputcurrentPassword;
 			cancel = true;
-		}
-		else if (TextUtils.isEmpty(password)) {
+		} else if (TextUtils.isEmpty(password)) {
 			inputPassword.setError(getString(R.string.error_field_required),null);
 			focusView = inputPassword;
 			cancel = true;
-		} else if (password.length() < AppConfig.PASSWORD_LENGTH){
+		} else if (password.length() < AppConfig.PASSWORD_LENGTH) {
 			inputPassword.setError(getString(R.string.error_pass_too_short),null);
 			focusView = inputPassword;
 			cancel = true;
@@ -80,10 +80,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 			focusView = inputPasswordCheck;
 			cancel = true;
 		}
+
 		if (cancel) {
 			focusView.requestFocus();
 			return false;
-		}else
+		} else
 			return true;
 	}
 }
