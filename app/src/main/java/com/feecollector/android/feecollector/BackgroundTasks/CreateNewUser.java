@@ -57,11 +57,17 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 
 			OutputStream outputStream = httpURLConnection.getOutputStream();
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-
-			String post_data = URLEncoder.encode("name","UTF-8") + "=" +URLEncoder.encode(user.getName(),"UTF-8")+ "&"
-					+URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(user.getEmail(),"UTF-8")+ "&"
-					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(user.getPassword(),"UTF-8")+ "&"
-					+URLEncoder.encode("facebook_json","UTF-8") + "=" +URLEncoder.encode(user.getFacebook_json(),"UTF-8");
+			String post_data;
+			if(user.getFacebook_json() != null) {
+				post_data = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(user.getName(), "UTF-8") + "&"
+						+ URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user.getEmail(), "UTF-8") + "&"
+						+ URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(user.getPassword(), "UTF-8") + "&"
+						+ URLEncoder.encode("facebook_json", "UTF-8") + "=" + URLEncoder.encode(user.getFacebook_json(), "UTF-8");
+			} else {
+				post_data = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(user.getName(), "UTF-8") + "&"
+						+ URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user.getEmail(), "UTF-8") + "&"
+						+ URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(user.getPassword(), "UTF-8");
+			}
 
 			bufferedWriter.write(post_data);
 			bufferedWriter.flush();
