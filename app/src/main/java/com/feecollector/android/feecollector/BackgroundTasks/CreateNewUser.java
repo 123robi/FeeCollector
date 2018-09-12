@@ -120,7 +120,6 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 				} else {
 					Intent intent = new Intent(context.get(), DashboardActivity.class);
 					SharedPreferencesSaver.setUser(context.get(), object.getString("user"));
-					intent.putExtra(AppConfig.FACEBOOK_DETAILS,user.getFacebook_json());
 					context.get().startActivity(intent);
 					Toast.makeText(context.get(), R.string.successful_login,Toast.LENGTH_LONG).show();
 				}
