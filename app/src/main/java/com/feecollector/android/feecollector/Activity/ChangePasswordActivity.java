@@ -4,13 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.BackgroundTasks.ChangePassword;
@@ -24,15 +22,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	private TextView viewCurrentPassword;
 	private Button button;
 	private ProgressBar progressBar;
+	private boolean facebook_login;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_password);
+
+		facebook_login = getIntent().getBooleanExtra("facebook_registration", false);
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
-				new ChangePassword(this, progressBar, inputCurrentPassword, getIntent().getBooleanExtra("facebook_registration", false)).execute(inputPassword.getText().toString(), inputCurrentPassword.getText().toString());
+				if (facebook_login) {
+					new ChangePassword(this, progressBar, inputCurrentPassword, getIntent().getBooleanExtra("facebook_registration", false)).execute(inputPassword.getText().toString(), inputCurrentPassword.getText().toString());
+				} else {
+					new ChangePassword(this, progressBar, null, getIntent().getBooleanExtra("facebook_registration", false)).execute(inputPassword.getText().toString(), null);
+				}
 			}
 		});
 	}
@@ -48,25 +53,27 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		inputCurrentPassword = findViewById(R.id.current_password);
 		progressBar = findViewById(R.id.pb_loading_indicator);
 
-		if(getIntent().getBooleanExtra("facebook_registration", false)) {
+		if (facebook_login) {
 			findViewById(R.id.current_password_label).setVisibility(View.GONE);
 			inputCurrentPassword.setVisibility(View.GONE);
 		}
 	}
 
 	private boolean attemptToRegister() {
-		inputCurrentPassword.setError(null);
 		inputPasswordCheck.setError(null);
 		inputPassword.setError(null);
-
-		String currentPassword = inputCurrentPassword.getText().toString();
+		String currentPassword = null;
+		if (!facebook_login) {
+			inputCurrentPassword.setError(null);
+			currentPassword = inputCurrentPassword.getText().toString();
+		}
 		String password = inputPassword.getText().toString();
 		String passwordCheck = inputPasswordCheck.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
-		if (TextUtils.isEmpty(currentPassword)) {
+		if (TextUtils.isEmpty(currentPassword) && !facebook_login) {
 			inputCurrentPassword.setError(getString(R.string.error_field_required),null);
 			focusView = inputCurrentPassword;
 			cancel = true;

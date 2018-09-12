@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.feecollector.android.feecollector.Activity.DashboardActivity;
 import com.feecollector.android.feecollector.AppConfig;
 import com.feecollector.android.feecollector.Helper.JsonObjectConverter;
 import com.feecollector.android.feecollector.Helper.SharedPreferencesSaver;
@@ -51,7 +52,9 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 	protected String doInBackground(String... strings) {
 		email = converter.getString("email");
 		password = strings[0];
-		currentPassword = strings[1];
+		if (!facebookChange) {
+			currentPassword = strings[1];
+		}
 		try {
 			URL url = new URL(AppConfig.URL_CHANGE_PASSWORD);
 			if(facebookChange) {
@@ -64,13 +67,15 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 
 			OutputStream outputStream = httpURLConnection.getOutputStream();
 			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+			String post_data;
 
-			String post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
-					+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8")+ "&"
-					+URLEncoder.encode("current_password","UTF-8") + "=" +URLEncoder.encode(currentPassword,"UTF-8");
 			if(facebookChange) {
 				post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
 						+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8");
+			} else {
+				post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
+						+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8")+ "&"
+						+URLEncoder.encode("current_password","UTF-8") + "=" +URLEncoder.encode(currentPassword,"UTF-8");
 			}
 
 			bufferedWriter.write(post_data);
@@ -113,6 +118,12 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 
 			if (!object.getBoolean("error")) {
 				Toast.makeText(context.get(), R.string.successfull_change_of_password,Toast.LENGTH_LONG).show();
+				if (facebookChange) {
+					Activity activity = (Activity)context.get();
+					Intent intent = new Intent(activity, DashboardActivity.class);
+					activity.startActivity(intent);
+					activity.finish();
+				}
 			} else {
 				current_password_input.get().setError(context.get().getString(R.string.error_current_password_not_match), null);
 				View focusView = current_password_input.get();
