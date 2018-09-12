@@ -69,5 +69,27 @@
 		android:layout_gravity="center"
 		android:visibility="invisible"
 		/>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginBottom="30dp"
+		android:gravity="bottom|center"
+		android:visibility="visible">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/sign_in_text"
+			android:textColor="@android:color/black" />
+
+		<TextView
+			android:id="@+id/signIn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="4dp"
+			android:text="@string/sign_in_link"
+			android:textColor="@android:color/black"
+			android:textStyle="bold" />
+	</LinearLayout>
 
 </LinearLayout>

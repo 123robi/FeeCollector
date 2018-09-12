@@ -88,24 +88,17 @@ public class LoginActivity extends AppCompatActivity {
 	}
 
 	private void buttonListeners() {
-		loginButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(InternetConnection.getInstance(LoginActivity.this).isOnline()){
-					new CheckCredentials(LoginActivity.this,progressBar).execute(email_login.getText().toString(), password_login.getText().toString());
-				} else {
-					Toast.makeText(LoginActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
-				}
+		loginButton.setOnClickListener(v -> {
+			if(InternetConnection.getInstance(LoginActivity.this).isOnline()){
+				new CheckCredentials(LoginActivity.this,progressBar).execute(email_login.getText().toString(), password_login.getText().toString());
+			} else {
+				Toast.makeText(LoginActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
 			}
 		});
 
-		signUp.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-				LoginActivity.this.startActivity(intent);
-				LoginActivity.this.finish();
-			}
+		signUp.setOnClickListener(v -> {
+			Intent intent = new Intent(this, RegistrationActivity.class);
+			this.startActivity(intent);
 		});
 
 		loginButton_facebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

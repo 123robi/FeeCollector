@@ -1,10 +1,14 @@
 <resources>
 	<string name="app_name">Fee Collector</string>
-	<string name="create_user_btn">Create User</string>
-	<string name="name_label">Name</string>
 	<string name="facebook_app_id">513037572471782</string>
 	<string name="facebook_login_protocol">fb513037572471782</string>
+
+	<!--Registration Page-->
+	<string name="sign_in_text">Already have an account?</string>
+	<string name="name_label">Name</string>
+	<string name="sign_in_link">Sign in</string>
 	<string name="sign_up_link">Sign up</string>
+	<string name="create_user_btn">Create User</string>
 
 	<!--Login Page/ChangePassword-->
 	<string name="sign_in">Sign in</string>

@@ -1,5 +1,6 @@
 package com.feecollector.android.feecollector.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.feecollector.android.feecollector.BackgroundTasks.CreateNewUser;
@@ -24,6 +26,7 @@ public class RegistrationActivity extends AppCompatActivity {
 	private EditText inputPassword;
 	private Button createUserbtn;
 	private ProgressBar progressBar;
+	private TextView signIn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,22 +41,28 @@ public class RegistrationActivity extends AppCompatActivity {
 		inputEmail = findViewById(R.id.email);
 		inputPassword = findViewById(R.id.password);
 
+		signIn = findViewById(R.id.signIn);
+
 		createUserbtn = findViewById(R.id.createUser);
 		progressBar = findViewById(R.id.pb_loading_indicator);
 	}
 
 	private void buttonListeners() {
-		createUserbtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				User user = new User(inputName.getText().toString(),inputEmail.getText().toString(), inputPassword.getText().toString());
-				if(attemptToRegister() && InternetConnection.getInstance(RegistrationActivity.this).isOnline()) {
-					new CreateNewUser(RegistrationActivity.this,user, progressBar, false).execute();
-				} else {
-					Toast.makeText(RegistrationActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
-				}
+		createUserbtn.setOnClickListener(v -> {
+			User user = new User(inputName.getText().toString(),inputEmail.getText().toString(), inputPassword.getText().toString());
+			if(attemptToRegister() && InternetConnection.getInstance(RegistrationActivity.this).isOnline()) {
+				new CreateNewUser(RegistrationActivity.this,user, progressBar, false).execute();
+			} else {
+				Toast.makeText(RegistrationActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
 			}
 		});
+
+		signIn.setOnClickListener(v -> {
+			Intent intent = new Intent(this, LoginActivity.class);
+			this.startActivity(intent);
+			this.finish();
+		});
+
 	}
 
 	private boolean attemptToRegister() {
