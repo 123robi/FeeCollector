@@ -26,6 +26,9 @@
 	<!--Dashboard Page-->
 	<string name="open">Open</string>
 	<string name="close">Close</string>
+	<string name="create_team">Create team</string>
+	<string name="join_team">Join team</string>
+	<string name="team_id">Team ID</string>
 
 	<!--Settings Page-->
 	<string name="change_password">Change Password</string>

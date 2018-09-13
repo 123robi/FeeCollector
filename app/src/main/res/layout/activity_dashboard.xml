@@ -7,10 +7,15 @@
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="true"
 	tools:context=".activity.DashboardActivity">
-
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:id="@+id/container">
+	<!--Toolbar-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		android:orientation="vertical">
 
 		<android.support.v7.widget.Toolbar
@@ -32,7 +37,34 @@
 		</FrameLayout>
 
 	</LinearLayout>
+	<!--Content-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
 
+		<Button
+			android:id="@+id/button5"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/create_team"
+			android:layout_marginBottom="10dp"/>
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/teamId"
+			android:hint="@string/team_id"/>
+		<Button
+			android:id="@+id/button4"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/join_team" />
+	</LinearLayout>
+
+	</LinearLayout>
 	<android.support.design.widget.NavigationView
 		android:id="@+id/nav_view"
 		android:layout_width="wrap_content"
