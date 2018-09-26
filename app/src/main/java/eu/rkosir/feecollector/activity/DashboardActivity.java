@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.activity;
+package eu.rkosir.feecollector.activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -17,13 +17,14 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.feecollector.android.feecollector.helper.JsonObjectConverter;
-import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
-import com.feecollector.android.feecollector.R;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class DashboardActivity extends AppCompatActivity {
 

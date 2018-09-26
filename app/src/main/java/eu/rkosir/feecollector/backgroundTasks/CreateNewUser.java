@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.backgroundTasks;
+package eu.rkosir.feecollector.backgroundTasks;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,16 +7,6 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.feecollector.android.feecollector.activity.ChangePasswordActivity;
-import com.feecollector.android.feecollector.activity.DashboardActivity;
-import com.feecollector.android.feecollector.activity.LoginActivity;
-import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.helper.JsonObjectConverter;
-import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
-import com.feecollector.android.feecollector.R;
-import com.feecollector.android.feecollector.User.entity.User;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +23,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import eu.rkosir.feecollector.AppConfig;
+import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.User.entity.User;
+import eu.rkosir.feecollector.activity.ChangePasswordActivity;
+import eu.rkosir.feecollector.activity.DashboardActivity;
+import eu.rkosir.feecollector.activity.LoginActivity;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class CreateNewUser extends AsyncTask<String, String, String>{
 

@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.activity;
+package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +11,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.backgroundTasks.ChangePassword;
-import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
-import com.feecollector.android.feecollector.R;
+import eu.rkosir.feecollector.AppConfig;
+import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.backgroundTasks.ChangePassword;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 	private Toolbar toolbar;

@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.User.entity;
+package eu.rkosir.feecollector.User.entity;
 
 
 import java.util.Date;

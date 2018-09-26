@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.helper;
+package eu.rkosir.feecollector.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;

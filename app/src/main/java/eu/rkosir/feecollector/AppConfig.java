@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector;
+package eu.rkosir.feecollector;
 
 public class AppConfig {
 	public static final String FACEBOOK_DETAILS = "jsondata";

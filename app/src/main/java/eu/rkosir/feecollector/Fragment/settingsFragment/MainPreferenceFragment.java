@@ -1,11 +1,11 @@
-package com.feecollector.android.feecollector.Fragment.settingsFragment;
+package eu.rkosir.feecollector.Fragment.settingsFragment;
 
 
 import android.os.Bundle;
 import android.app.Fragment;
 import android.preference.PreferenceFragment;
 
-import com.feecollector.android.feecollector.R;
+import eu.rkosir.feecollector.R;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.activity;
+package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -18,18 +18,19 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.backgroundTasks.CheckCredentials;
-import com.feecollector.android.feecollector.backgroundTasks.CreateNewUser;
-import com.feecollector.android.feecollector.helper.InternetConnection;
-import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
-import com.feecollector.android.feecollector.R;
-import com.feecollector.android.feecollector.User.entity.User;
 
 import org.json.JSONException;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
+
+import eu.rkosir.feecollector.AppConfig;
+import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.User.entity.User;
+import eu.rkosir.feecollector.backgroundTasks.CheckCredentials;
+import eu.rkosir.feecollector.backgroundTasks.CreateNewUser;
+import eu.rkosir.feecollector.helper.InternetConnection;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -130,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
 				(object, response) -> {
 					User user = null;
 					try {
-						user = new User(object.getString("name"),object.getString("email"), generatePassword(20,AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+						user = new User(object.getString("name"),object.getString("email"), generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
 						user.setFacebook_json(object.toString());
 					} catch (JSONException e) {
 						e.printStackTrace();

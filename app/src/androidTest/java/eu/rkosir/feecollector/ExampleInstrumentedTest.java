@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under navigation_menu.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.feecollector.android.feecollector", appContext.getPackageName());
+        assertEquals("eu.rkosir.feecollector", appContext.getPackageName());
     }
 }

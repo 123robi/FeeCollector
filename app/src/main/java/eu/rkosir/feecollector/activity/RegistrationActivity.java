@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.activity;
+package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +12,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.feecollector.android.feecollector.backgroundTasks.CreateNewUser;
-import com.feecollector.android.feecollector.helper.InternetConnection;
-import com.feecollector.android.feecollector.R;
-import com.feecollector.android.feecollector.User.entity.User;
+import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.User.entity.User;
+import eu.rkosir.feecollector.backgroundTasks.CreateNewUser;
+import eu.rkosir.feecollector.helper.InternetConnection;
 
 public class RegistrationActivity extends AppCompatActivity {
 

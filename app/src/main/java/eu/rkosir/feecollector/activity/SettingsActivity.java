@@ -1,11 +1,12 @@
-package com.feecollector.android.feecollector.activity;
+package eu.rkosir.feecollector.activity;
 
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import com.feecollector.android.feecollector.Fragment.settingsFragment.MainPreferenceFragment;
-import com.feecollector.android.feecollector.R;
+import eu.rkosir.feecollector.Fragment.settingsFragment.MainPreferenceFragment;
+import eu.rkosir.feecollector.R;
+
 
 public class SettingsActivity extends PreferenceActivity {
 	private Toolbar toolbar;

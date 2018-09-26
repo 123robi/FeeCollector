@@ -1,4 +1,4 @@
-package com.feecollector.android.feecollector.backgroundTasks;
+package eu.rkosir.feecollector.backgroundTasks;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,12 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.feecollector.android.feecollector.activity.DashboardActivity;
-import com.feecollector.android.feecollector.AppConfig;
-import com.feecollector.android.feecollector.helper.JsonObjectConverter;
-import com.feecollector.android.feecollector.helper.SharedPreferencesSaver;
-import com.feecollector.android.feecollector.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +23,12 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import eu.rkosir.feecollector.AppConfig;
+import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.DashboardActivity;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class ChangePassword  extends AsyncTask<String, String, String> {
 
