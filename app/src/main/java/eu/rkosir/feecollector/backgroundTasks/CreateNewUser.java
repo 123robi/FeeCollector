@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -30,6 +31,7 @@ import eu.rkosir.feecollector.User.entity.User;
 import eu.rkosir.feecollector.activity.ChangePasswordActivity;
 import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.activity.LoginActivity;
+import eu.rkosir.feecollector.helper.HttpRequest;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
@@ -48,16 +50,8 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 	}
 	@Override
 	protected String doInBackground(String... strings) {
+		String post_data = null;
 		try {
-			URL url = new URL(AppConfig.URL_REGISTER);
-			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-			httpURLConnection.setRequestMethod("POST");
-			httpURLConnection.setDoOutput(true);
-			httpURLConnection.setDoInput(true);
-
-			OutputStream outputStream = httpURLConnection.getOutputStream();
-			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-			String post_data;
 			if(user.getFacebook_json() != null) {
 				post_data = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(user.getName(), "UTF-8") + "&"
 						+ URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user.getEmail(), "UTF-8") + "&"
@@ -68,32 +62,12 @@ public class CreateNewUser extends AsyncTask<String, String, String>{
 						+ URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(user.getEmail(), "UTF-8") + "&"
 						+ URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(user.getPassword(), "UTF-8");
 			}
-
-			bufferedWriter.write(post_data);
-			bufferedWriter.flush();
-			bufferedWriter.close();
-			outputStream.close();
-
-			InputStream inputStream = httpURLConnection.getInputStream();
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-			String result = "";
-			String line = "";
-			while((line = bufferedReader.readLine()) != null){
-				result += line;
-			}
-			bufferedReader.close();
-			inputStream.close();
-			httpURLConnection.disconnect();
-
-			return result;
-
-		} catch (MalformedURLException e) {
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			return null;
 		}
 
-		return null;
+		return new HttpRequest(AppConfig.POST, post_data, AppConfig.URL_REGISTER).getResult();
 	}
 
 	@Override

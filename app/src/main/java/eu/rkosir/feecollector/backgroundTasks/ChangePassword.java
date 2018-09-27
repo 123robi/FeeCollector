@@ -12,21 +12,14 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.DashboardActivity;
+import eu.rkosir.feecollector.helper.HttpRequest;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
@@ -52,23 +45,13 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 	protected String doInBackground(String... strings) {
 		email = converter.getString("email");
 		password = strings[0];
+
 		if (!facebookChange) {
 			currentPassword = strings[1];
 		}
+		String post_data = null;
+
 		try {
-			URL url = new URL(AppConfig.URL_CHANGE_PASSWORD);
-			if(facebookChange) {
-				url = new URL(AppConfig.URL_CHANGE_PASSWORD_FACEBOOK);
-			}
-			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-			httpURLConnection.setRequestMethod("POST");
-			httpURLConnection.setDoOutput(true);
-			httpURLConnection.setDoInput(true);
-
-			OutputStream outputStream = httpURLConnection.getOutputStream();
-			BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-			String post_data;
-
 			if(facebookChange) {
 				post_data = URLEncoder.encode("email","UTF-8") + "=" +URLEncoder.encode(email,"UTF-8")+ "&"
 						+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8");
@@ -77,30 +60,16 @@ public class ChangePassword  extends AsyncTask<String, String, String> {
 						+URLEncoder.encode("password","UTF-8") + "=" +URLEncoder.encode(password,"UTF-8")+ "&"
 						+URLEncoder.encode("current_password","UTF-8") + "=" +URLEncoder.encode(currentPassword,"UTF-8");
 			}
-
-			bufferedWriter.write(post_data);
-			bufferedWriter.flush();
-			bufferedWriter.close();
-			outputStream.close();
-
-			InputStream inputStream = httpURLConnection.getInputStream();
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-			String result = "";
-			String line = "";
-			while((line = bufferedReader.readLine()) != null){
-				result += line;
-			}
-			bufferedReader.close();
-			inputStream.close();
-			httpURLConnection.disconnect();
-
-			return result;
-
-		} catch (IOException e) {
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
+			return null;
 		}
 
-		return null;
+		if (facebookChange) {
+			return new HttpRequest(AppConfig.POST, post_data, AppConfig.URL_CHANGE_PASSWORD_FACEBOOK).getResult();
+		} else {
+			return new HttpRequest(AppConfig.POST, post_data, AppConfig.URL_CHANGE_PASSWORD).getResult();
+		}
 	}
 
 	@Override
