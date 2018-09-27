@@ -126,6 +126,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	}
 
 	private void changePassword(boolean facebook_login) {
+		progressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, facebook_login?AppConfig.URL_CHANGE_PASSWORD_FACEBOOK : AppConfig.URL_CHANGE_PASSWORD, response -> {
 			JSONObject object = null;
 
@@ -166,5 +167,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 		RequestQueue requestQueue = Volley.newRequestQueue(this);
 		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (progressBar != null) {
+				progressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 }

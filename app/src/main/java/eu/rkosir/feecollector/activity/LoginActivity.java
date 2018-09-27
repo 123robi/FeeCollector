@@ -153,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 	}
 
 	private void login() {
+		progressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_LOGIN, response -> {
 			JSONObject object = null;
 
@@ -191,9 +192,15 @@ public class LoginActivity extends AppCompatActivity {
 
 		RequestQueue requestQueue = Volley.newRequestQueue(this);
 		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (progressBar != null) {
+				progressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	private void facebookLogin(User user) {
+		progressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {
@@ -238,6 +245,11 @@ public class LoginActivity extends AppCompatActivity {
 
 		RequestQueue requestQueue = Volley.newRequestQueue(this);
 		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (progressBar != null) {
+				progressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	private String generatePassword(int len, String dic) {
