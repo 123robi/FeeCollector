@@ -1,8 +1,8 @@
 package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -12,14 +12,25 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.User.entity.User;
-import eu.rkosir.feecollector.backgroundTasks.CreateNewUser;
 import eu.rkosir.feecollector.helper.InternetConnection;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class RegistrationActivity extends AppCompatActivity {
-
-	private String TAG = LoginActivity.class.getSimpleName();
 
 	private EditText inputName;
 	private EditText inputEmail;
@@ -51,7 +62,7 @@ public class RegistrationActivity extends AppCompatActivity {
 		createUserbtn.setOnClickListener(v -> {
 			User user = new User(inputName.getText().toString(),inputEmail.getText().toString(), inputPassword.getText().toString());
 			if(attemptToRegister() && InternetConnection.getInstance(RegistrationActivity.this).isOnline()) {
-				new CreateNewUser(RegistrationActivity.this,user, progressBar, false).execute();
+				createUser(user);
 			} else {
 				Toast.makeText(RegistrationActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
 			}
@@ -99,5 +110,47 @@ public class RegistrationActivity extends AppCompatActivity {
 			return false;
 		}else
 			return true;
+	}
+
+	private void createUser(User user) {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				if(!object.getBoolean("error")) {
+					Toast.makeText(this, R.string.successful_registration,Toast.LENGTH_LONG).show();
+					SharedPreferencesSaver.setUser(this, object.getString("user"));
+					if(object.getJSONObject("user").isNull("facebook_json")) {
+						Intent intent = new Intent(this, LoginActivity.class);
+						this.startActivity(intent);
+						this.finish();
+					} else {
+						Intent intent = new Intent(this, ChangePasswordActivity.class);
+						SharedPreferencesSaver.setLogin(this,true);
+						this.startActivity(intent);
+						this.finish();
+					}
+
+				} else {
+					Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("name", user.getName());
+				params.put("email", user.getEmail());
+				params.put("password", user.getPassword());
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = Volley.newRequestQueue(this);
+		requestQueue.add(stringRequest);
 	}
 }

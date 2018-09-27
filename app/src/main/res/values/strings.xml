@@ -46,6 +46,7 @@
 	<string name="successful_login">You have been logged in</string>
 	<string name="connection_warning">Please check your connection</string>
 	<string name="successfull_change_of_password">Your password has been changed</string>
+	<string name="unknown_error">Unknown error has occured</string>
 
 	<!--Base texts-->
 	<string name="confirm">Confirm</string>

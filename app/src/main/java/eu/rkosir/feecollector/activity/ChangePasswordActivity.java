@@ -1,5 +1,6 @@
 package eu.rkosir.feecollector.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +11,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.backgroundTasks.ChangePassword;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -35,13 +49,20 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		initialize();
 		button.setOnClickListener(view -> {
 			if(attemptToRegister()) {
-				if (!facebook_login) {
-					new ChangePassword(this, progressBar, inputCurrentPassword, facebook_login).execute(inputPassword.getText().toString(), inputCurrentPassword.getText().toString());
-				} else {
-					new ChangePassword(this, progressBar, null, facebook_login).execute(inputPassword.getText().toString(), null);
-				}
+				changePassword(facebook_login);
 			}
 		});
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (facebook_login) {
+			Intent intent = new Intent(this, DashboardActivity.class);
+			startActivity(intent);
+			finish();
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	private void initialize() {
@@ -104,14 +125,46 @@ public class ChangePasswordActivity extends AppCompatActivity {
 			return true;
 	}
 
-	@Override
-	public void onBackPressed() {
-		if (facebook_login) {
-			Intent intent = new Intent(this, DashboardActivity.class);
-			startActivity(intent);
-			finish();
-		} else {
-			super.onBackPressed();
-		}
+	private void changePassword(boolean facebook_login) {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, facebook_login?AppConfig.URL_CHANGE_PASSWORD_FACEBOOK : AppConfig.URL_CHANGE_PASSWORD, response -> {
+			JSONObject object = null;
+
+			try {
+				object = new JSONObject(response);
+
+				if (!object.getBoolean("error")) {
+					Toast.makeText(this, R.string.successfull_change_of_password,Toast.LENGTH_LONG).show();
+					if (facebook_login) {
+						SharedPreferencesSaver.setLogin(this,false);
+						Intent intent = new Intent(this, DashboardActivity.class);
+						this.startActivity(intent);
+						this.finish();
+					}
+				} else {
+					inputCurrentPassword.setError(this.getString(R.string.error_current_password_not_match), null);
+					View focusView = inputCurrentPassword;
+					focusView.requestFocus();
+				}
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
+				params.put("password", inputPassword.getText().toString());
+				if (!facebook_login) {
+					params.put("current_password", inputCurrentPassword.getText().toString());
+				}
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = Volley.newRequestQueue(this);
+		requestQueue.add(stringRequest);
 	}
 }
