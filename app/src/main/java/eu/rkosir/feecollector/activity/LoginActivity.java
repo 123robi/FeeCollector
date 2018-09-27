@@ -1,6 +1,8 @@
 package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -69,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
 		buttonListeners();
 	}
 
-
 	private void checkIfLogged() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
@@ -87,6 +88,25 @@ public class LoginActivity extends AppCompatActivity {
 
 		loginButton = findViewById(R.id.login_button);
 		loginButton_facebook = findViewById(R.id.login_button_facebook);
+
+		float fbIconScale = 1.45F;
+		Drawable drawable = this.getResources().getDrawable(
+				com.facebook.R.drawable.com_facebook_button_icon);
+		drawable.setBounds(0, 0, (int)(drawable.getIntrinsicWidth()*fbIconScale),
+				(int)(drawable.getIntrinsicHeight()*fbIconScale));
+		loginButton_facebook.setCompoundDrawables(drawable, null, null, null);
+		loginButton_facebook.setCompoundDrawablePadding(this.getResources().
+				getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
+		loginButton_facebook.setPadding(
+				this.getResources().getDimensionPixelSize(
+						R.dimen.fb_margin_override_lr),
+				this.getResources().getDimensionPixelSize(
+						R.dimen.fb_margin_override_top),
+				this.getResources().getDimensionPixelSize(
+						R.dimen.fb_margin_override_lr),
+				this.getResources().getDimensionPixelSize(
+						R.dimen.fb_margin_override_bottom));
+
 		loginButton_facebook.setReadPermissions(Arrays.asList(
 				"public_profile", "email", "user_birthday", "user_friends"));
 		callbackManager = CallbackManager.Factory.create();
@@ -224,6 +244,7 @@ public class LoginActivity extends AppCompatActivity {
 					Intent intent = new Intent(this, DashboardActivity.class);
 					SharedPreferencesSaver.setUser(this, object.getString("user"));
 					this.startActivity(intent);
+					this.finish();
 					Toast.makeText(this, R.string.successful_login,Toast.LENGTH_LONG).show();
 				}
 			} catch (JSONException e) {
