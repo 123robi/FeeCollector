@@ -53,29 +53,11 @@ public class DashboardActivity extends AppCompatActivity {
 			converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
 
 			String jsonData = converter.getString("facebook_json");
-			if (!(jsonData == null || jsonData.equals(""))) {
+			if (jsonData != null && !jsonData.equals("null")) {
 				setNavigationView();
 				setUserProfile(jsonData);
 			}
 		}
-	}
-
-	@Override
-	protected void onStop() {
-		Log.d("ONSTOP","ONSTOP");
-		super.onStop();
-	}
-
-	@Override
-	protected void onPause() {
-		Log.d("OnPause","OnPause");
-		super.onPause();
-	}
-
-	@Override
-	protected void onResumeFragments() {
-		Log.d("OnResume","ONRESUME");
-		super.onResumeFragments();
 	}
 
 	@Override
@@ -131,9 +113,6 @@ public class DashboardActivity extends AppCompatActivity {
 
 	private void setUserProfile(String jsondata) {
 		JSONObject pic_data, pic_url = null;
-		if (jsondata == null || jsondata.equals("")){
-			return;
-		}
 		try {
 			respone = new JSONObject(jsondata);
 			header_username.setText(respone.get("name").toString());
