@@ -1,4 +1,4 @@
-package eu.rkosir.feecollector.Fragment.settingsFragment;
+package eu.rkosir.feecollector.fragment.settingsFragment;
 
 
 import android.os.Bundle;

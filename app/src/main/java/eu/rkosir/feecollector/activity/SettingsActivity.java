@@ -2,10 +2,9 @@ package eu.rkosir.feecollector.activity;
 
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 
-import eu.rkosir.feecollector.Fragment.settingsFragment.MainPreferenceFragment;
+import eu.rkosir.feecollector.fragment.settingsFragment.MainPreferenceFragment;
 import eu.rkosir.feecollector.R;
 
 

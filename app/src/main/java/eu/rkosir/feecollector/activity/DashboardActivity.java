@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,8 +23,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import eu.rkosir.feecollector.Fragment.dashboardFragment.CreateTeam;
-import eu.rkosir.feecollector.Fragment.dashboardFragment.MainFragment;
+import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;

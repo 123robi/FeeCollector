@@ -1,7 +1,6 @@
-package eu.rkosir.feecollector.Fragment.dashboardFragment;
+package eu.rkosir.feecollector.fragment.dashboardFragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package eu.rkosir.feecollector.Fragment.dashboardFragment;
+package eu.rkosir.feecollector.fragment.dashboardFragment;
 
 
 import android.os.Bundle;
