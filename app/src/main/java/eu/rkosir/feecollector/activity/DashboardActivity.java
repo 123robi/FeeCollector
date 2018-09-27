@@ -9,9 +9,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +24,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import eu.rkosir.feecollector.Fragment.dashboardFragment.CreateTeam;
+import eu.rkosir.feecollector.Fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -38,10 +42,14 @@ public class DashboardActivity extends AppCompatActivity {
 	private Toolbar toolbar;
 	private JsonObjectConverter converter;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
+		if (savedInstanceState == null) {
+			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+		}
 		initialize();
 		if (SharedPreferencesSaver.getUser(this) != null) {
 			converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
@@ -52,6 +60,24 @@ public class DashboardActivity extends AppCompatActivity {
 				setUserProfile(jsonData);
 			}
 		}
+	}
+
+	@Override
+	protected void onStop() {
+		Log.d("ONSTOP","ONSTOP");
+		super.onStop();
+	}
+
+	@Override
+	protected void onPause() {
+		Log.d("OnPause","OnPause");
+		super.onPause();
+	}
+
+	@Override
+	protected void onResumeFragments() {
+		Log.d("OnResume","ONRESUME");
+		super.onResumeFragments();
 	}
 
 	@Override
@@ -70,6 +96,7 @@ public class DashboardActivity extends AppCompatActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	private void initialize() {
 		toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
