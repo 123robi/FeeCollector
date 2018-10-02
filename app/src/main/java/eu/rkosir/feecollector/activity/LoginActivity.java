@@ -187,7 +187,6 @@ public class LoginActivity extends AppCompatActivity {
 
 					Intent intent = new Intent(this, DashboardActivity.class);
 					SharedPreferencesSaver.setUser(this,object.getString("user"));
-					intent.putExtra("email",email_login.getText().toString());
 					this.startActivity(intent);
 					this.finish();
 
