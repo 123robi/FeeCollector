@@ -2,12 +2,10 @@ package eu.rkosir.feecollector.fragment.dashboardFragment;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +28,7 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.ChangePasswordActivity;
 import eu.rkosir.feecollector.activity.DashboardActivity;
-import eu.rkosir.feecollector.activity.LoginActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
@@ -82,7 +78,6 @@ public class        CreateTeam extends Fragment {
 
 				try {
 					object = new JSONObject(response);
-					Log.d("JSON", object + "JSON");
 					if (!object.getBoolean("error")) {
 						Toast.makeText(getActivity(), R.string.successful_team_creation,Toast.LENGTH_LONG).show();
 
@@ -105,7 +100,6 @@ public class        CreateTeam extends Fragment {
 					Map<String,String> params = new HashMap<>();
 					params.put("team_name", team_name.getText().toString());
 					params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
-					Log.d("PARAMS", params + "");
 					return params;
 				}
 			};
