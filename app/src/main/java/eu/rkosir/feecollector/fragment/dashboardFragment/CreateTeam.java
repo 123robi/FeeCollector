@@ -4,6 +4,7 @@ package eu.rkosir.feecollector.fragment.dashboardFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -40,7 +41,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CreateTeam extends Fragment {
+public class        CreateTeam extends Fragment {
 
 	private EditText team_name;
 	private Button create_team_button;
@@ -51,17 +52,32 @@ public class CreateTeam extends Fragment {
 	}
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		initialize();
+	}
+
+	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.create_team);
+	}
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		return inflater.inflate(R.layout.fragment_create_team, container, false);
+	}
+
+	private void initialize() {
 		team_name = getView().findViewById(R.id.team_name);
 		create_team_button = getView().findViewById(R.id.create_team);
 		progressBar = getView().findViewById(R.id.pb_loading_indicator);
 
 		create_team_button.setOnClickListener(view -> {
 			progressBar.setVisibility(View.VISIBLE);
-			StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_LOGIN, response -> {
+			StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SAVE_TEAM, response -> {
 				JSONObject object = null;
 
 				try {
@@ -89,6 +105,7 @@ public class CreateTeam extends Fragment {
 					Map<String,String> params = new HashMap<>();
 					params.put("team_name", team_name.getText().toString());
 					params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
+					Log.d("PARAMS", params + "");
 					return params;
 				}
 			};
@@ -101,14 +118,6 @@ public class CreateTeam extends Fragment {
 				}
 			});
 		});
-
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_create_team, container, false);
 	}
 
 }
