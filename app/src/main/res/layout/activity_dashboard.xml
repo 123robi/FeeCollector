@@ -35,7 +35,12 @@
 			android:id="@+id/fragment_container">
 
 		</FrameLayout>
-
+		<ProgressBar
+			android:id="@+id/pb_loading_indicator"
+			android:layout_width="42dp"
+			android:layout_height="42dp"
+			android:layout_gravity="center_vertical|center_horizontal"
+			android:visibility="invisible" />
 	</LinearLayout>
 	</LinearLayout>
 	<android.support.design.widget.NavigationView

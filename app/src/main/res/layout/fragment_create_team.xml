@@ -5,4 +5,35 @@
 	android:layout_height="match_parent"
 	tools:context=".fragment.dashboardFragment.CreateTeam">
 
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:labelFor="@+id/team_name"
+			android:paddingLeft="10dip"
+			android:paddingRight="10dip"
+			android:paddingTop="10dip"
+			android:text="@string/team_name"
+			android:textSize="17sp" />
+
+		<EditText
+			android:id="@+id/team_name"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dip"
+			android:layout_marginBottom="15dip"
+			android:inputType="text"
+			android:singleLine="true" />
+
+		<Button
+			android:id="@+id/create_team"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/create_team" />
+
+	</LinearLayout>
 </FrameLayout>

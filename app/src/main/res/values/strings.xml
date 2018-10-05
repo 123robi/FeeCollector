@@ -30,6 +30,9 @@
 	<string name="join_team">Join team</string>
 	<string name="team_id">Team ID</string>
 
+	<!--Create Team Fragment-->
+	<string name="team_name">Team Name</string>
+
 	<!--Settings Page-->
 	<string name="change_password">Change Password</string>
 	<string name="notification">Notifications</string>
@@ -47,6 +50,7 @@
 	<string name="connection_warning">Please check your connection</string>
 	<string name="successfull_change_of_password">Your password has been changed</string>
 	<string name="unknown_error">Unknown error has occured</string>
+	<string name="successful_team_creation">Your team has been successfully created.</string>
 
 	<!--Base texts-->
 	<string name="confirm">Confirm</string>
