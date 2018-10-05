@@ -73,7 +73,7 @@ public class        CreateTeam extends Fragment {
 	private void initialize() {
 		team_name = getView().findViewById(R.id.team_name);
 		create_team_button = getView().findViewById(R.id.create_team);
-		progressBar = getView().findViewById(R.id.pb_loading_indicator);
+		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 
 		create_team_button.setOnClickListener(view -> {
 			progressBar.setVisibility(View.VISIBLE);
