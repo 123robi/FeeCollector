@@ -51,6 +51,7 @@
 	<string name="successfull_change_of_password">Your password has been changed</string>
 	<string name="unknown_error">Unknown error has occured</string>
 	<string name="successful_team_creation">Your team has been successfully created.</string>
+	<string name="successful_joining">You have successfully joined the team.</string>
 
 	<!--Base texts-->
 	<string name="confirm">Confirm</string>

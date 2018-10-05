@@ -6,6 +6,7 @@ public class AppConfig {
 	public static final String URL_CHANGE_PASSWORD = "http://rkosir.eu/usersApi/changePassword";
 	public static final String URL_CHANGE_PASSWORD_FACEBOOK = "http://rkosir.eu/usersApi/changePasswordFacebook";;
 	public static final String URL_SAVE_TEAM = "http://rkosir.eu/teamsApi/add";
+	public static final String URL_JOIN_TEAM = "http://rkosir.eu/teamsApi/join";
 
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
