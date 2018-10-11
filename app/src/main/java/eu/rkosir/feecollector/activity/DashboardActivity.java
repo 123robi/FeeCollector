@@ -80,8 +80,8 @@ public class DashboardActivity extends AppCompatActivity {
 			new AlertDialog.Builder(this)
 					.setTitle(R.string.closing_application_title)
 					.setMessage(R.string.closing_application_message)
-					.setPositiveButton(R.string.no_button, (dialogInterface, i) -> finish())
-					.setNegativeButton(R.string.yes_button, null)
+					.setPositiveButton(R.string.yes_button, (dialogInterface, i) -> finish())
+					.setNegativeButton(R.string.no_button, null)
 					.show();
 		}
 		else {
