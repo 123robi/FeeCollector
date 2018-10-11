@@ -53,6 +53,12 @@
 	<string name="successful_team_creation">Your team has been successfully created.</string>
 	<string name="successful_joining">You have successfully joined the team.</string>
 
+	<!--Alert Dialogs-->
+	<string name="closing_application_title">Closing Application...</string>
+	<string name="closing_application_message">Are you sure you want to exit the application?</string>
+	<string name="no_button">No</string>
+	<string name="yes_button">Yes</string>
+
 	<!--Base texts-->
 	<string name="confirm">Confirm</string>
 

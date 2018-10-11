@@ -77,15 +77,10 @@ public class DashboardActivity extends AppCompatActivity {
 			super.onBackPressed();
 		} else if (getCurrentFragment() instanceof MainFragment) {
 			new AlertDialog.Builder(this)
-					.setTitle("Closing Application")
-					.setMessage("Are you sure you want to exit the application")
-					.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialogInterface, int i) {
-							finish();
-						}
-					})
-					.setNegativeButton("No", null)
+					.setTitle(R.string.closing_application_title)
+					.setMessage(R.string.closing_application_message)
+					.setPositiveButton(R.string.no_button, (dialogInterface, i) -> finish())
+					.setNegativeButton(R.string.yes_button, null)
 					.show();
 		}
 		else {
