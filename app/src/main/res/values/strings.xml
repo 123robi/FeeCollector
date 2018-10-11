@@ -29,9 +29,13 @@
 	<string name="create_team">Create team</string>
 	<string name="join_team">Join team</string>
 	<string name="team_id">Team ID</string>
+	<string name="add_fee">Add Fee</string>
 
 	<!--Create Team Fragment-->
 	<string name="team_name">Team Name</string>
+
+	<!--Add fee Fragment-->
+	<string name="fee_name">Fee name</string>
 
 	<!--Settings Page-->
 	<string name="change_password">Change Password</string>

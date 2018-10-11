@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 
+import eu.rkosir.feecollector.fragment.dashboardFragment.AddFee;
 import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
 import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
@@ -165,7 +166,18 @@ public class DashboardActivity extends AppCompatActivity {
 					if (getCurrentFragment() instanceof CreateTeam) {
 						drawerLayout.closeDrawer(GravityCompat.START);
 					} else {
+						fragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 						fragment = new CreateTeam();
+						loadFragment(fragment);
+					}
+					break;
+				}
+				case R.id.add_fee: {
+					if (getCurrentFragment() instanceof AddFee) {
+						drawerLayout.closeDrawer(GravityCompat.START);
+					} else {
+						fragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+						fragment = new AddFee();
 						loadFragment(fragment);
 					}
 					break;
@@ -200,6 +212,8 @@ public class DashboardActivity extends AppCompatActivity {
 		if (getCurrentFragment() instanceof  MainFragment) {
 			navigationView.setCheckedItem(R.id.dashboard);
 		} else if (getCurrentFragment() instanceof  CreateTeam) {
+			navigationView.setCheckedItem(R.id.create_team);
+		} else if (getCurrentFragment() instanceof  AddFee) {
 			navigationView.setCheckedItem(R.id.create_team);
 		}
 		super.onResume();

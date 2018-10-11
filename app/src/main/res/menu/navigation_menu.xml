@@ -9,6 +9,10 @@
 		android:id="@+id/create_team"
 		android:title="@string/create_team"
 		android:icon="@drawable/ic_add_black_24dp"/>
+		<item
+			android:id="@+id/add_fee"
+			android:title="@string/add_fee"
+			android:icon="@drawable/ic_add_black_24dp"/>
 	</group>
     <group android:id="@+id/group2" android:checkableBehavior="single">
 		<item
