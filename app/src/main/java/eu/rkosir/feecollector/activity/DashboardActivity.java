@@ -1,8 +1,9 @@
 package eu.rkosir.feecollector.activity;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +24,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+
+import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
 import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
@@ -46,7 +50,7 @@ public class DashboardActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainFragment(), "dashboard").commit();
 		}
 		initialize();
 		if (SharedPreferencesSaver.getUser(this) != null) {
@@ -64,6 +68,9 @@ public class DashboardActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
 			drawerLayout.closeDrawer(GravityCompat.START);
+		} else if (!(getCurrentFragment() instanceof MainFragment)) {
+			navigationView.setCheckedItem(R.id.dashboard);
+			super.onBackPressed();
 		} else {
 			super.onBackPressed();
 		}
@@ -128,34 +135,69 @@ public class DashboardActivity extends AppCompatActivity {
 
 	private void navigationViewListener() {
 		navigationView.setNavigationItemSelectedListener(item -> {
-				FragmentManager fragmentManager = getFragmentManager();
 			int id = item.getItemId();
+			Fragment fragment = null;
 
-			if(id == R.id.log_out) {
-				if(AccessToken.getCurrentAccessToken() != null) {
-					LoginManager.getInstance().logOut();
+			switch (id) {
+				case R.id.log_out: {
+					if(AccessToken.getCurrentAccessToken() != null) {
+						LoginManager.getInstance().logOut();
+					}
+					//claring SharedPReferences after logout
+					SharedPreferencesSaver.clearUser(this);
+					SharedPreferencesSaver.setToken(DashboardActivity.this,false);
+
+					Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+					startActivity(intent);
+					finish();
 				}
-				//claring SharedPReferences after logout
-				SharedPreferencesSaver.clearUser(this);
-				SharedPreferencesSaver.setToken(DashboardActivity.this,false);
-
-				Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
-				startActivity(intent);
-				finish();
-			} else if(id == R.id.settings) {
-				Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
-				startActivity(intent);
+				case R.id.settings: {
+					Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
+					startActivity(intent);
+				}
+				case R.id.create_team: {
+					if (getCurrentFragment() instanceof CreateTeam) {
+						drawerLayout.closeDrawer(GravityCompat.START);
+					} else {
+						fragment = new CreateTeam();
+						loadFragment(fragment);
+					}
+				}
 			}
-
 			drawerLayout.closeDrawer(GravityCompat.START);
 
 			return true;
 		});
 	}
 
+
 	@Override
 	protected void onResume() {
-		navigationView.setCheckedItem(R.id.dashboard);
+		if (getCurrentFragment() instanceof  MainFragment) {
+			navigationView.setCheckedItem(R.id.dashboard);
+		} else if (getCurrentFragment() instanceof  CreateTeam) {
+			navigationView.setCheckedItem(R.id.create_team);
+		}
 		super.onResume();
+	}
+
+	private boolean loadFragment(Fragment fragment) {
+		//switching fragment
+		if (fragment != null ) {
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, fragment)
+					.addToBackStack(null)
+					.commit();
+			return true;
+		}
+		return false;
+	}
+
+	private Fragment getCurrentFragment() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+
+		return currentFragment;
 	}
 }

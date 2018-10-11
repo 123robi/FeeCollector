@@ -5,6 +5,10 @@
 			android:id="@+id/dashboard"
 			android:title="@string/dashboard"
 			android:icon="@drawable/ic_info_24dp"/>
+		<item
+		android:id="@+id/create_team"
+		android:title="@string/create_team"
+		android:icon="@drawable/ic_add_black_24dp"/>
 	</group>
     <group android:id="@+id/group2" android:checkableBehavior="single">
 		<item
