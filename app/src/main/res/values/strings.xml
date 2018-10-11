@@ -36,6 +36,7 @@
 
 	<!--Add fee Fragment-->
 	<string name="fee_name">Fee name</string>
+	<string name="fee_cost">Cost</string>
 
 	<!--Settings Page-->
 	<string name="change_password">Change Password</string>

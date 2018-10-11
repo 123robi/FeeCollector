@@ -28,7 +28,23 @@
 			android:layout_marginBottom="15dip"
 			android:inputType="text"
 			android:singleLine="true" />
-
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:labelFor="@+id/fee_cost"
+			android:paddingLeft="10dip"
+			android:paddingRight="10dip"
+			android:paddingTop="10dip"
+			android:text="@string/fee_cost"
+			android:textSize="17sp" />
+		<EditText
+			android:id="@+id/fee_cost"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dip"
+			android:layout_marginBottom="15dip"
+			android:inputType="number"
+			android:singleLine="true" />
 		<Button
 			android:id="@+id/add_fee"
 			android:layout_width="fill_parent"
