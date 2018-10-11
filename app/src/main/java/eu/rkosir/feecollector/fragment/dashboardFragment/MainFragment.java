@@ -40,7 +40,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class MainFragment extends Fragment {
 
-	private Button createTeam;
 	private Button joinTeam;
 	private ProgressBar progressBar;
 	private EditText teamId;
@@ -65,9 +64,6 @@ public class MainFragment extends Fragment {
 
 	private void initialize() {
 		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-
-		createTeam = getView().findViewById(R.id.createTeam);
-		createTeam.setOnClickListener(view -> getFragmentManager().beginTransaction().replace(R.id.fragment_container, new CreateTeam()).addToBackStack(null).commit());
 
 		teamId = getView().findViewById(R.id.teamId);
 
