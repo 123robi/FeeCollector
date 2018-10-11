@@ -43,6 +43,8 @@ public class DashboardActivity extends AppCompatActivity {
 	private JSONObject respone;
 	private Toolbar toolbar;
 	private JsonObjectConverter converter;
+	private FragmentManager fragmentManager;
+
 
 
 	@Override
@@ -107,6 +109,8 @@ public class DashboardActivity extends AppCompatActivity {
 				startActivity(intent);
 			});
 		}
+
+		fragmentManager = getSupportFragmentManager();
 	}
 
 	private void setNavigationView() {
@@ -139,6 +143,28 @@ public class DashboardActivity extends AppCompatActivity {
 			Fragment fragment = null;
 
 			switch (id) {
+				case R.id.dashboard: {
+					if (getCurrentFragment() instanceof MainFragment) {
+						drawerLayout.closeDrawer(GravityCompat.START);
+					} else {
+						fragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+					}
+					break;
+				}
+				case R.id.create_team: {
+					if (getCurrentFragment() instanceof CreateTeam) {
+						drawerLayout.closeDrawer(GravityCompat.START);
+					} else {
+						fragment = new CreateTeam();
+						loadFragment(fragment);
+					}
+					break;
+				}
+				case R.id.settings: {
+					Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
+					startActivity(intent);
+					break;
+				}
 				case R.id.log_out: {
 					if(AccessToken.getCurrentAccessToken() != null) {
 						LoginManager.getInstance().logOut();
@@ -150,18 +176,7 @@ public class DashboardActivity extends AppCompatActivity {
 					Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
 					startActivity(intent);
 					finish();
-				}
-				case R.id.settings: {
-					Intent intent = new Intent(DashboardActivity.this, SettingsActivity.class);
-					startActivity(intent);
-				}
-				case R.id.create_team: {
-					if (getCurrentFragment() instanceof CreateTeam) {
-						drawerLayout.closeDrawer(GravityCompat.START);
-					} else {
-						fragment = new CreateTeam();
-						loadFragment(fragment);
-					}
+					break;
 				}
 			}
 			drawerLayout.closeDrawer(GravityCompat.START);
@@ -169,7 +184,6 @@ public class DashboardActivity extends AppCompatActivity {
 			return true;
 		});
 	}
-
 
 	@Override
 	protected void onResume() {
@@ -183,7 +197,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 	private boolean loadFragment(Fragment fragment) {
 		//switching fragment
-		if (fragment != null ) {
+		if (fragment != null) {
 			getSupportFragmentManager()
 					.beginTransaction()
 					.replace(R.id.fragment_container, fragment)
@@ -195,7 +209,6 @@ public class DashboardActivity extends AppCompatActivity {
 	}
 
 	private Fragment getCurrentFragment() {
-		FragmentManager fragmentManager = getSupportFragmentManager();
 		Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
 
 		return currentFragment;
