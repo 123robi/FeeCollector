@@ -11,14 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
+
 import eu.rkosir.feecollector.R;
 
 public class ShowTeamsAdapter extends ArrayAdapter<String>{
-	private String[] teams;
-	private String[] team_id;
+	private  ArrayList<String> teams;
+	private  ArrayList<String> team_id;
 	private Context context;
 
-	public ShowTeamsAdapter(@NonNull Context context, String[] teams, String[] team_id) {
+	public ShowTeamsAdapter(@NonNull Context context, ArrayList<String> teams, ArrayList<String> team_id) {
 		super(context, R.layout.listview_team);
 		this.context = context;
 		this.teams = teams;
@@ -27,7 +29,7 @@ public class ShowTeamsAdapter extends ArrayAdapter<String>{
 
 	@Override
 	public int getCount() {
-		return teams.length;
+		return teams.size();
 	}
 
 	@NonNull
@@ -43,8 +45,8 @@ public class ShowTeamsAdapter extends ArrayAdapter<String>{
 		} else {
 			viewHolder = (ViewHolder)convertView.getTag();
 		}
-			viewHolder.teamName.setText(teams[position]);
-			viewHolder.teamId.setText(team_id[position]);
+			viewHolder.teamName.setText(teams.get(position));
+			viewHolder.teamId.setText(team_id.get(position));
 
 
 		return convertView;
