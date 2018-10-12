@@ -1,6 +1,9 @@
 package eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +16,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.helper.ShowTeamsAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +27,6 @@ public class ShowTeams extends Fragment {
 
 	SearchView searchView;
 	ArrayAdapter<String> adapter;
-	ArrayList<String> data = new ArrayList<>();
 
 
 	public ShowTeams() {
@@ -37,16 +38,19 @@ public class ShowTeams extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
+		String[]teams = {"ASDASD","ASDASD2","ASDA3SD","ASDAS5D"};
+		String[]ids = {"123","124","1245","16212"};
+		ClipboardManager clipboard = (ClipboardManager)
+				getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 		View view = inflater.inflate(R.layout.fragment_show_teams, container, false);
 		lv = view.findViewById(R.id.teamsList);
-		adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,data);
-		lv.setAdapter(adapter);
-		data.add("Test");
-		data.add("Test2");
-		data.add("Test3");
+		ShowTeamsAdapter teamsAdapter = new ShowTeamsAdapter(getActivity(), teams,ids);
+		lv.setAdapter(teamsAdapter);
+
 		lv.setOnItemClickListener((adapterView, view1, position, l) -> {
-			String s = data.get(position);
-			Toast.makeText(getActivity(), s,Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "Your team_id" + ids[position] + "has been copied to clipboard",Toast.LENGTH_LONG).show();
+			ClipData clip = ClipData.newPlainText("id", ids[position]);
+			clipboard.setPrimaryClip(clip);
 		});
 		return view;
 	}
