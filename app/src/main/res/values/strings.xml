@@ -57,6 +57,7 @@
 	<string name="unknown_error">Unknown error has occured</string>
 	<string name="successful_team_creation">Your team has been successfully created.</string>
 	<string name="successful_joining">You have successfully joined the team.</string>
+	<string name="successful_fee_add">You have successfully added fee to your team.</string>
 
 	<!--Alert Dialogs-->
 	<string name="closing_application_title">Closing Application...</string>

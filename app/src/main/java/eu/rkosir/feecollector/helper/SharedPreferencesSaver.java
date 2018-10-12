@@ -13,6 +13,10 @@ public class SharedPreferencesSaver {
 	private final static String LOGIN = "login";
 	private final static String TOKEN_KEY_LOGIN = "login";
 
+
+	private final static String TEAM = "team";
+	private final static String TOKEN_KEY_TEAM = "team";
+
 	public static boolean getToken(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(IS_LOGGED, Context.MODE_PRIVATE);
 		return prefs.getBoolean(TOKEN_KEY, false);
@@ -53,5 +57,17 @@ public class SharedPreferencesSaver {
 	public static boolean getLogin(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(LOGIN, Context.MODE_PRIVATE);
 		return prefs.getBoolean(TOKEN_KEY_LOGIN, false);
+	}
+
+	public static void setTeam(Context c, String id) {
+		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(TOKEN_KEY_TEAM, id);
+		editor.apply();
+	}
+
+	public static String getTeam(Context c) {
+		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+		return prefs.getString(TOKEN_KEY_TEAM, "");
 	}
 }
