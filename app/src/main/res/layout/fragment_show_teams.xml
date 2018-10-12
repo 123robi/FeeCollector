@@ -3,8 +3,22 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".fragment.dashboardFragment.teamFragment.ShowTeams">
+	tools:context=".fragment.dashboardFragment.teamFragment.ShowTeams"
+	android:orientation="vertical">
 
+	<EditText
+		android:id="@+id/add_test_text"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dip"
+		android:layout_marginBottom="15dip"
+		android:inputType="text"
+		android:singleLine="true" />
+	<Button
+		android:id="@+id/btnAdd"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/sign_in" />
 	<ListView
 		android:id="@+id/teamsList"
 		android:layout_width="match_parent"

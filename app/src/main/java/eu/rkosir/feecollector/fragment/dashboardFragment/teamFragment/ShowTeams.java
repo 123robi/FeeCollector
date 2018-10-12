@@ -1,10 +1,16 @@
 package eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment;
 
 
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -21,6 +29,8 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -35,9 +45,13 @@ import java.util.TreeMap;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.helper.DbContract;
+import eu.rkosir.feecollector.helper.DbHelper;
+import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.ShowTeamsAdapter;
+import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -48,6 +62,10 @@ public class ShowTeams extends Fragment {
 	ListView lv;
 	private ProgressBar progressBar;
 	private ShowTeamsAdapter teamsAdapter;
+	private EditText editText;
+	private Button button;
+	private BroadcastReceiver broadcastReceiver;
+	private ArrayList<String> names;
 
 	public ShowTeams() {
 		// Required empty public constructor
@@ -62,8 +80,57 @@ public class ShowTeams extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_show_teams, container, false);
 		lv = view.findViewById(R.id.teamsList);
 		loadTeams();
+		readFromLocalStorage();
 
 		return view;
+	}
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		button = getActivity().findViewById(R.id.btnAdd);
+		editText = getActivity().findViewById(R.id.add_test_text);
+
+		names =new ArrayList<>();
+
+		button.setOnClickListener(view1 -> {
+			saveToAppServer(editText.getText().toString());
+			editText.setText("");
+		});
+	}
+
+	private void readFromLocalStorage() {
+		DbHelper dbHelper = new DbHelper(getActivity());
+		SQLiteDatabase database = dbHelper.getReadableDatabase();
+		String[] fields = {"name"};
+		Cursor cursor = dbHelper.readFromLocalDatabase(database,DbContract.TEAMS, fields);
+		while (cursor.moveToNext()) {
+			String name = cursor.getString(cursor.getColumnIndex("name"));
+			names.add(name);
+			Toast.makeText(getActivity(),names.toString(),Toast.LENGTH_LONG).show();
+		}
+		cursor.close();
+		dbHelper.close();
+	}
+
+	private void saveToAppServer(String name) {
+		if (InternetConnection.getInstance(getActivity()).isOnline()) {
+			StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SAVE_TEAM, response -> {
+				Toast.makeText(getActivity(), "Created",Toast.LENGTH_LONG).show();
+				saveToLocalStorage(name);
+			}, error -> {
+				Toast.makeText(getActivity(), "FAILED",Toast.LENGTH_LONG).show();
+			}){
+				@Override
+				protected Map<String, String> getParams() throws AuthFailureError {
+					Map<String,String> params = new HashMap<>();
+					params.put("name", name);
+					return params;
+				}
+			};
+			VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+		} else {
+			saveToLocalStorage(name);
+		}
 	}
 
 
@@ -108,5 +175,13 @@ public class ShowTeams extends Fragment {
 				progressBar.setVisibility(View.INVISIBLE);
 			}
 		});
+	}
+	private void saveToLocalStorage(String name) {
+		DbHelper dbHelper = new DbHelper(getActivity());
+		SQLiteDatabase database = dbHelper.getWritableDatabase();
+		dbHelper.saveToLocalDatabase(name,0,database);
+
+		readFromLocalStorage();
+		dbHelper.close();
 	}
 }
