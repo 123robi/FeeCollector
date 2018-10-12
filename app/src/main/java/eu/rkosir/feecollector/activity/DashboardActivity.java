@@ -214,7 +214,7 @@ public class DashboardActivity extends AppCompatActivity {
 		} else if (getCurrentFragment() instanceof  CreateTeam) {
 			navigationView.setCheckedItem(R.id.create_team);
 		} else if (getCurrentFragment() instanceof  AddFee) {
-			navigationView.setCheckedItem(R.id.create_team);
+			navigationView.setCheckedItem(R.id.add_fee);
 		}
 		super.onResume();
 	}
