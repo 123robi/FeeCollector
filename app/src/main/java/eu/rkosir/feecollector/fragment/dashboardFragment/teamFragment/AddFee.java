@@ -1,4 +1,4 @@
-package eu.rkosir.feecollector.fragment.dashboardFragment;
+package eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment;
 
 
 import android.content.Intent;

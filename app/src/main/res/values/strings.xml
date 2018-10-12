@@ -30,6 +30,7 @@
 	<string name="join_team">Join team</string>
 	<string name="team_id">Team ID</string>
 	<string name="add_fee">Add Fee</string>
+	<string name="your_teams">Your teams</string>
 
 	<!--Create Team Fragment-->
 	<string name="team_name">Team Name</string>

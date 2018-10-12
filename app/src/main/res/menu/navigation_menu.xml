@@ -13,6 +13,10 @@
 			android:id="@+id/add_fee"
 			android:title="@string/add_fee"
 			android:icon="@drawable/ic_add_black_24dp"/>
+		<item
+		android:id="@+id/teams"
+		android:title="@string/your_teams"
+		android:icon="@drawable/ic_directions_bike_black_24dp"/>
 	</group>
     <group android:id="@+id/group2" android:checkableBehavior="single">
 		<item

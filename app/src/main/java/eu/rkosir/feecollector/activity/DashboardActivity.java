@@ -1,6 +1,5 @@
 package eu.rkosir.feecollector.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,8 +11,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,12 +25,11 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
-
-import eu.rkosir.feecollector.fragment.dashboardFragment.AddFee;
+import eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment.AddFee;
 import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
 import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment.ShowTeams;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
@@ -128,6 +126,9 @@ public class DashboardActivity extends AppCompatActivity {
 		View header = LayoutInflater.from(this).inflate(R.layout.navigation_header,null);
 		navigationView.addHeaderView(header);
 
+		Menu navMenu = navigationView.getMenu();
+		navMenu.findItem(R.id.add_fee).setVisible(false);
+
 		header_username = header.findViewById(R.id.header_username);
 		header_email = header.findViewById(R.id.header_email);
 		header_picture = header.findViewById(R.id.header_profile_pic);
@@ -172,12 +173,12 @@ public class DashboardActivity extends AppCompatActivity {
 					}
 					break;
 				}
-				case R.id.add_fee: {
-					if (getCurrentFragment() instanceof AddFee) {
+				case R.id.teams: {
+					if (getCurrentFragment() instanceof ShowTeams) {
 						drawerLayout.closeDrawer(GravityCompat.START);
 					} else {
 						fragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-						fragment = new AddFee();
+						fragment = new ShowTeams();
 						loadFragment(fragment);
 					}
 					break;
