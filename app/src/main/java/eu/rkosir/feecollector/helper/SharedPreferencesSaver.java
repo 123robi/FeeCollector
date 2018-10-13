@@ -3,6 +3,8 @@ package eu.rkosir.feecollector.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashMap;
+
 public class SharedPreferencesSaver {
 	private final static String IS_LOGGED = "IS_LOGGED";
 	private final static String TOKEN_KEY = "TOKEN_KEY";
@@ -59,14 +61,14 @@ public class SharedPreferencesSaver {
 		return prefs.getBoolean(TOKEN_KEY_LOGIN, false);
 	}
 
-	public static void setTeam(Context c, String id) {
+	public static void setLastTeam(Context c, HashMap<String,String> team_id) {
 		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(TOKEN_KEY_TEAM, id);
+		editor.putString(TOKEN_KEY_TEAM, team_id.toString());
 		editor.apply();
 	}
 
-	public static String getTeam(Context c) {
+	public static String getLastTeam(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
 		return prefs.getString(TOKEN_KEY_TEAM, "");
 	}
