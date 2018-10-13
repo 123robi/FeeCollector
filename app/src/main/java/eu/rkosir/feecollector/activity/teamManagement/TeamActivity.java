@@ -1,15 +1,13 @@
 package eu.rkosir.feecollector.activity.teamManagement;
 
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment.AddFee;
+import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFee;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddMember;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Summary;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;

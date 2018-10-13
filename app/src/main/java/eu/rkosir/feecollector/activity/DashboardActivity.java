@@ -26,7 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
-import eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment.AddFee;
+import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFee;
 import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
 import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
