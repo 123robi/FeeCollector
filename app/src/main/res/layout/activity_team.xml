@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
@@ -7,23 +7,28 @@
 	tools:context=".activity.teamManagement.TeamActivity"
 	android:orientation="vertical">
 
-	<include android:id="@+id/back_action_bar" layout="@layout/toolbar"/>
-
-	<android.support.design.widget.TabLayout
-		android:id="@+id/navigation_top"
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="56dp"
-		app:tabGravity="fill"
-		app:tabMode="fixed"
-		app:tabTextColor="@color/white"
-		app:tabIndicatorColor="@color/indicator_color"
-		android:background="@color/colorPrimary"/>
-	<android.support.v4.view.ViewPager
-		android:id="@+id/content"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 
-	</android.support.v4.view.ViewPager>
+		<include android:id="@+id/back_action_bar" layout="@layout/toolbar"/>
+		<android.support.design.widget.TabLayout
+			android:id="@+id/navigation_top"
+			android:layout_width="match_parent"
+			android:layout_height="56dp"
+			app:tabGravity="fill"
+			app:tabMode="fixed"
+			app:tabTextColor="@color/white"
+			app:tabIndicatorColor="@color/indicator_color"
+			android:background="@color/colorPrimary"/>
+
+		<android.support.v4.view.ViewPager
+			android:id="@+id/content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+		</android.support.v4.view.ViewPager>
+	</LinearLayout>
 	<ProgressBar
 		android:id="@+id/pb_loading_indicator"
 		android:layout_width="42dp"
@@ -31,4 +36,4 @@
 		android:layout_gravity="center_vertical|center_horizontal"
 		android:visibility="invisible" />
 
-</LinearLayout>
+</FrameLayout>

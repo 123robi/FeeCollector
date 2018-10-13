@@ -98,7 +98,7 @@ public class AddFee extends Fragment {
 					Map<String,String> params = new HashMap<>();
 					params.put("name", feeName.getText().toString());
 					params.put("cost", feeCost.getText().toString());
-					params.put("team_id", SharedPreferencesSaver.getLastTeamID(getActivity()));
+					params.put("connection_number", SharedPreferencesSaver.getLastTeamID(getActivity()));
 					return params;
 				}
 			};
