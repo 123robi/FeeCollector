@@ -4,6 +4,7 @@ package eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,8 @@ import java.util.TreeMap;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.DashboardActivity;
+import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.ShowTeamsAdapter;
@@ -92,6 +95,10 @@ public class ShowTeams extends Fragment {
 					Toast.makeText(getActivity(), "Your team_id " + ids.get(position) + " has been copied to clipboard",Toast.LENGTH_LONG).show();
 					ClipData clip = ClipData.newPlainText("id",ids.get(position));
 					clipboard.setPrimaryClip(clip);
+					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position));
+					SharedPreferencesSaver.setLastTeamId(getActivity(),ids.get(position));
+					Intent intent = new Intent(getActivity(), TeamActivity.class);
+					startActivity(intent);
 				});
 			} catch (JSONException e) {
 				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();

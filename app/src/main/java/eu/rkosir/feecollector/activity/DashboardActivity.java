@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment.AddFee;
 import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
 import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
@@ -51,6 +52,10 @@ public class DashboardActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (SharedPreferencesSaver.getLastTeamID(this) != null) {
+			Intent intent = new Intent(this, TeamActivity.class);
+			startActivity(intent);
+		}
 		setContentView(R.layout.activity_dashboard);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainFragment(), "dashboard").commit();

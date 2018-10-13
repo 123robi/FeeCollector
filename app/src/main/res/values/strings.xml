@@ -71,4 +71,12 @@
 
 	<!--Infomration header-->
 	<string name="information_addPassword">Since you have registered with facebook, we recommend you to set a password in case facebook login fails. Thanks! <u><b>Password Settings</b></u></string>
+
+	<!--Team Activity-->
+	<string name="summary_bar">Summary</string>
+	<string name="add_member_bar">Member</string>
+	<string name="add_fee_bar">Fee</string>
+
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

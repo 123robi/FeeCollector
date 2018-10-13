@@ -17,7 +17,8 @@ public class SharedPreferencesSaver {
 
 
 	private final static String TEAM = "team";
-	private final static String TOKEN_KEY_TEAM = "team";
+	private final static String TOKEN_KEY_TEAM_NAME = "team_name";
+	private final static String TOKEN_KEY_TEAM_ID = "team_id";
 
 	public static boolean getToken(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(IS_LOGGED, Context.MODE_PRIVATE);
@@ -61,15 +62,26 @@ public class SharedPreferencesSaver {
 		return prefs.getBoolean(TOKEN_KEY_LOGIN, false);
 	}
 
-	public static void setLastTeam(Context c, HashMap<String,String> team_id) {
+	public static void setLastTeamName(Context c, String team_name) {
 		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(TOKEN_KEY_TEAM, team_id.toString());
+		editor.putString(TOKEN_KEY_TEAM_NAME, team_name);
 		editor.apply();
 	}
 
-	public static String getLastTeam(Context c) {
+	public static String getLastTeamName(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
-		return prefs.getString(TOKEN_KEY_TEAM, "");
+		return prefs.getString(TOKEN_KEY_TEAM_NAME, null);
+	}
+	public static void setLastTeamId(Context c, String team_id) {
+		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(TOKEN_KEY_TEAM_ID, team_id);
+		editor.apply();
+	}
+
+	public static String getLastTeamID(Context c) {
+		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+		return prefs.getString(TOKEN_KEY_TEAM_ID, null);
 	}
 }
