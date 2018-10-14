@@ -26,11 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
-import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFee;
 import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
 import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment.ShowTeams;
+import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
@@ -219,7 +219,7 @@ public class DashboardActivity extends AppCompatActivity {
 			navigationView.setCheckedItem(R.id.dashboard);
 		} else if (getCurrentFragment() instanceof  CreateTeam) {
 			navigationView.setCheckedItem(R.id.create_team);
-		} else if (getCurrentFragment() instanceof  AddFee) {
+		} else if (getCurrentFragment() instanceof AddFeeToMember) {
 			navigationView.setCheckedItem(R.id.add_fee);
 		}
 		super.onResume();

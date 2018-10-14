@@ -1,14 +1,9 @@
-package eu.rkosir.feecollector.fragment.teamManagementFragment;
+package eu.rkosir.feecollector.activity.teamManagement;
 
-
-import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -28,51 +23,31 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.DashboardActivity;
-import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AddFee extends Fragment {
+public class AddFee extends AppCompatActivity {
 
 	private EditText feeName;
 	private EditText feeCost;
 	private Button addFee;
+	private Toolbar toolbar;
 	private ProgressBar progressBar;
-
-	public AddFee() {
-		// Required empty public constructor
-	}
-
-
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_add_fee, container, false);
-	}
-
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActivity().setTitle(R.string.add_fee);
-	}
-
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+		setContentView(R.layout.activity_add_fee);
 		initialize();
 	}
-
 	private void initialize() {
-		feeName = getView().findViewById(R.id.fee_name);
-		feeCost = getView().findViewById(R.id.fee_cost);
-		addFee = getView().findViewById(R.id.add_fee);
-		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		toolbar = findViewById(R.id.back_action_bar);
+		toolbar.setTitle(R.string.add_fee_title);
+		toolbar.setNavigationOnClickListener(view -> {
+			onBackPressed();
+		});
+		feeName = findViewById(R.id.fee_name);
+		feeCost = findViewById(R.id.fee_cost);
+		addFee = findViewById(R.id.add_fee);
+		progressBar = findViewById(R.id.pb_loading_indicator);
 
 		addFee.setOnClickListener(view -> {
 			progressBar.setVisibility(View.VISIBLE);
@@ -82,28 +57,28 @@ public class AddFee extends Fragment {
 				try {
 					object = new JSONObject(response);
 					if (!object.getBoolean("error")) {
-						Toast.makeText(getActivity(), R.string.successful_fee_add,Toast.LENGTH_LONG).show();
+						Toast.makeText(this, R.string.successful_fee_add,Toast.LENGTH_LONG).show();
 					} else {
-						Toast.makeText(getActivity(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
+						Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
 					}
 
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}, error -> {
-				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+				Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
 			}){
 				@Override
 				protected Map<String, String> getParams() throws AuthFailureError {
 					Map<String,String> params = new HashMap<>();
 					params.put("name", feeName.getText().toString());
 					params.put("cost", feeCost.getText().toString());
-					params.put("connection_number", SharedPreferencesSaver.getLastTeamID(getActivity()));
+					params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddFee.this));
 					return params;
 				}
 			};
 
-			RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+			RequestQueue requestQueue = Volley.newRequestQueue(this);
 			requestQueue.add(stringRequest);
 			requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 				if (progressBar != null) {

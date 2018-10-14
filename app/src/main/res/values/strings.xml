@@ -77,6 +77,8 @@
 	<string name="add_member_bar">Member</string>
 	<string name="add_fee_bar">Fee</string>
 
+	<!--AddFee Activity-->
+	<string name="add_fee_title">Add new Fee</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

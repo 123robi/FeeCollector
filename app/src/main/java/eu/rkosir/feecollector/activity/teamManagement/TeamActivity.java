@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFee;
+import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddMember;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Summary;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -33,7 +33,7 @@ public class TeamActivity extends AppCompatActivity {
 		viewPager = findViewById(R.id.content);
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new Summary(), "Summary");
-		adapter.addFragment(new AddFee(), "Add Fee");
+		adapter.addFragment(new AddFeeToMember(), "Add Fee");
 		adapter.addFragment(new AddMember(), "Add Member");
 
 		viewPager.setAdapter(adapter);
