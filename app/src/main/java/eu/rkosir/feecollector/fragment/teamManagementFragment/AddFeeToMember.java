@@ -81,7 +81,7 @@ public class AddFeeToMember extends Fragment {
 				JSONArray teamArray = object.getJSONArray("members");
 				for(int i = 0; i < teamArray.length(); i++) {
 					JSONObject user = teamArray.getJSONObject(i);
-					members.append(user.getString("name\n"));
+					members.append(user.getString("name") + "\n");
 				}
 			} catch (JSONException e) {
 				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
