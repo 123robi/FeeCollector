@@ -132,7 +132,6 @@ public class DashboardActivity extends AppCompatActivity {
 		navigationView.addHeaderView(header);
 
 		Menu navMenu = navigationView.getMenu();
-		navMenu.findItem(R.id.add_fee).setVisible(false);
 
 		header_username = header.findViewById(R.id.header_username);
 		header_email = header.findViewById(R.id.header_email);
