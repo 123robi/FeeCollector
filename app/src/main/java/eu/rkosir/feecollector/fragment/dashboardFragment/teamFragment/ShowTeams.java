@@ -76,8 +76,6 @@ public class ShowTeams extends Fragment {
 
 		ArrayList<String> teams = new ArrayList<>();
 		ArrayList<String> ids = new ArrayList<>();
-		ClipboardManager clipboard = (ClipboardManager)
-				getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 		progressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
@@ -92,9 +90,6 @@ public class ShowTeams extends Fragment {
 				teamsAdapter = new ShowTeamsAdapter(getActivity(), teams,ids);
 				lv.setAdapter(teamsAdapter);
 				lv.setOnItemClickListener((adapterView, view1, position, l) -> {
-					Toast.makeText(getActivity(), "Your team_id " + ids.get(position) + " has been copied to clipboard",Toast.LENGTH_LONG).show();
-					ClipData clip = ClipData.newPlainText("id",ids.get(position));
-					clipboard.setPrimaryClip(clip);
 					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position));
 					SharedPreferencesSaver.setLastTeamId(getActivity(),ids.get(position));
 					Intent intent = new Intent(getActivity(), TeamActivity.class);

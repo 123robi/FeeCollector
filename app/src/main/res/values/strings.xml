@@ -76,6 +76,7 @@
 	<string name="summary_bar">Summary</string>
 	<string name="add_member_bar">Member</string>
 	<string name="add_fee_bar">Fee</string>
+	<string name="copy_to_clipboard">Copy connection number</string>
 
 	<!--AddFee Activity-->
 	<string name="add_fee_title">Add new Fee</string>
