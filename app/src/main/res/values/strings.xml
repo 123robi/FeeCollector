@@ -82,4 +82,7 @@
 	<string name="add_fee_title">Add new Fee</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="delete_team">Delete team</string>
+	<string name="successful_team_deletion">Your team has been successfully deleted!</string>
+	<string name="wrong_team_name">Team names does not match.</string>
 </resources>
