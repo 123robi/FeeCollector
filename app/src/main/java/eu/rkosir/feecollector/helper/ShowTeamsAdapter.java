@@ -17,14 +17,12 @@ import eu.rkosir.feecollector.R;
 
 public class ShowTeamsAdapter extends ArrayAdapter<String>{
 	private  ArrayList<String> teams;
-	private  ArrayList<String> team_id;
 	private Context context;
 
-	public ShowTeamsAdapter(@NonNull Context context, ArrayList<String> teams, ArrayList<String> team_id) {
+	public ShowTeamsAdapter(@NonNull Context context, ArrayList<String> teams) {
 		super(context, R.layout.listview_team);
 		this.context = context;
 		this.teams = teams;
-		this.team_id = team_id;
 	}
 
 	@Override
@@ -40,19 +38,16 @@ public class ShowTeamsAdapter extends ArrayAdapter<String>{
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.listview_team, parent, false);
 			viewHolder.teamName = convertView.findViewById(R.id.team_name);
-			viewHolder.teamId = convertView.findViewById(R.id.team_id);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder)convertView.getTag();
 		}
 			viewHolder.teamName.setText(teams.get(position));
-			viewHolder.teamId.setText(team_id.get(position));
 
 
 		return convertView;
 	}
 	static class ViewHolder {
 		TextView teamName;
-		TextView teamId;
 	}
 }

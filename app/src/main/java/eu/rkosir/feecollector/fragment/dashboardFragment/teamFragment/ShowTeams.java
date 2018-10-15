@@ -1,25 +1,16 @@
 package eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment;
 
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -30,13 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -87,7 +74,7 @@ public class ShowTeams extends Fragment {
 					teams.add(team.getString("team_name"));
 					ids.add(team.getString("connection_number"));
 				}
-				teamsAdapter = new ShowTeamsAdapter(getActivity(), teams,ids);
+				teamsAdapter = new ShowTeamsAdapter(getActivity(), teams);
 				lv.setAdapter(teamsAdapter);
 				lv.setOnItemClickListener((adapterView, view1, position, l) -> {
 					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position));
