@@ -9,12 +9,17 @@ public class User {
 	private String password;
 	private Date created_at, updated_at;
 	private String facebook_json;
+	private int id;
 
 	public User(String name, String email, String password) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.created_at = new Date();
+	}
+	public User(String name, int id) {
+		this.name = name;
+		this.id = id;
 	}
 
 	public String getName() {
@@ -67,6 +72,14 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "" + getEmail() + " " + getName() + " " + getFacebook_json();
+		return getName();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

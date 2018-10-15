@@ -85,4 +85,6 @@
 	<string name="delete_team">Delete team</string>
 	<string name="successful_team_deletion">Your team has been successfully deleted!</string>
 	<string name="wrong_team_name">Team names does not match.</string>
+	<string name="choose_player">Choose player</string>
+	<string name="choose_fee">Choose fee</string>
 </resources>
