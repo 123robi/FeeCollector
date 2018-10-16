@@ -1,5 +1,6 @@
 package eu.rkosir.feecollector.helper;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import eu.rkosir.feecollector.entity.Team;
 public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.ViewHolder> {
 
 	private ArrayList<Team> teams;
+	private Context context;
 	private OnItemClickListener mListener;
 
 	public interface OnItemClickListener {
@@ -49,8 +51,9 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 		}
 	}
 
-	public ShowTeamsAdapter(ArrayList<Team> teams) {
+	public ShowTeamsAdapter(ArrayList<Team> teams, Context context) {
 		this.teams = teams;
+		this.context = context;
 	}
 
 	@NonNull
@@ -67,7 +70,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 
 		if (currentTeam.isAdmin()) {
 			holder.imageView.setImageResource(R.drawable.team_admin_image);
-			holder.countMembers.append(R.string.members + " " + currentTeam.getMembers());
+			holder.countMembers.append(context.getString(R.string.members) + " " + currentTeam.getMembers());
 		} else {
 			holder.imageView.setImageResource(R.drawable.team_member_image);
 		}
