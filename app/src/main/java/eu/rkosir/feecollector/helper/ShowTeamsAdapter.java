@@ -1,62 +1,77 @@
 package eu.rkosir.feecollector.helper;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import java.util.ArrayList;
 
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Team;
 
-public class ShowTeamsAdapter extends ArrayAdapter<String>{
-	private  ArrayList<Team> teams;
-	private Context context;
+public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.ViewHolder> {
 
-	public ShowTeamsAdapter(@NonNull Context context, ArrayList<Team> teams) {
-		super(context, R.layout.listview_team);
-		this.context = context;
-		this.teams = teams;
+	private ArrayList<Team> teams;
+	private OnItemClickListener mListener;
+
+	public interface OnItemClickListener {
+		void onItemClick(int position);
 	}
 
-	@Override
-	public int getCount() {
-		return teams.size();
+	public void setOnItemClickListener(OnItemClickListener listener) {
+		mListener = listener;
+	}
+
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		public ImageView imageView;
+		public TextView textView;
+
+		public ViewHolder(View itemView, OnItemClickListener listener) {
+			super(itemView);
+			imageView = itemView.findViewById(R.id.privileges);
+			textView = itemView.findViewById(R.id.team_name);
+
+			itemView.setOnClickListener(view -> {
+				if (listener != null) {
+					int position = getAdapterPosition();
+					if (position != RecyclerView.NO_POSITION) {
+						listener.onItemClick(position );
+					}
+				}
+			});
+		}
+	}
+
+	public ShowTeamsAdapter(ArrayList<Team> teams) {
+		this.teams = teams;
 	}
 
 	@NonNull
 	@Override
-	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-		ViewHolder viewHolder = new ViewHolder();
-		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.listview_team, parent, false);
-			viewHolder.teamName = convertView.findViewById(R.id.team_name);
-			viewHolder.imageView = convertView.findViewById(R.id.privileges);
-			convertView.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder)convertView.getTag();
-		}
-		viewHolder.teamName.setText(teams.get(position).getName());
-		if (teams.get(position).isAdmin()) {
-			viewHolder.imageView.setImageResource(R.mipmap.ic_launcher);
-		} else {
-			viewHolder.imageView.setImageResource(R.mipmap.ic_launcher);
-		}
-
-
-		return convertView;
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_team, parent, false);
+		ViewHolder viewHolder = new ViewHolder(v,mListener);
+		return viewHolder;
 	}
-	static class ViewHolder {
-		ImageView imageView;
-		TextView teamName;
+
+	@Override
+	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+		Team currentTeam = teams.get(position);
+
+		if (currentTeam.isAdmin()) {
+			holder.imageView.setImageResource(R.drawable.team_admin_image);
+		} else {
+			holder.imageView.setImageResource(R.drawable.team_member_image);
+		}
+		holder.textView.setText(currentTeam.getName());
+	}
+
+	@Override
+	public int getItemCount() {
+		return teams.size();
 	}
 }

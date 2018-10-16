@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,7 +29,6 @@ import eu.rkosir.feecollector.entity.Team;
 import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
-import eu.rkosir.feecollector.helper.ShowTeamAdapter;
 import eu.rkosir.feecollector.helper.ShowTeamsAdapter;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -40,10 +38,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class ShowTeams extends Fragment {
 	private ProgressBar progressBar;
-	private ShowTeamsAdapter teamsAdapter;
 
 	private RecyclerView mRecyclerView;
-	private ShowTeamAdapter mAdapter;
+	private ShowTeamsAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
 
 	public ShowTeams() {
@@ -86,8 +83,7 @@ public class ShowTeams extends Fragment {
 					JSONObject team = adminTeamsArray.getJSONObject(i);
 					teams.add(new Team(team.getInt("id"),team.getString("team_name"),true, team.getString("connection_number")));
 				}
-				mAdapter = new ShowTeamAdapter(teams);
-				teamsAdapter = new ShowTeamsAdapter(getActivity(), teams);
+				mAdapter = new ShowTeamsAdapter(teams);
 				mRecyclerView.setLayoutManager(mLayoutManager);
 				mRecyclerView.setAdapter(mAdapter);
 
