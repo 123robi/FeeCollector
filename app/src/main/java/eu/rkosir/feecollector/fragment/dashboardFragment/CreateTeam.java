@@ -48,12 +48,6 @@ public class        CreateTeam extends Fragment {
 	}
 
 	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		initialize();
-	}
-
-	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActivity().setTitle(R.string.create_team);
@@ -65,13 +59,19 @@ public class        CreateTeam extends Fragment {
 		// Inflate the layout for this fragment
 		return inflater.inflate(R.layout.fragment_create_team, container, false);
 	}
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		super.onViewCreated(view, savedInstanceState);
+		initialize();
+	}
 
 	private void initialize() {
 		team_name = getView().findViewById(R.id.team_name);
 		create_team_button = getView().findViewById(R.id.create_team);
-		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 
 		create_team_button.setOnClickListener(view -> {
+			progressBar.bringToFront();
 			progressBar.setVisibility(View.VISIBLE);
 			StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SAVE_TEAM, response -> {
 				JSONObject object = null;

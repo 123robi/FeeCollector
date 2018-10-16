@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,8 +97,13 @@ public class ShowTeams extends Fragment {
 				mAdapter.setOnItemClickListener(position -> {
 					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position).getName());
 					SharedPreferencesSaver.setLastTeamId(getActivity(),teams.get(position).getConnection_number());
-					Intent intent = new Intent(getActivity(), TeamActivity.class);
-					startActivity(intent);
+					if (teams.get(position).isAdmin()) {
+						Intent intent = new Intent(getActivity(), TeamActivity.class);
+						startActivity(intent);
+					} else {
+						Toast.makeText(getActivity(), "You are not allowed to enter this team as an admin",Toast.LENGTH_LONG).show();
+					}
+
 				});
 			} catch (JSONException e) {
 				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
