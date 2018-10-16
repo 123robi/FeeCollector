@@ -14,12 +14,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.User.entity.Team;
 
 public class ShowTeamsAdapter extends ArrayAdapter<String>{
-	private  ArrayList<String> teams;
+	private  ArrayList<Team> teams;
 	private Context context;
 
-	public ShowTeamsAdapter(@NonNull Context context, ArrayList<String> teams) {
+	public ShowTeamsAdapter(@NonNull Context context, ArrayList<Team> teams) {
 		super(context, R.layout.listview_team);
 		this.context = context;
 		this.teams = teams;
@@ -42,7 +43,12 @@ public class ShowTeamsAdapter extends ArrayAdapter<String>{
 		} else {
 			viewHolder = (ViewHolder)convertView.getTag();
 		}
-			viewHolder.teamName.setText(teams.get(position));
+		viewHolder.teamName.setText(teams.get(position).getName());
+		if (teams.get(position).isAdmin()) {
+			viewHolder.teamName.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_info_24dp,0);
+		} else {
+			viewHolder.teamName.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_add_black_24dp,0);
+		}
 
 
 		return convertView;

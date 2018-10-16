@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.User.entity.Team;
 import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -61,8 +62,7 @@ public class ShowTeams extends Fragment {
 		String uri = String.format(AppConfig.URL_GET_TEAMS,
 				new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
 
-		ArrayList<String> teams = new ArrayList<>();
-		ArrayList<String> ids = new ArrayList<>();
+		ArrayList<Team> teams = new ArrayList<>();
 		progressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
@@ -71,14 +71,18 @@ public class ShowTeams extends Fragment {
 				JSONArray teamArray = object.getJSONArray("teams");
 				for(int i = 0; i < teamArray.length(); i++) {
 					JSONObject team = teamArray.getJSONObject(i);
-					teams.add(team.getString("team_name"));
-					ids.add(team.getString("connection_number"));
+					teams.add(new Team(team.getInt("id"),team.getString("team_name"),false, team.getString("connection_number")));
+				}
+				JSONArray adminTeamsArray = object.getJSONArray("admin");
+				for(int i = 0; i < adminTeamsArray.length(); i++) {
+					JSONObject team = adminTeamsArray.getJSONObject(i);
+					teams.add(new Team(team.getInt("id"),team.getString("team_name"),true, team.getString("connection_number")));
 				}
 				teamsAdapter = new ShowTeamsAdapter(getActivity(), teams);
 				lv.setAdapter(teamsAdapter);
 				lv.setOnItemClickListener((adapterView, view1, position, l) -> {
-					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position));
-					SharedPreferencesSaver.setLastTeamId(getActivity(),ids.get(position));
+					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position).getName());
+					SharedPreferencesSaver.setLastTeamId(getActivity(),teams.get(position).getConnection_number());
 					Intent intent = new Intent(getActivity(), TeamActivity.class);
 					startActivity(intent);
 				});

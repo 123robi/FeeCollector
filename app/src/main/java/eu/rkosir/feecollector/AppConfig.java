@@ -8,7 +8,7 @@ public class AppConfig {
 	public static final String URL_SAVE_TEAM = "http://rkosir.eu/teamsApi/add";
 	public static final String URL_JOIN_TEAM = "http://rkosir.eu/teamsApi/join";
 	public static final String URL_ADD_FEE = "http://rkosir.eu/FeesApi/add";
-	public static final String URL_GET_TEAMS = "http://rkosir.eu/teamsApi/get?email=%1$s";
+	public static final String URL_GET_TEAMS = "http://rkosir.eu/teamsApi/getTeamsOfUser?email=%1$s";
 	public static final String URL_GET_TEAM_MEMEBERS = "http://rkosir.eu/teamsApi/getUsersInTeam?connection_number=%1$s";
 	public static final String URL_DELETE_TEAM = "http://rkosir.eu/teamsApi/deleteTeam";
 
