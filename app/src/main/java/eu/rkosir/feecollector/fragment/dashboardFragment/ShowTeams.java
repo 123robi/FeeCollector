@@ -3,6 +3,8 @@ package eu.rkosir.feecollector.fragment.dashboardFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,17 +53,20 @@ public class ShowTeams extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-
-		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		View view = inflater.inflate(R.layout.fragment_show_teams, container, false);
 		mRecyclerView = view.findViewById(R.id.teamsList);
-		mRecyclerView.setHasFixedSize(true);
-		mLayoutManager = new LinearLayoutManager(getActivity());
-		loadTeams();
 
 		return view;
 	}
 
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		mRecyclerView.setHasFixedSize(true);
+		mLayoutManager = new LinearLayoutManager(getActivity());
+		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		loadTeams();
+	}
 
 	private void loadTeams() {
 		String uri = String.format(AppConfig.URL_GET_TEAMS,
@@ -69,6 +74,7 @@ public class ShowTeams extends Fragment {
 
 		ArrayList<Team> teams = new ArrayList<>();
 		progressBar.setVisibility(View.VISIBLE);
+		progressBar.bringToFront();
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
