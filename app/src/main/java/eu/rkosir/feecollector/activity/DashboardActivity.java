@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,15 +62,10 @@ public class DashboardActivity extends AppCompatActivity {
 			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainFragment(), "dashboard").commit();
 		}
 		initialize();
-		if (SharedPreferencesSaver.getUser(this) != null) {
-			converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
+		converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
+		setNavigationView();
+		setUserProfile(converter);
 
-			String jsonData = converter.getString("facebook_json");
-			if (jsonData != null && !jsonData.equals("null")) {
-				setNavigationView();
-				setUserProfile(jsonData);
-			}
-		}
 	}
 
 	@Override
@@ -131,26 +127,30 @@ public class DashboardActivity extends AppCompatActivity {
 		View header = LayoutInflater.from(this).inflate(R.layout.navigation_header,null);
 		navigationView.addHeaderView(header);
 
-		Menu navMenu = navigationView.getMenu();
-
 		header_username = header.findViewById(R.id.header_username);
 		header_email = header.findViewById(R.id.header_email);
 		header_picture = header.findViewById(R.id.header_profile_pic);
 	}
 
-	private void setUserProfile(String jsondata) {
+	private void setUserProfile(JsonObjectConverter jsondata) {
 		JSONObject pic_data, pic_url = null;
-		try {
-			respone = new JSONObject(jsondata);
-			header_username.setText(respone.get("name").toString());
-			header_email.setText(respone.get("email").toString());
-			pic_data = new JSONObject(respone.get("picture").toString());
-			pic_url = new JSONObject(pic_data.getString("data"));
-			Picasso.get().load(pic_url.getString("url")).into(header_picture);
+			try {
 
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+				if (jsondata.getString("facebook_json").equals("")) {
+					respone = new JSONObject(jsondata.getString("facebook_json"));
+					header_username.setText(respone.get("name").toString());
+					header_email.setText(respone.get("email").toString());
+					pic_data = new JSONObject(respone.get("picture").toString());
+					pic_url = new JSONObject(pic_data.getString("data"));
+					Picasso.get().load(pic_url.getString("url")).into(header_picture);
+				} else {
+					header_username.setText(jsondata.getString("name"));
+					header_email.setText(jsondata.getString("email"));
+				}
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 	}
 
 	private void navigationViewListener() {
