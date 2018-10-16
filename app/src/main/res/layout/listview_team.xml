@@ -28,5 +28,15 @@
 			android:layout_toEndOf="@+id/privileges"
 			android:textColor="@android:color/black"
 			android:textSize="20sp" />
+
+		<TextView
+			android:id="@+id/count"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@+id/privileges"
+			android:layout_alignParentEnd="true"
+			android:text="@string/members"
+			android:textColor="@android:color/black"
+			android:textSize="20sp" />
 	</RelativeLayout>
 </android.support.v7.widget.CardView>

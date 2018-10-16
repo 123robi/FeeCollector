@@ -2,6 +2,7 @@ package eu.rkosir.feecollector.helper;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,13 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public ImageView imageView;
 		public TextView textView;
+		public TextView countMembers;
 
 		public ViewHolder(View itemView, OnItemClickListener listener) {
 			super(itemView);
 			imageView = itemView.findViewById(R.id.privileges);
 			textView = itemView.findViewById(R.id.team_name);
+			countMembers = itemView.findViewById(R.id.count);
 
 			itemView.setOnClickListener(view -> {
 				if (listener != null) {
@@ -64,6 +67,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 
 		if (currentTeam.isAdmin()) {
 			holder.imageView.setImageResource(R.drawable.team_admin_image);
+			holder.countMembers.append(" " + currentTeam.getMembers());
 		} else {
 			holder.imageView.setImageResource(R.drawable.team_member_image);
 		}

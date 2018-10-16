@@ -3,6 +3,17 @@ package eu.rkosir.feecollector.entity;
 public class Team {
 	private int id;
 	private String name;
+	private int members;
+	private boolean admin;
+	private String connection_number;
+
+	public Team(int id, String name, boolean admin, String connection_number) {
+
+		this.id = id;
+		this.name = name;
+		this.admin = admin;
+		this.connection_number = connection_number;
+	}
 
 	public int getId() {
 		return id;
@@ -36,14 +47,11 @@ public class Team {
 		this.connection_number = connection_number;
 	}
 
-	private boolean admin;
-	private String connection_number;
+	public int getMembers() {
+		return members;
+	}
 
-	public Team(int id, String name, boolean admin, String connection_number) {
-
-		this.id = id;
-		this.name = name;
-		this.admin = admin;
-		this.connection_number = connection_number;
+	public void setMembers(int members) {
+		this.members = members;
 	}
 }
