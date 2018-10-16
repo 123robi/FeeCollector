@@ -1,4 +1,4 @@
-package eu.rkosir.feecollector.User.entity;
+package eu.rkosir.feecollector.entity;
 
 
 import java.util.Date;

@@ -1,9 +1,11 @@
-package eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment;
+package eu.rkosir.feecollector.fragment.dashboardFragment;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +26,11 @@ import java.util.ArrayList;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.User.entity.Team;
+import eu.rkosir.feecollector.entity.Team;
 import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.ShowTeamAdapter;
 import eu.rkosir.feecollector.helper.ShowTeamsAdapter;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -36,9 +39,12 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * A simple {@link Fragment} subclass.
  */
 public class ShowTeams extends Fragment {
-	ListView lv;
 	private ProgressBar progressBar;
 	private ShowTeamsAdapter teamsAdapter;
+
+	private RecyclerView mRecyclerView;
+	private ShowTeamAdapter mAdapter;
+	private RecyclerView.LayoutManager mLayoutManager;
 
 	public ShowTeams() {
 		// Required empty public constructor
@@ -51,7 +57,9 @@ public class ShowTeams extends Fragment {
 
 		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		View view = inflater.inflate(R.layout.fragment_show_teams, container, false);
-		lv = view.findViewById(R.id.teamsList);
+		mRecyclerView = view.findViewById(R.id.teamsList);
+		mRecyclerView.setHasFixedSize(true);
+		mLayoutManager = new LinearLayoutManager(getActivity());
 		loadTeams();
 
 		return view;
@@ -78,9 +86,12 @@ public class ShowTeams extends Fragment {
 					JSONObject team = adminTeamsArray.getJSONObject(i);
 					teams.add(new Team(team.getInt("id"),team.getString("team_name"),true, team.getString("connection_number")));
 				}
+				mAdapter = new ShowTeamAdapter(teams);
 				teamsAdapter = new ShowTeamsAdapter(getActivity(), teams);
-				lv.setAdapter(teamsAdapter);
-				lv.setOnItemClickListener((adapterView, view1, position, l) -> {
+				mRecyclerView.setLayoutManager(mLayoutManager);
+				mRecyclerView.setAdapter(mAdapter);
+
+				mAdapter.setOnItemClickListener(position -> {
 					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position).getName());
 					SharedPreferencesSaver.setLastTeamId(getActivity(),teams.get(position).getConnection_number());
 					Intent intent = new Intent(getActivity(), TeamActivity.class);

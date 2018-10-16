@@ -29,7 +29,7 @@ import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
 import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.fragment.dashboardFragment.teamFragment.ShowTeams;
+import eu.rkosir.feecollector.fragment.dashboardFragment.ShowTeams;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;

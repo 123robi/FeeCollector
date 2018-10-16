@@ -2,7 +2,6 @@ package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +36,7 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.User.entity.User;
+import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;

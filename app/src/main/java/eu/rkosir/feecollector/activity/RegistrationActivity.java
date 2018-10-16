@@ -26,7 +26,7 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.User.entity.User;
+import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 

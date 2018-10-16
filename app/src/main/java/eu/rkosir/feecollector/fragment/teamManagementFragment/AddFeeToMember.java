@@ -8,17 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,15 +30,10 @@ import java.util.ArrayList;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.User.entity.Fee;
-import eu.rkosir.feecollector.User.entity.User;
+import eu.rkosir.feecollector.entity.Fee;
+import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.activity.teamManagement.AddFee;
-import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
-import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
-import eu.rkosir.feecollector.helper.ShowTeamsAdapter;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
