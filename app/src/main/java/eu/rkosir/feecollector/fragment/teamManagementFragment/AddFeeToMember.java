@@ -130,4 +130,10 @@ public class AddFeeToMember extends Fragment {
 			}
 		});
 	}
+
+	@Override
+	public void onResume() {
+		loadMembersAndFees();
+		super.onResume();
+	}
 }

@@ -98,16 +98,13 @@ public class TeamActivity extends AppCompatActivity {
 			View mView = getLayoutInflater().inflate(R.layout.dialog_delete_team,null);
 			EditText team_name = mView.findViewById(R.id.team_name);
 			Button button = mView.findViewById(R.id.delete_team_button);
-			button.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (team_name.getText().toString().equals(SharedPreferencesSaver.getLastTeamName(TeamActivity.this))) {
-						deleteTeamApi();
-					} else {
-						team_name.setError(getString(R.string.wrong_team_name),null);
-						View focusView = team_name;
-						focusView.requestFocus();
-					}
+			button.setOnClickListener(v -> {
+				if (team_name.getText().toString().equals(SharedPreferencesSaver.getLastTeamName(TeamActivity.this))) {
+					deleteTeamApi();
+				} else {
+					team_name.setError(getString(R.string.wrong_team_name),null);
+					View focusView = team_name;
+					focusView.requestFocus();
 				}
 			});
 			mBuilder.setView(mView);
