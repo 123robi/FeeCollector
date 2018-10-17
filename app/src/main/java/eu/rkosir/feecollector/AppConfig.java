@@ -6,12 +6,13 @@ public class AppConfig {
 	public static final String URL_CHANGE_PASSWORD = "http://rkosir.eu/usersApi/changePassword";
 	public static final String URL_CHANGE_PASSWORD_FACEBOOK = "http://rkosir.eu/usersApi/changePasswordFacebook";;
 	public static final String URL_SAVE_TEAM = "http://rkosir.eu/teamsApi/add";
-	public static final String URL_JOIN_TEAM = "http://rkosir.eu/teamsApi/join";
+	public static final String URL_JOIN_TEAM = "http://rkosir.eu/teamMembersApi/update";
 	public static final String URL_ADD_FEE = "http://rkosir.eu/FeesApi/add";
 	public static final String URL_GET_TEAMS = "http://rkosir.eu/teamsApi/getTeamsOfUser?email=%1$s";
 	public static final String URL_GET_TEAM_MEMEBERS_AND_FEES = "http://rkosir.eu/teamsApi/getUsersInTeam?connection_number=%1$s";
 	public static final String URL_DELETE_TEAM = "http://rkosir.eu/teamsApi/deleteTeam";
 	public static final String URL_ADD_MEMBER_TO_TEAM = "http://rkosir.eu/teamMembersApi/add";
+	public static final String URL_GET_MEMBERS = "http://rkosir.eu/teamMembersApi/getUsersInTeam?connection_number=%1$s";
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
