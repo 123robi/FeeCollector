@@ -99,26 +99,30 @@ public class MainFragment extends Fragment {
 	private void selectMember() {
 		progressBar.setVisibility(View.VISIBLE);
 		String uri = String.format(AppConfig.URL_GET_MEMBERS,
-				teamId.getText().toString());
+				teamId.getText().toString(),new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
 		progressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
 				object = new JSONObject(response);
-				JSONArray membersArray = object.getJSONArray("members");
-				ArrayList<User> membersList = new ArrayList<>();
-				for(int i = 0; i < membersArray.length(); i++) {
-					JSONObject user = membersArray.getJSONObject(i);
-					membersList.add(new User(user.getString("name"),user.getInt("id")));
-				}
-				mAdapter = new ShowMembersAdapter(membersList, getActivity());
-				mRecyclerView.setLayoutManager(mLayoutManager);
-				mRecyclerView.setAdapter(mAdapter);
+				if (!object.getBoolean("error")) {
+					JSONArray membersArray = object.getJSONArray("members");
+					ArrayList<User> membersList = new ArrayList<>();
+					for(int i = 0; i < membersArray.length(); i++) {
+						JSONObject user = membersArray.getJSONObject(i);
+						membersList.add(new User(user.getString("name"),user.getInt("id")));
+					}
+					mAdapter = new ShowMembersAdapter(membersList, getActivity());
+					mRecyclerView.setLayoutManager(mLayoutManager);
+					mRecyclerView.setAdapter(mAdapter);
 
-				mAdapter.setOnItemClickListener(position -> {
-					Toast.makeText(getActivity(), membersList.get(position).getName(),Toast.LENGTH_LONG).show();
-					joinTeam(membersList.get(position));
-				});
+					mAdapter.setOnItemClickListener(position -> {
+						Toast.makeText(getActivity(), membersList.get(position).getName(),Toast.LENGTH_LONG).show();
+						joinTeam(membersList.get(position));
+					});
+				} else {
+					Toast.makeText(getActivity(),object.getString("error_msg"),Toast.LENGTH_LONG).show();
+				}
 			} catch (JSONException e) {
 				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
