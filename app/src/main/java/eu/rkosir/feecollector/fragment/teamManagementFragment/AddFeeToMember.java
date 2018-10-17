@@ -70,6 +70,7 @@ public class AddFeeToMember extends Fragment {
 		autoCompleteFee = getActivity().findViewById(R.id.choose_fee);
 		add_fee_to_member = getActivity().findViewById(R.id.add_fee_to_member);
 		autoCompletePlayer.setOnTouchListener((arg0, arg1) -> {
+			loadMembersAndFees();
 			autoCompletePlayer.showDropDown();
 			return false;
 		});
