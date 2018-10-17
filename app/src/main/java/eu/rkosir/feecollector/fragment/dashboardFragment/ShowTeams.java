@@ -81,17 +81,17 @@ public class ShowTeams extends Fragment {
 			JSONObject object = null;
 			try {
 				object = new JSONObject(response);
-				JSONArray teamArray = object.getJSONArray("teams");
-				for(int i = 0; i < teamArray.length(); i++) {
-					JSONObject team = teamArray.getJSONObject(i);
-					teams.add(new Team(team.getInt("id"),team.getString("team_name"),false, team.getString("connection_number")));
-				}
 				JSONArray adminTeamsArray = object.getJSONArray("admin");
 				for(int i = 0; i < adminTeamsArray.length(); i++) {
 					JSONObject team = adminTeamsArray.getJSONObject(i);
 					Team teamObject = new Team(team.getInt("id"),team.getString("team_name"),true, team.getString("connection_number"));
 					teamObject.setMembers(team.getInt("count_members"));
 					teams.add(teamObject);
+				}
+				JSONArray teamArray = object.getJSONArray("teams");
+				for(int i = 0; i < teamArray.length(); i++) {
+					JSONObject team = teamArray.getJSONObject(i);
+					teams.add(new Team(team.getInt("id"),team.getString("team_name"),false, team.getString("connection_number")));
 				}
 				mAdapter = new ShowTeamsAdapter(teams, getActivity());
 				mRecyclerView.setLayoutManager(mLayoutManager);
