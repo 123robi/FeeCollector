@@ -88,4 +88,7 @@
 	<string name="choose_player">Choose player</string>
 	<string name="choose_fee">Choose fee</string>
 	<string name="members">Members:</string>
+	<string name="add_member">Add Member</string>
+	<string name="successful_adding_member_to_team">You have successfully added member to a team.</string>
+	<string name="refresh">Refresh</string>
 </resources>

@@ -11,7 +11,7 @@ public class AppConfig {
 	public static final String URL_GET_TEAMS = "http://rkosir.eu/teamsApi/getTeamsOfUser?email=%1$s";
 	public static final String URL_GET_TEAM_MEMEBERS = "http://rkosir.eu/teamsApi/getUsersInTeam?connection_number=%1$s";
 	public static final String URL_DELETE_TEAM = "http://rkosir.eu/teamsApi/deleteTeam";
-
+	public static final String URL_ADD_MEMBER_TO_TEAM = "http://rkosir.eu/teamMembersApi/add";
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
