@@ -40,6 +40,9 @@ import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.VolleySingleton;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -208,7 +211,8 @@ public class LoginActivity extends AppCompatActivity {
 			}
 		};
 
-		RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 			if (progressBar != null) {
@@ -262,7 +266,8 @@ public class LoginActivity extends AppCompatActivity {
 			}
 		};
 
-		RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 			if (progressBar != null) {

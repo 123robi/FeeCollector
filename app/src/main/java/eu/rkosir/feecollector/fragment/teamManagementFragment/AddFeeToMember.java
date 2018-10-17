@@ -34,6 +34,9 @@ import eu.rkosir.feecollector.entity.Fee;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.activity.teamManagement.AddFee;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.VolleySingleton;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,7 +125,7 @@ public class AddFeeToMember extends Fragment {
 			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
 		});
 
-		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 			if (progressBar != null) {

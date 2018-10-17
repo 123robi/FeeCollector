@@ -32,6 +32,7 @@ import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -106,7 +107,8 @@ public class MainFragment extends Fragment {
 			}
 		};
 
-		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 			if (progressBar != null) {

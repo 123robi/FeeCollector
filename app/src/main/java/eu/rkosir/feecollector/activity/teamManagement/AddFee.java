@@ -24,6 +24,9 @@ import java.util.Map;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.VolleySingleton;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddFee extends AppCompatActivity {
 
@@ -78,7 +81,7 @@ public class AddFee extends AppCompatActivity {
 				}
 			};
 
-			RequestQueue requestQueue = Volley.newRequestQueue(this);
+			RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 			requestQueue.add(stringRequest);
 			requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 				if (progressBar != null) {

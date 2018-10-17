@@ -33,6 +33,7 @@ import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.ShowTeamsAdapter;
+import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -115,7 +116,7 @@ public class ShowTeams extends Fragment {
 			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
 		});
 
-		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 			if (progressBar != null) {

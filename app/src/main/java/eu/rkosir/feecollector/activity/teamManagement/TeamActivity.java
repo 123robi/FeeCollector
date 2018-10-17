@@ -40,6 +40,9 @@ import eu.rkosir.feecollector.fragment.teamManagementFragment.AddMember;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Summary;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.ViewPagerAdapter;
+import eu.rkosir.feecollector.helper.VolleySingleton;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -152,7 +155,7 @@ public class TeamActivity extends AppCompatActivity {
 			}
 		};
 
-		RequestQueue requestQueue = Volley.newRequestQueue(this);
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 			if (loadingBar != null) {
