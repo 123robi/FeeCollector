@@ -75,6 +75,7 @@ public class AddFeeToMember extends Fragment {
 			return false;
 		});
 		autoCompleteFee.setOnTouchListener((arg0, arg1) -> {
+			loadMembersAndFees();
 			autoCompleteFee.showDropDown();
 			return false;
 		});
@@ -93,7 +94,7 @@ public class AddFeeToMember extends Fragment {
 
 	private void loadMembersAndFees() {
 
-		String uri = String.format(AppConfig.URL_GET_TEAM_MEMEBERS,
+		String uri = String.format(AppConfig.URL_GET_TEAM_MEMEBERS_AND_FEES,
 				SharedPreferencesSaver.getLastTeamID(getActivity()));
 		progressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
@@ -112,12 +113,16 @@ public class AddFeeToMember extends Fragment {
 					JSONObject fee = feesArray.getJSONObject(i);
 					feesList.add(new Fee(fee.getInt("id"),fee.getString("name")));
 				}
-				ArrayAdapter<User> adapter = new ArrayAdapter<User>(getActivity(),
-						android.R.layout.simple_dropdown_item_1line, membersList);
-				autoCompletePlayer.setAdapter(adapter);
-				ArrayAdapter<Fee> adapter1 = new ArrayAdapter<Fee>(getActivity(),
-						android.R.layout.simple_dropdown_item_1line, feesList);
-				autoCompleteFee.setAdapter(adapter1);
+				if (membersList.size() > 0) {
+					ArrayAdapter<User> adapter = new ArrayAdapter<User>(getActivity(),
+							android.R.layout.simple_dropdown_item_1line, membersList);
+					autoCompletePlayer.setAdapter(adapter);
+				}
+				if (feesList.size() > 0) {
+					ArrayAdapter<Fee> adapter1 = new ArrayAdapter<Fee>(getActivity(),
+							android.R.layout.simple_dropdown_item_1line, feesList);
+					autoCompleteFee.setAdapter(adapter1);
+				}
 			} catch (JSONException e) {
 				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
