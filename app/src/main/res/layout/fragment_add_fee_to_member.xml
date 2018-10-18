@@ -15,19 +15,19 @@
 		android:layout_width="match_parent"
 		android:completionThreshold="1"
 		android:layout_height="wrap_content"
-		android:hint="@string/choose_player"/>
+		android:hint="@string/add_fee_to_member_choose_player"/>
 	<AutoCompleteTextView
 		android:id="@+id/choose_fee"
 		android:completionThreshold="1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/choose_fee"/>
+		android:hint="@string/add_fee_to_member_choose_fee"/>
 
 	<Button
 		android:id="@+id/add_fee_to_member"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/add_fee" />
+		android:text="@string/add_fee_to_member_add_fee" />
 </LinearLayout>
 
 

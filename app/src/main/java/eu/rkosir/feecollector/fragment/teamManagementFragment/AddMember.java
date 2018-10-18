@@ -71,7 +71,7 @@ public class AddMember extends Fragment {
 			try {
 				object = new JSONObject(response);
 				if(!object.getBoolean("error")) {
-					Toast.makeText(getContext(), R.string.successful_adding_member_to_team,Toast.LENGTH_LONG).show();
+					Toast.makeText(getContext(), R.string.toast_successful_adding_member_to_team,Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(getActivity(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
@@ -79,7 +79,7 @@ public class AddMember extends Fragment {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

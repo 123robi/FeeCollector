@@ -69,7 +69,7 @@ public class AddFee extends AppCompatActivity {
 			try {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
-					Toast.makeText(this, R.string.successful_fee_add,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_fee_add,Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
@@ -78,7 +78,7 @@ public class AddFee extends AppCompatActivity {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

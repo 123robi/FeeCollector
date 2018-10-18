@@ -4,44 +4,49 @@
 	<string name="facebook_login_protocol">fb513037572471782</string>
 
 	<!--Registration Page-->
-	<string name="sign_in_text">Already have an account?</string>
-	<string name="name_label">Name</string>
-	<string name="sign_in_link">Sign in</string>
-	<string name="sign_up_link">Sign up</string>
-	<string name="create_user_btn">Create User</string>
+	<string name="registration_sign_in">Already have an account?</string>
+	<string name="registration_name">Name</string>
+	<string name="registration_sign_in_link">Sign in</string>
+	<string name="registration_sign_up_link">Sign up</string>
+	<string name="registration_register">Register</string>
+	<string name="registration_password_label">Password</string>
 
 	<!--Login Page/ChangePassword-->
-	<string name="sign_in">Sign in</string>
-	<string name="sign_up_text">Don not have an account?</string>
-	<string name="email_label">Email</string>
-	<string name="password_label">Password</string>
-	<string name="password_label_check">Repeat password</string>
-	<string name="current_password">Current Password</string>
+	<string name="login_sign_in">Sign in</string>
+	<string name="login_sign_up">Don not have an account?</string>
+	<string name="login_email_label">Email</string>
+	<string name="login_password_label">Password</string>
+	<string name="change_password_password_label_check">Repeat password</string>
+	<string name="change_password_current_password">Current Password</string>
+	<string name="change_password_password_label">Password</string>
 
 	<!--Navigation Menu-->
-	<string name="logout">Log out</string>
-	<string name="settings">Settings</string>
-	<string name="dashboard">Dashboard</string>
+	<string name="navigation_menu_logout">Log out</string>
+	<string name="navigation_menu_settings">Settings</string>
+	<string name="navigation_menu_dashboard">Dashboard</string>
+	<string name="navigation_menu_your_teams">Your teams</string>
+	<string name="navigation_menu_create_team">Create team</string>
 
 	<!--Dashboard Page-->
-	<string name="open">Open</string>
-	<string name="close">Close</string>
-	<string name="create_team">Create team</string>
-	<string name="join_team">Join team</string>
-	<string name="team_id">Team ID</string>
-	<string name="add_fee">Add Fee</string>
-	<string name="your_teams">Your teams</string>
+	<string name="dashboard_open">Open</string>
+	<string name="dashboard_close">Close</string>
+	<string name="dashboard_create_team">Create team</string>
+	<string name="dashboard_join_team">Join team</string>
+	<string name="dashboard_team_id_hint">Team ID</string>
+	<string name="dashboard_add_fee">Add Fee</string>
 
 	<!--Create Team Fragment-->
-	<string name="team_name">Team Name</string>
+	<string name="create_team_team_name">Team Name</string>
+	<string name="create_team_title">Create Team</string>
 
 	<!--Add fee Fragment-->
-	<string name="fee_name">Fee name</string>
-	<string name="fee_cost">Cost</string>
+	<string name="add_fee_fee_name">Fee name</string>
+	<string name="add_fee_fee_cost">Cost</string>
 
 	<!--Settings Page-->
-	<string name="change_password">Change Password</string>
-	<string name="notification">Notifications</string>
+	<string name="settings_change_password">Change Password</string>
+	<string name="settings_notification">Notifications</string>
+	<string name="settings_title">Settings</string>
 
 	<!--ERRORS-->
 	<string name="error_field_required">This field is required</string>
@@ -51,44 +56,54 @@
 	<string name="error_current_password_not_match">Password is incorrect</string>
 
 	<!--Toast Messages-->
-	<string name="successful_registration">You have been successfully registered</string>
-	<string name="successful_login">You have been logged in</string>
-	<string name="connection_warning">Please check your connection</string>
-	<string name="successfull_change_of_password">Your password has been changed</string>
-	<string name="unknown_error">Unknown error has occured</string>
-	<string name="successful_team_creation">Your team has been successfully created.</string>
-	<string name="successful_joining">You have successfully joined the team.</string>
-	<string name="successful_fee_add">You have successfully added fee to your team.</string>
+	<string name="toast_successful_registration">You have been successfully registered</string>
+	<string name="toast_successful_login">You have been logged in</string>
+	<string name="toast_connection_warning">Please check your connection</string>
+	<string name="toast_successful_change_of_password">Your password has been changed</string>
+	<string name="toast_unknown_error">Unknown error has occured</string>
+	<string name="toast_successful_team_creation">Your team has been successfully created.</string>
+	<string name="toast_successful_joining">You have successfully joined the team.</string>
+	<string name="toast_successful_fee_add">You have successfully added fee to your team.</string>
+	<string name="toast_successful_team_deletion">Your team has been successfully deleted!</string>
+	<string name="toast_successful_adding_member_to_team">You have successfully added member to a team.</string>
 
 	<!--Alert Dialogs-->
-	<string name="closing_application_title">Closing Application...</string>
-	<string name="closing_application_message">Are you sure you want to exit the application?</string>
-	<string name="no_button">No</string>
-	<string name="yes_button">Yes</string>
+	<string name="dialog_closing_application_title">Closing Application...</string>
+	<string name="dialog_closing_application_message">Are you sure you want to exit the application?</string>
+	<string name="dialog_no_button">No</string>
+	<string name="dialog_yes_button">Yes</string>
+	<string name="dialog_team_name">Team name</string>
 
 	<!--Base texts-->
 	<string name="confirm">Confirm</string>
 
 	<!--Infomration header-->
 	<string name="information_addPassword">Since you have registered with facebook, we recommend you to set a password in case facebook login fails. Thanks! <u><b>Password Settings</b></u></string>
-
+	<!--Show Teams activity-->
+	<string name="show_teams_members">Members:</string>
 	<!--Team Activity-->
-	<string name="summary_bar">Summary</string>
-	<string name="add_member_bar">Member</string>
-	<string name="add_fee_bar">Fee</string>
-	<string name="copy_to_clipboard">Copy connection number</string>
+	<string name="team_summary_bar">Summary</string>
+	<string name="team_add_member_bar">Add Member</string>
+	<string name="team_add_fee_bar">Add Fee</string>
+	<string name="team_copy_to_clipboard">Copy connection number</string>
+	<string name="team_delete_team">Delete team</string>
+	<string name="team_wrong_team_name">Team names does not match.</string>
+	<!--Team Activity toolbar-->
+	<string name="team_menu_copy_to_clipboard">Copy to a clipboard</string>
+	<string name="team_menu_delete_team">Delete team</string>
+
+	<!--Add fee to a member Fragment-->
+	<string name="add_fee_to_member_choose_player">Choose player</string>
+	<string name="add_fee_to_member_choose_fee">Choose fee</string>
+	<string name="add_fee_to_member_add_fee">Submit</string>
+
+	<!--Add member Fragment-->
+	<string name="add_member_add_member">Add Member</string>
+	<string name="add_member_name_label">Member Name</string>
 
 	<!--AddFee Activity-->
 	<string name="add_fee_title">Add new Fee</string>
+	<string name="add_fee_add">Add Fee</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
-	<string name="delete_team">Delete team</string>
-	<string name="successful_team_deletion">Your team has been successfully deleted!</string>
-	<string name="wrong_team_name">Team names does not match.</string>
-	<string name="choose_player">Choose player</string>
-	<string name="choose_fee">Choose fee</string>
-	<string name="members">Members:</string>
-	<string name="add_member">Add Member</string>
-	<string name="successful_adding_member_to_team">You have successfully added member to a team.</string>
-	<string name="refresh">Refresh</string>
 </resources>

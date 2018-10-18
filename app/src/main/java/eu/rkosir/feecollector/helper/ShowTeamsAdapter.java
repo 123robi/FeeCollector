@@ -70,7 +70,7 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 
 		if (currentTeam.isAdmin()) {
 			holder.imageView.setImageResource(R.drawable.team_admin_image);
-			holder.countMembers.append(context.getString(R.string.members) + " " + currentTeam.getMembers());
+			holder.countMembers.append(context.getString(R.string.show_teams_members) + " " + currentTeam.getMembers());
 		} else {
 			holder.imageView.setImageResource(R.drawable.team_member_image);
 		}

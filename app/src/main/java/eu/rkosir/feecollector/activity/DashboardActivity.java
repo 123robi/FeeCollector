@@ -87,10 +87,10 @@ public class DashboardActivity extends AppCompatActivity {
 			super.onBackPressed();
 		} else if (getCurrentFragment() instanceof MainFragment) {
 			new AlertDialog.Builder(this)
-					.setTitle(R.string.closing_application_title)
-					.setMessage(R.string.closing_application_message)
-					.setPositiveButton(R.string.yes_button, (dialogInterface, i) -> finish())
-					.setNegativeButton(R.string.no_button, null)
+					.setTitle(R.string.dialog_closing_application_title)
+					.setMessage(R.string.dialog_closing_application_message)
+					.setPositiveButton(R.string.dialog_yes_button, (dialogInterface, i) -> finish())
+					.setNegativeButton(R.string.dialog_no_button, null)
 					.show();
 		}
 		else {
@@ -111,7 +111,7 @@ public class DashboardActivity extends AppCompatActivity {
 		setSupportActionBar(mToolbar);
 
 		mDrawerLayout = findViewById(R.id.activity_dashboard);
-		mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,mToolbar,R.string.open,R.string.close);
+		mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,mToolbar,R.string.dashboard_open,R.string.dashboard_close);
 		mDrawerLayout.addDrawerListener(mToggle);
 		mToggle.syncState();
 

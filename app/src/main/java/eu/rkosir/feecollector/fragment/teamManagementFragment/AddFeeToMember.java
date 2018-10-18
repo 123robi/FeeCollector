@@ -132,11 +132,11 @@ public class AddFeeToMember extends Fragment {
 					mAutoCompleteFee.setAdapter(adapter1);
 				}
 			} catch (JSONException e) {
-				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		});
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();

@@ -13,7 +13,7 @@
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
 		android:paddingTop="10dip"
-		android:text="@string/team_name"
+		android:text="@string/create_team_team_name"
 		android:textSize="17sp" />
 
 	<EditText
@@ -29,6 +29,6 @@
 		android:id="@+id/create_team"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/create_team" />
+		android:text="@string/dashboard_create_team" />
 
 </LinearLayout>

@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
 			if(InternetConnection.getInstance(LoginActivity.this).isOnline()){
 				login();
 			} else {
-				Toast.makeText(LoginActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginActivity.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
 			}
 		});
 
@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
 
 			@Override
 			public void onError(FacebookException error) {
-				Toast.makeText(LoginActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
+				Toast.makeText(LoginActivity.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
 			}
 		});
 	}
@@ -196,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
 				object = new JSONObject(response);
 				Log.d("JSON", object + "JSON");
 				if (!object.getBoolean("error")) {
-					Toast.makeText(this, R.string.successful_login,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_login,Toast.LENGTH_LONG).show();
 
 					SharedPreferencesSaver.setToken(this,true);
 
@@ -213,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {
@@ -245,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
 				object = new JSONObject(response);
 				JsonObjectConverter converter = new JsonObjectConverter(object.getString("user"));
 				if(!object.getBoolean("error")) {
-					Toast.makeText(this, R.string.successful_registration,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_registration,Toast.LENGTH_LONG).show();
 					SharedPreferencesSaver.setUser(this, object.getString("user"));
 					if(object.getJSONObject("user").isNull("facebook_json")) {
 						Intent intent = new Intent(this, LoginActivity.class);
@@ -263,13 +263,13 @@ public class LoginActivity extends AppCompatActivity {
 					SharedPreferencesSaver.setUser(this, object.getString("user"));
 					this.startActivity(intent);
 					this.finish();
-					Toast.makeText(this, R.string.successful_login,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_login,Toast.LENGTH_LONG).show();
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

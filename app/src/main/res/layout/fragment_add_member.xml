@@ -13,7 +13,7 @@
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
 		android:paddingTop="10dip"
-		android:text="@string/name_label"
+		android:text="@string/add_member_name_label"
 		android:textSize="17sp" />
 
 	<EditText
@@ -28,5 +28,5 @@
 		android:id="@+id/add_user"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/add_member" />
+		android:text="@string/add_member_add_member" />
 </LinearLayout>

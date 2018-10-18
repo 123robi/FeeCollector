@@ -72,7 +72,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 	private void initialize() {
 		mToolbar = findViewById(R.id.back_action_bar);
-		mToolbar.setTitle(R.string.change_password);
+		mToolbar.setTitle(R.string.settings_change_password);
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
 		mButton = findViewById(R.id.confirmButton);
@@ -147,7 +147,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 				object = new JSONObject(response);
 
 				if (!object.getBoolean("error")) {
-					Toast.makeText(this, R.string.successfull_change_of_password,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_change_of_password,Toast.LENGTH_LONG).show();
 					if (facebook_login) {
 						SharedPreferencesSaver.setLogin(this,false);
 						Intent intent = new Intent(this, DashboardActivity.class);
@@ -164,7 +164,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

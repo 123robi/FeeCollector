@@ -127,11 +127,11 @@ public class MainFragment extends Fragment {
 					Toast.makeText(getActivity(),object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
 			} catch (JSONException e) {
-				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		});
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
@@ -156,7 +156,7 @@ public class MainFragment extends Fragment {
 			try {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
-					Toast.makeText(getActivity(), R.string.successful_joining,Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_successful_joining,Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(getActivity(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
@@ -164,7 +164,7 @@ public class MainFragment extends Fragment {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

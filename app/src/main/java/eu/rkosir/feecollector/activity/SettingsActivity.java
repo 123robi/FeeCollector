@@ -16,7 +16,7 @@ public class SettingsActivity extends PreferenceActivity {
 		setContentView(R.layout.activity_settings);
 		
 		mToolbar = findViewById(R.id.back_action_bar);
-		mToolbar.setTitle(R.string.settings);
+		mToolbar.setTitle(R.string.settings_title);
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
 		getFragmentManager().beginTransaction().replace(R.id.content,new MainPreferenceFragment()).commit();

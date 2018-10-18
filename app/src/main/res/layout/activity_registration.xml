@@ -7,7 +7,7 @@
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/name_label"
+		android:text="@string/registration_name"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
 		android:paddingTop="10dip"
@@ -25,7 +25,7 @@
 
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/email_label"
+		android:text="@string/login_email_label"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
 		android:paddingTop="10dip"
@@ -42,7 +42,7 @@
 
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/password_label"
+		android:text="@string/registration_password_label"
 		android:paddingLeft="10dip"
 		android:paddingRight="10dip"
 		android:paddingTop="10dip"
@@ -60,7 +60,7 @@
 	<Button android:id="@+id/createUser"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/create_user_btn"/>
+		android:text="@string/registration_register"/>
 
 	<ProgressBar
 		android:layout_width="42dp"
@@ -79,7 +79,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/sign_in_text"
+			android:text="@string/registration_sign_in"
 			android:textColor="@android:color/black" />
 
 		<TextView
@@ -87,7 +87,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="4dp"
-			android:text="@string/sign_in_link"
+			android:text="@string/registration_sign_in_link"
 			android:textColor="@android:color/black"
 			android:textStyle="bold" />
 	</LinearLayout>

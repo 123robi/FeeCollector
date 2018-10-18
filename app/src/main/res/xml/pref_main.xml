@@ -2,12 +2,12 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:key="asdasd">
-	<Preference android:title="@string/change_password" >
+	<Preference android:title="@string/settings_change_password" >
 		<intent
 			android:action="change_password"/>
 	</Preference>
 	<SwitchPreference
 		android:defaultValue="true"
 		android:key="notification"
-		android:title="@string/notification" />
+		android:title="@string/settings_notification" />
 </PreferenceScreen>

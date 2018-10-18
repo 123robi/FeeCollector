@@ -20,7 +20,7 @@
 			android:paddingLeft="10dip"
 			android:paddingRight="10dip"
 			android:paddingTop="10dip"
-			android:text="@string/fee_name"
+			android:text="@string/add_fee_fee_name"
 			android:textSize="17sp" />
 
 		<EditText
@@ -38,7 +38,7 @@
 			android:paddingLeft="10dip"
 			android:paddingRight="10dip"
 			android:paddingTop="10dip"
-			android:text="@string/fee_cost"
+			android:text="@string/add_fee_fee_cost"
 			android:textSize="17sp" />
 		<EditText
 			android:id="@+id/fee_cost"
@@ -52,7 +52,7 @@
 			android:id="@+id/add_fee"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/add_fee" />
+			android:text="@string/add_fee_add" />
 	</LinearLayout>
 	<ProgressBar
 		android:id="@+id/pb_loading_indicator"

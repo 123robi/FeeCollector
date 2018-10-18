@@ -73,7 +73,7 @@ public class RegistrationActivity extends AppCompatActivity {
 			if(attemptToRegister() && InternetConnection.getInstance(RegistrationActivity.this).isOnline()) {
 				createUser(user);
 			} else {
-				Toast.makeText(RegistrationActivity.this, R.string.connection_warning, Toast.LENGTH_LONG).show();
+				Toast.makeText(RegistrationActivity.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
 			}
 		});
 
@@ -136,7 +136,7 @@ public class RegistrationActivity extends AppCompatActivity {
 			try {
 				object = new JSONObject(response);
 				if(!object.getBoolean("error")) {
-					Toast.makeText(this, R.string.successful_registration,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_registration,Toast.LENGTH_LONG).show();
 					SharedPreferencesSaver.setUser(this, object.getString("user"));
 					if(object.getJSONObject("user").isNull("facebook_json")) {
 						Intent intent = new Intent(this, LoginActivity.class);
@@ -156,7 +156,7 @@ public class RegistrationActivity extends AppCompatActivity {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

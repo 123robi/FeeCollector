@@ -51,7 +51,7 @@ public class CreateTeam extends Fragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActivity().setTitle(R.string.create_team);
+		getActivity().setTitle(R.string.create_team_title);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class CreateTeam extends Fragment {
 			try {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
-					Toast.makeText(getActivity(), R.string.successful_team_creation,Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.toast_successful_team_creation,Toast.LENGTH_LONG).show();
 
 					Intent intent = new Intent(getActivity(), DashboardActivity.class);
 					getActivity().startActivity(intent);
@@ -102,7 +102,7 @@ public class CreateTeam extends Fragment {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

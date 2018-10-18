@@ -64,9 +64,9 @@ public class TeamActivity extends AppCompatActivity {
 		mTabLayout = findViewById(R.id.navigation_top);
 		mViewPager = findViewById(R.id.content);
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-		adapter.addFragment(new Summary(), "Summary");
-		adapter.addFragment(new AddFeeToMember(), "Add Fee");
-		adapter.addFragment(new AddMember(), "Add Member");
+		adapter.addFragment(new Summary(), getString(R.string.team_summary_bar));
+		adapter.addFragment(new AddFeeToMember(), getString(R.string.team_add_fee_bar));
+		adapter.addFragment(new AddMember(),  getString(R.string.team_add_member_bar));
 
 		mViewPager.setAdapter(adapter);
 		mTabLayout.setupWithViewPager(mViewPager);
@@ -118,7 +118,7 @@ public class TeamActivity extends AppCompatActivity {
 				if (team_name.getText().toString().equals(SharedPreferencesSaver.getLastTeamName(TeamActivity.this))) {
 					deleteTeamApi();
 				} else {
-					team_name.setError(getString(R.string.wrong_team_name),null);
+					team_name.setError(getString(R.string.team_wrong_team_name),null);
 					View focusView = team_name;
 					focusView.requestFocus();
 				}
@@ -140,9 +140,8 @@ public class TeamActivity extends AppCompatActivity {
 
 			try {
 				object = new JSONObject(response);
-				Log.d("JSON", object + "JSON");
 				if (!object.getBoolean("error")) {
-					Toast.makeText(this, R.string.successful_team_deletion,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_team_deletion,Toast.LENGTH_LONG).show();
 
 					SharedPreferencesSaver.setToken(this,true);
 
@@ -160,7 +159,7 @@ public class TeamActivity extends AppCompatActivity {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		})
 		{
 			@Override
