@@ -46,34 +46,37 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class TeamActivity extends AppCompatActivity {
 
-	private TabLayout tabLayout;
-	private ViewPager viewPager;
-	private Toolbar toolbar;
-	private ProgressBar loadingBar;
+	private TabLayout mTabLayout;
+	private ViewPager mViewPager;
+	private Toolbar mToolbar;
+	private ProgressBar mLoadingBar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_team);
-		toolbar = findViewById(R.id.back_action_bar);
-		toolbar.setTitle(SharedPreferencesSaver.getLastTeamName(this));
-		setSupportActionBar(toolbar);
-		toolbar.setNavigationOnClickListener(view -> {
+		mToolbar = findViewById(R.id.back_action_bar);
+		mToolbar.setTitle(SharedPreferencesSaver.getLastTeamName(this));
+		setSupportActionBar(mToolbar);
+		mToolbar.setNavigationOnClickListener(view -> {
 			onBackPressed();
 		});
 
-		tabLayout = findViewById(R.id.navigation_top);
-		viewPager = findViewById(R.id.content);
+		mTabLayout = findViewById(R.id.navigation_top);
+		mViewPager = findViewById(R.id.content);
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new Summary(), "Summary");
 		adapter.addFragment(new AddFeeToMember(), "Add Fee");
 		adapter.addFragment(new AddMember(), "Add Member");
 
-		viewPager.setAdapter(adapter);
-		tabLayout.setupWithViewPager(viewPager);
+		mViewPager.setAdapter(adapter);
+		mTabLayout.setupWithViewPager(mViewPager);
 
-		loadingBar = findViewById(R.id.pb_loading_indicator);
+		mLoadingBar = findViewById(R.id.pb_loading_indicator);
 	}
 
+	/**
+	 * Set team_id and team_name in shared preferences to null, as you are exiting the team activity
+	 */
 	@Override
 	public void onBackPressed() {
 		SharedPreferencesSaver.setLastTeamId(this,null);
@@ -81,6 +84,11 @@ public class TeamActivity extends AppCompatActivity {
 		super.onBackPressed();
 	}
 
+	/**
+	 * Inflate a menu with team_menu
+	 * @param menu
+	 * @return
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -88,6 +96,11 @@ public class TeamActivity extends AppCompatActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * * Depends on the click in the toolbar you either copy a team_id or open a AlertDialog where you can delete a team
+	 * @param item
+	 * @return boolean
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		ClipboardManager clipboard = (ClipboardManager)
@@ -117,8 +130,11 @@ public class TeamActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Sending a Volley Post Request to delete a team using 1 parameter: connection_number
+	 */
 	private void deleteTeamApi() {
-		loadingBar.setVisibility(View.VISIBLE);
+		mLoadingBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_DELETE_TEAM, response -> {
 			JSONObject object = null;
 
@@ -158,8 +174,8 @@ public class TeamActivity extends AppCompatActivity {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (loadingBar != null) {
-				loadingBar.setVisibility(View.INVISIBLE);
+			if (mLoadingBar != null) {
+				mLoadingBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}

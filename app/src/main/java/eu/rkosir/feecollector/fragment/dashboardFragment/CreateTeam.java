@@ -38,11 +38,11 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class        CreateTeam extends Fragment {
+public class CreateTeam extends Fragment {
 
-	private EditText team_name;
-	private Button create_team_button;
-	private ProgressBar progressBar;
+	private EditText mTeam_name;
+	private Button mCreate_team_button;
+	private ProgressBar mProgressBar;
 
 	public CreateTeam() {
 		// Required empty public constructor
@@ -62,56 +62,63 @@ public class        CreateTeam extends Fragment {
 	}
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		super.onViewCreated(view, savedInstanceState);
 		initialize();
 	}
 
 	private void initialize() {
-		team_name = getView().findViewById(R.id.team_name);
-		create_team_button = getView().findViewById(R.id.create_team);
+		mTeam_name = getView().findViewById(R.id.team_name);
+		mCreate_team_button = getView().findViewById(R.id.create_team);
 
-		create_team_button.setOnClickListener(view -> {
-			progressBar.bringToFront();
-			progressBar.setVisibility(View.VISIBLE);
-			StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SAVE_TEAM, response -> {
-				JSONObject object = null;
+		mCreate_team_button.setOnClickListener(view -> {
+			createTeam();
+		});
+	}
 
-				try {
-					object = new JSONObject(response);
-					if (!object.getBoolean("error")) {
-						Toast.makeText(getActivity(), R.string.successful_team_creation,Toast.LENGTH_LONG).show();
+	/**
+	 * Sending a Volley Post Request to create a team using 3 parameter: team_name, email
+	 */
+	private void createTeam() {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SAVE_TEAM, response -> {
+			JSONObject object = null;
 
-						Intent intent = new Intent(getActivity(), DashboardActivity.class);
-						getActivity().startActivity(intent);
-						getActivity().finish();
+			try {
+				object = new JSONObject(response);
+				if (!object.getBoolean("error")) {
+					Toast.makeText(getActivity(), R.string.successful_team_creation,Toast.LENGTH_LONG).show();
 
-					} else {
-						Toast.makeText(getActivity(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
-					}
+					Intent intent = new Intent(getActivity(), DashboardActivity.class);
+					getActivity().startActivity(intent);
+					getActivity().finish();
 
-				} catch (JSONException e) {
-					e.printStackTrace();
+				} else {
+					Toast.makeText(getActivity(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
-			}, error -> {
-				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
-			}){
-				@Override
-				protected Map<String, String> getParams() throws AuthFailureError {
-					Map<String,String> params = new HashMap<>();
-					params.put("team_name", team_name.getText().toString());
-					params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
-					return params;
-				}
-			};
 
-			RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
-			requestQueue.add(stringRequest);
-			requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-				if (progressBar != null) {
-					progressBar.setVisibility(View.INVISIBLE);
-				}
-			});
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("team_name", mTeam_name.getText().toString());
+				params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
 		});
 	}
 }

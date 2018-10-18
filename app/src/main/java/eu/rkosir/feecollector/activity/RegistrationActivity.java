@@ -35,12 +35,12 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-	private EditText inputName;
-	private EditText inputEmail;
-	private EditText inputPassword;
-	private Button createUserbtn;
-	private ProgressBar progressBar;
-	private TextView signIn;
+	private EditText mInputName;
+	private EditText mInputEmail;
+	private EditText mInputPassword;
+	private Button mCreateUserbtn;
+	private ProgressBar mProgressBar;
+	private TextView mSignIn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +50,26 @@ public class RegistrationActivity extends AppCompatActivity {
 		buttonListeners();
 	}
 
+	/**
+	 * initialize fields
+	 */
 	private void initialize() {
-		inputName = findViewById(R.id.name);
-		inputEmail = findViewById(R.id.email);
-		inputPassword = findViewById(R.id.password);
+		mInputName = findViewById(R.id.name);
+		mInputEmail = findViewById(R.id.email);
+		mInputPassword = findViewById(R.id.password);
 
-		signIn = findViewById(R.id.signIn);
+		mSignIn = findViewById(R.id.signIn);
 
-		createUserbtn = findViewById(R.id.createUser);
-		progressBar = findViewById(R.id.pb_loading_indicator);
+		mCreateUserbtn = findViewById(R.id.createUser);
+		mProgressBar = findViewById(R.id.pb_loading_indicator);
 	}
 
+	/**
+	 * append button listeners to all buttons
+	 */
 	private void buttonListeners() {
-		createUserbtn.setOnClickListener(v -> {
-			User user = new User(inputName.getText().toString(),inputEmail.getText().toString(), inputPassword.getText().toString());
+		mCreateUserbtn.setOnClickListener(v -> {
+			User user = new User(mInputName.getText().toString(),mInputEmail.getText().toString(), mInputPassword.getText().toString());
 			if(attemptToRegister() && InternetConnection.getInstance(RegistrationActivity.this).isOnline()) {
 				createUser(user);
 			} else {
@@ -71,7 +77,7 @@ public class RegistrationActivity extends AppCompatActivity {
 			}
 		});
 
-		signIn.setOnClickListener(v -> {
+		mSignIn.setOnClickListener(v -> {
 			Intent intent = new Intent(this, LoginActivity.class);
 			this.startActivity(intent);
 			this.finish();
@@ -79,33 +85,37 @@ public class RegistrationActivity extends AppCompatActivity {
 
 	}
 
+	/**
+	 * validate fields and request focus if any trouble
+	 * @return true|false
+	 */
 	private boolean attemptToRegister() {
-		inputName.setError(null);
-		inputEmail.setError(null);
-		inputPassword.setError(null);
+		mInputName.setError(null);
+		mInputEmail.setError(null);
+		mInputPassword.setError(null);
 
-		String name = inputName.getText().toString();
-		String email = inputEmail.getText().toString();
-		String password = inputPassword.getText().toString();
+		String name = mInputName.getText().toString();
+		String email = mInputEmail.getText().toString();
+		String password = mInputPassword.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
 		if (TextUtils.isEmpty(name)) {
-			inputName.setError(getString(R.string.error_field_required));
-			focusView = inputName;
+			mInputName.setError(getString(R.string.error_field_required));
+			focusView = mInputName;
 			cancel = true;
 		} else if (TextUtils.isEmpty(email)) {
-			inputEmail.setError(getString(R.string.error_field_required),null);
-			focusView = inputEmail;
+			mInputEmail.setError(getString(R.string.error_field_required),null);
+			focusView = mInputEmail;
 			cancel = true;
 		} else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-			inputEmail.setError(getString(R.string.error_email_validation),null);
-			focusView = inputEmail;
+			mInputEmail.setError(getString(R.string.error_email_validation),null);
+			focusView = mInputEmail;
 			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
-			inputPassword.setError(getString(R.string.error_field_required),null);
-			focusView = inputPassword;
+			mInputPassword.setError(getString(R.string.error_field_required),null);
+			focusView = mInputPassword;
 			cancel = true;
 		}
 		if (cancel) {
@@ -115,8 +125,12 @@ public class RegistrationActivity extends AppCompatActivity {
 			return true;
 	}
 
+	/**
+	 * Sending a Volley Post Request to create a user using 3 parameter: name, email, password
+	 * @param user
+	 */
 	private void createUser(User user) {
-		progressBar.setVisibility(View.VISIBLE);
+		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {
@@ -154,12 +168,11 @@ public class RegistrationActivity extends AppCompatActivity {
 			}
 		};
 
-
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}

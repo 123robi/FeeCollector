@@ -51,9 +51,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class MainFragment extends Fragment {
 
-	private Button joinTeam;
-	private ProgressBar progressBar;
-	private EditText teamId;
+	private Button mJoinTeam;
+	private ProgressBar mProgressBar;
+	private EditText mTeamId;
 	private RecyclerView mRecyclerView;
 	private ShowMembersAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
@@ -80,12 +80,12 @@ public class MainFragment extends Fragment {
 	}
 
 	private void initialize() {
-		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 
-		teamId = getView().findViewById(R.id.teamId);
+		mTeamId = getView().findViewById(R.id.teamId);
 
-		joinTeam = getView().findViewById(R.id.joinTeam);
-		joinTeam.setOnClickListener(view -> {
+		mJoinTeam = getView().findViewById(R.id.joinTeam);
+		mJoinTeam.setOnClickListener(view -> {
 			selectMember();
 		});
 	}
@@ -96,11 +96,14 @@ public class MainFragment extends Fragment {
 		getActivity().setTitle(R.string.app_name);
 	}
 
+	/**
+	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
+	 */
 	private void selectMember() {
-		progressBar.setVisibility(View.VISIBLE);
+		mProgressBar.setVisibility(View.VISIBLE);
 		String uri = String.format(AppConfig.URL_GET_MEMBERS,
-				teamId.getText().toString(),new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
-		progressBar.setVisibility(View.VISIBLE);
+				mTeamId.getText().toString(),new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
+		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
@@ -134,12 +137,18 @@ public class MainFragment extends Fragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}
 
+	/**
+	 * After selection a member
+	 *
+	 * Sending a Volley Post Request to join a team using 2 parameter: email, update_id
+	 * @param name
+	 */
 	private void joinTeam(User name) {
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_JOIN_TEAM, response -> {
 			JSONObject object = null;
@@ -166,12 +175,11 @@ public class MainFragment extends Fragment {
 			}
 		};
 
-
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}

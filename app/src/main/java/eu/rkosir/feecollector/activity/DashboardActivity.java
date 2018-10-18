@@ -37,19 +37,23 @@ import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class DashboardActivity extends AppCompatActivity {
 
-	private DrawerLayout drawerLayout;
-	private ActionBarDrawerToggle toggle;
-	private NavigationView navigationView;
-	private TextView header_username;
-	private TextView header_email;
-	private ImageView header_picture;
-	private JSONObject respone;
-	private Toolbar toolbar;
-	private JsonObjectConverter converter;
-	private FragmentManager fragmentManager;
+	private DrawerLayout mDrawerLayout;
+	private ActionBarDrawerToggle mToggle;
+	private NavigationView mNavigationView;
+	private TextView mHeader_username;
+	private TextView mHeader_email;
+	private ImageView mHeader_picture;
+	private JSONObject mRespone;
+	private Toolbar mToolbar;
+	private JsonObjectConverter mConverter;
+	private FragmentManager mFragmentManager;
 
 
-
+	/**
+	 * if team_id in shared PReferences is not null go to Team activity, if there is no fragment displayed than display MainFragment
+	 *
+	 * @param savedInstanceState
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,18 +66,24 @@ public class DashboardActivity extends AppCompatActivity {
 			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainFragment(), "dashboard").commit();
 		}
 		initialize();
-		converter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
+		mConverter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
 		setNavigationView();
-		setUserProfile(converter);
+		setUserProfile(mConverter);
 
 	}
 
+	/**
+	 * On backpress
+	 * If drawer is open close it
+	 * if is not instance of Main Fragment set checked item to main fragment
+	 * if is instance of main Fragment then show alert dialog
+	 */
 	@Override
 	public void onBackPressed() {
-		if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-			drawerLayout.closeDrawer(GravityCompat.START);
+		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+			mDrawerLayout.closeDrawer(GravityCompat.START);
 		} else if (!(getCurrentFragment() instanceof MainFragment)) {
-			navigationView.setCheckedItem(R.id.dashboard);
+			mNavigationView.setCheckedItem(R.id.dashboard);
 			super.onBackPressed();
 		} else if (getCurrentFragment() instanceof MainFragment) {
 			new AlertDialog.Builder(this)
@@ -90,24 +100,24 @@ public class DashboardActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if(toggle.onOptionsItemSelected(item)) {
+		if(mToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void initialize() {
-		toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
+		mToolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(mToolbar);
 
-		drawerLayout = findViewById(R.id.activity_dashboard);
-		toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
-		drawerLayout.addDrawerListener(toggle);
-		toggle.syncState();
+		mDrawerLayout = findViewById(R.id.activity_dashboard);
+		mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,mToolbar,R.string.open,R.string.close);
+		mDrawerLayout.addDrawerListener(mToggle);
+		mToggle.syncState();
 
-		navigationView = findViewById(R.id.nav_view);
-		navigationView.setCheckedItem(R.id.dashboard);
-		navigationViewListener();
+		mNavigationView = findViewById(R.id.nav_view);
+		mNavigationView.setCheckedItem(R.id.dashboard);
+		mNavigationViewListener();
 
 		if (!SharedPreferencesSaver.getLogin(this)) {
 			findViewById(R.id.information_header).setVisibility(View.GONE);
@@ -120,31 +130,38 @@ public class DashboardActivity extends AppCompatActivity {
 			});
 		}
 
-		fragmentManager = getSupportFragmentManager();
+		mFragmentManager = getSupportFragmentManager();
 	}
 
+	/**
+	 * Prepare naviagtion view for inflation
+	 */
 	private void setNavigationView() {
 		View header = LayoutInflater.from(this).inflate(R.layout.navigation_header,null);
-		navigationView.addHeaderView(header);
+		mNavigationView.addHeaderView(header);
 
-		header_username = header.findViewById(R.id.header_username);
-		header_email = header.findViewById(R.id.header_email);
-		header_picture = header.findViewById(R.id.header_profile_pic);
+		mHeader_username = header.findViewById(R.id.header_username);
+		mHeader_email = header.findViewById(R.id.header_email);
+		mHeader_picture = header.findViewById(R.id.header_profile_pic);
 	}
 
+	/**
+	 * get a jsonData a inflate a navigation header
+	 * @param jsondata
+	 */
 	private void setUserProfile(JsonObjectConverter jsondata) {
 		JSONObject pic_data, pic_url = null;
 			try {
 				if (!jsondata.getString("facebook_json").equals("null")) {
-					respone = new JSONObject(jsondata.getString("facebook_json"));
-					header_username.setText(respone.get("name").toString());
-					header_email.setText(respone.get("email").toString());
-					pic_data = new JSONObject(respone.get("picture").toString());
+					mRespone = new JSONObject(jsondata.getString("facebook_json"));
+					mHeader_username.setText(mRespone.get("name").toString());
+					mHeader_email.setText(mRespone.get("email").toString());
+					pic_data = new JSONObject(mRespone.get("picture").toString());
 					pic_url = new JSONObject(pic_data.getString("data"));
-					Picasso.get().load(pic_url.getString("url")).into(header_picture);
+					Picasso.get().load(pic_url.getString("url")).into(mHeader_picture);
 				} else {
-					header_username.setText(jsondata.getString("name"));
-					header_email.setText(jsondata.getString("email"));
+					mHeader_username.setText(jsondata.getString("name"));
+					mHeader_email.setText(jsondata.getString("email"));
 				}
 
 			} catch (JSONException e) {
@@ -152,25 +169,28 @@ public class DashboardActivity extends AppCompatActivity {
 			}
 	}
 
-	private void navigationViewListener() {
-		navigationView.setNavigationItemSelectedListener(item -> {
+	/**
+	 * check for any clicks in the navigation drawer and link it to other activities/fragments
+	 */
+	private void mNavigationViewListener() {
+		mNavigationView.setNavigationItemSelectedListener(item -> {
 			int id = item.getItemId();
 			Fragment fragment = null;
 
 			switch (id) {
 				case R.id.dashboard: {
 					if (getCurrentFragment() instanceof MainFragment) {
-						drawerLayout.closeDrawer(GravityCompat.START);
+						mDrawerLayout.closeDrawer(GravityCompat.START);
 					} else {
-						fragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+						mFragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 					}
 					break;
 				}
 				case R.id.create_team: {
 					if (getCurrentFragment() instanceof CreateTeam) {
-						drawerLayout.closeDrawer(GravityCompat.START);
+						mDrawerLayout.closeDrawer(GravityCompat.START);
 					} else {
-						fragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+						mFragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 						fragment = new CreateTeam();
 						loadFragment(fragment);
 					}
@@ -178,9 +198,9 @@ public class DashboardActivity extends AppCompatActivity {
 				}
 				case R.id.teams: {
 					if (getCurrentFragment() instanceof ShowTeams) {
-						drawerLayout.closeDrawer(GravityCompat.START);
+						mDrawerLayout.closeDrawer(GravityCompat.START);
 					} else {
-						fragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+						mFragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 						fragment = new ShowTeams();
 						loadFragment(fragment);
 					}
@@ -205,20 +225,23 @@ public class DashboardActivity extends AppCompatActivity {
 					break;
 				}
 			}
-			drawerLayout.closeDrawer(GravityCompat.START);
+			mDrawerLayout.closeDrawer(GravityCompat.START);
 
 			return true;
 		});
 	}
 
+	/**
+	 * check which fragment is visibale and check it in drawer
+	 */
 	@Override
 	protected void onResume() {
 		if (getCurrentFragment() instanceof  MainFragment) {
-			navigationView.setCheckedItem(R.id.dashboard);
+			mNavigationView.setCheckedItem(R.id.dashboard);
 		} else if (getCurrentFragment() instanceof  CreateTeam) {
-			navigationView.setCheckedItem(R.id.create_team);
+			mNavigationView.setCheckedItem(R.id.create_team);
 		} else if (getCurrentFragment() instanceof AddFeeToMember) {
-			navigationView.setCheckedItem(R.id.add_fee);
+			mNavigationView.setCheckedItem(R.id.add_fee);
 		}
 		super.onResume();
 	}
@@ -237,7 +260,7 @@ public class DashboardActivity extends AppCompatActivity {
 	}
 
 	private Fragment getCurrentFragment() {
-		Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+		Fragment currentFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
 
 		return currentFragment;
 	}

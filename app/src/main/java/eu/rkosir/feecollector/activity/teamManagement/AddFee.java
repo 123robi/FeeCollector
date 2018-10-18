@@ -13,7 +13,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,68 +25,77 @@ import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddFee extends AppCompatActivity {
 
-	private EditText feeName;
-	private EditText feeCost;
-	private Button addFee;
-	private Toolbar toolbar;
-	private ProgressBar progressBar;
+	private EditText mFeeName;
+	private EditText mFeeCost;
+	private Button mAddFee;
+	private Toolbar mToolbar;
+	private ProgressBar mProgressBar;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_fee);
 		initialize();
 	}
+
+	/**
+	 * initializie all required fields in the Activity
+	 */
 	private void initialize() {
-		toolbar = findViewById(R.id.back_action_bar);
-		toolbar.setTitle(R.string.add_fee_title);
-		toolbar.setNavigationOnClickListener(view -> {
-			onBackPressed();
-		});
-		feeName = findViewById(R.id.fee_name);
-		feeCost = findViewById(R.id.fee_cost);
-		addFee = findViewById(R.id.add_fee);
-		progressBar = findViewById(R.id.pb_loading_indicator);
+		mToolbar = findViewById(R.id.back_action_bar);
+		mToolbar.setTitle(R.string.add_fee_title);
 
-		addFee.setOnClickListener(view -> {
-			progressBar.setVisibility(View.VISIBLE);
-			StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_ADD_FEE, response -> {
-				JSONObject object = null;
+		mFeeName = findViewById(R.id.fee_name);
+		mFeeCost = findViewById(R.id.fee_cost);
+		mAddFee = findViewById(R.id.add_fee);
+		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
-				try {
-					object = new JSONObject(response);
-					if (!object.getBoolean("error")) {
-						Toast.makeText(this, R.string.successful_fee_add,Toast.LENGTH_LONG).show();
-					} else {
-						Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
-					}
+		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
+		mAddFee.setOnClickListener(view -> storeFee());
 
-				} catch (JSONException e) {
-					e.printStackTrace();
+	}
+
+	/**
+	 * Sending a Volley Post Request to store a fee using 1 parameter: connection_number, name, cost
+	 */
+	private void storeFee() {
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_ADD_FEE, response -> {
+			JSONObject object = null;
+
+			try {
+				object = new JSONObject(response);
+				if (!object.getBoolean("error")) {
+					Toast.makeText(this, R.string.successful_fee_add,Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
-			}, error -> {
-				Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
-			}){
-				@Override
-				protected Map<String, String> getParams() throws AuthFailureError {
-					Map<String,String> params = new HashMap<>();
-					params.put("name", feeName.getText().toString());
-					params.put("cost", feeCost.getText().toString());
-					params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddFee.this));
-					return params;
-				}
-			};
 
-			RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
-			requestQueue.add(stringRequest);
-			requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-				if (progressBar != null) {
-					progressBar.setVisibility(View.INVISIBLE);
-				}
-			});
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(this,R.string.unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("name", mFeeName.getText().toString());
+				params.put("cost", mFeeCost.getText().toString());
+				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddFee.this));
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
 		});
 	}
 }

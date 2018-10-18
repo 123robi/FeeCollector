@@ -60,6 +60,10 @@ public class AddMember extends Fragment {
 		mButton.setOnClickListener(v -> saveUserToTeam());
 	}
 
+	/**
+	 * Saving random data to a database so any user joining to a team can select this member and therefore see his fees that has already been made to his name
+	 * Sending a Volley Post Request to save user to a team using 2 parameters: name, connection_number
+	 */
 	private void saveUserToTeam() {
 		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_ADD_MEMBER_TO_TEAM, response -> {
@@ -85,7 +89,6 @@ public class AddMember extends Fragment {
 				return params;
 			}
 		};
-
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
 		requestQueue.add(stringRequest);

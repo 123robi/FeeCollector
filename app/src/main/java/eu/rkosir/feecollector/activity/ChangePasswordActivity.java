@@ -34,13 +34,12 @@ import eu.rkosir.feecollector.helper.VolleySingleton;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ChangePasswordActivity extends AppCompatActivity {
-	private Toolbar toolbar;
-	private EditText inputPassword;
-	private EditText inputPasswordCheck;
-	private EditText inputCurrentPassword;
-	private TextView viewCurrentPassword;
-	private Button button;
-	private ProgressBar progressBar;
+	private Toolbar mToolbar;
+	private EditText mInputPassword;
+	private EditText mInputPasswordCheck;
+	private EditText mInputCurrentPassword;
+	private Button mButton;
+	private ProgressBar mProgressBar;
 	private boolean facebook_login;
 
 	@Override
@@ -50,13 +49,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 		facebook_login = SharedPreferencesSaver.getLogin(this);
 		initialize();
-		button.setOnClickListener(view -> {
+		mButton.setOnClickListener(view -> {
 			if(attemptToRegister()) {
 				changePassword(facebook_login);
 			}
 		});
 	}
 
+	/**
+	 * If facebook login than return back to dashboard activity, else go bak to settings
+	 */
 	@Override
 	public void onBackPressed() {
 		if (facebook_login) {
@@ -69,55 +71,59 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	}
 
 	private void initialize() {
-		toolbar = findViewById(R.id.back_action_bar);
-		toolbar.setTitle(R.string.change_password);
-		toolbar.setNavigationOnClickListener(view -> onBackPressed());
+		mToolbar = findViewById(R.id.back_action_bar);
+		mToolbar.setTitle(R.string.change_password);
+		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
-		button = findViewById(R.id.confirmButton);
-		inputPassword = findViewById(R.id.password_change);
-		inputPasswordCheck = findViewById(R.id.password_change_check);
-		inputCurrentPassword = findViewById(R.id.current_password);
-		progressBar = findViewById(R.id.pb_loading_indicator);
+		mButton = findViewById(R.id.confirmButton);
+		mInputPassword = findViewById(R.id.password_change);
+		mInputPasswordCheck = findViewById(R.id.password_change_check);
+		mInputCurrentPassword = findViewById(R.id.current_password);
+		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		if (facebook_login) {
 			findViewById(R.id.current_password_label).setVisibility(View.GONE);
-			inputCurrentPassword.setVisibility(View.GONE);
+			mInputCurrentPassword.setVisibility(View.GONE);
 		}
 	}
 
+	/**
+	 * Field validation and focus the field in case of any problem
+	 * @return boolean
+	 */
 	private boolean attemptToRegister() {
-		inputPasswordCheck.setError(null);
-		inputPassword.setError(null);
+		mInputPasswordCheck.setError(null);
+		mInputPassword.setError(null);
 		String currentPassword = null;
 		if (!facebook_login) {
-			inputCurrentPassword.setError(null);
-			currentPassword = inputCurrentPassword.getText().toString();
+			mInputCurrentPassword.setError(null);
+			currentPassword = mInputCurrentPassword.getText().toString();
 		}
-		String password = inputPassword.getText().toString();
-		String passwordCheck = inputPasswordCheck.getText().toString();
+		String password = mInputPassword.getText().toString();
+		String passwordCheck = mInputPasswordCheck.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
 		if (TextUtils.isEmpty(currentPassword) && !facebook_login) {
-			inputCurrentPassword.setError(getString(R.string.error_field_required),null);
-			focusView = inputCurrentPassword;
+			mInputCurrentPassword.setError(getString(R.string.error_field_required),null);
+			focusView = mInputCurrentPassword;
 			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
-			inputPassword.setError(getString(R.string.error_field_required),null);
-			focusView = inputPassword;
+			mInputPassword.setError(getString(R.string.error_field_required),null);
+			focusView = mInputPassword;
 			cancel = true;
 		} else if (password.length() < AppConfig.PASSWORD_LENGTH) {
-			inputPassword.setError(getString(R.string.error_pass_too_short),null);
-			focusView = inputPassword;
+			mInputPassword.setError(getString(R.string.error_pass_too_short),null);
+			focusView = mInputPassword;
 			cancel = true;
 		} else if (TextUtils.isEmpty(passwordCheck)) {
-			inputPasswordCheck.setError(getString(R.string.error_field_required));
-			focusView = inputPasswordCheck;
+			mInputPasswordCheck.setError(getString(R.string.error_field_required));
+			focusView = mInputPasswordCheck;
 			cancel = true;
 		} else if (!password.equals(passwordCheck)) {
-			inputPasswordCheck.setError(getString(R.string.error_password_not_match));
-			focusView = inputPasswordCheck;
+			mInputPasswordCheck.setError(getString(R.string.error_password_not_match));
+			focusView = mInputPasswordCheck;
 			cancel = true;
 		}
 
@@ -128,8 +134,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
 			return true;
 	}
 
+	/**
+	 * Sending a Volley Post Request to change a password using 2 or 3 parameter: email, password, (current_password)
+	 * @param facebook_login
+	 */
 	private void changePassword(boolean facebook_login) {
-		progressBar.setVisibility(View.VISIBLE);
+		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, facebook_login?AppConfig.URL_CHANGE_PASSWORD_FACEBOOK : AppConfig.URL_CHANGE_PASSWORD, response -> {
 			JSONObject object = null;
 
@@ -145,8 +155,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 						this.finish();
 					}
 				} else {
-					inputCurrentPassword.setError(this.getString(R.string.error_current_password_not_match), null);
-					View focusView = inputCurrentPassword;
+					mInputCurrentPassword.setError(this.getString(R.string.error_current_password_not_match), null);
+					View focusView = mInputCurrentPassword;
 					focusView.requestFocus();
 				}
 
@@ -160,9 +170,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String,String> params = new HashMap<>();
 				params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
-				params.put("password", inputPassword.getText().toString());
+				params.put("password", mInputPassword.getText().toString());
 				if (!facebook_login) {
-					params.put("current_password", inputCurrentPassword.getText().toString());
+					params.put("current_password", mInputCurrentPassword.getText().toString());
 				}
 				return params;
 			}
@@ -172,8 +182,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}

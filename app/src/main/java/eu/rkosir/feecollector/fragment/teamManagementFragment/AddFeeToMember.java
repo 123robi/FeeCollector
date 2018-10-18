@@ -43,11 +43,11 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class AddFeeToMember extends Fragment {
 
-	private FloatingActionButton addFee;
-	private ProgressBar progressBar;
-	private AutoCompleteTextView autoCompletePlayer;
-	private AutoCompleteTextView autoCompleteFee;
-	private Button add_fee_to_member;
+	private FloatingActionButton mAddFee;
+	private ProgressBar mProgressBar;
+	private AutoCompleteTextView mAutoCompletePlayer;
+	private AutoCompleteTextView mAutoCompleteFee;
+	private Button mAddFeeToMember;
 
 	public AddFeeToMember() {
 		// Required empty public constructor
@@ -61,27 +61,32 @@ public class AddFeeToMember extends Fragment {
 		return inflater.inflate(R.layout.fragment_add_fee_to_member, container, false);
 	}
 
+	/**
+	 * initialize alč fields and theid listeners
+	 * @param view
+	 * @param savedInstanceState
+	 */
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-		autoCompletePlayer = getActivity().findViewById(R.id.choose_player);
-		autoCompleteFee = getActivity().findViewById(R.id.choose_fee);
-		add_fee_to_member = getActivity().findViewById(R.id.add_fee_to_member);
-		autoCompletePlayer.setOnTouchListener((arg0, arg1) -> {
+		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		mAutoCompletePlayer = view.findViewById(R.id.choose_player);
+		mAutoCompleteFee = view.findViewById(R.id.choose_fee);
+		mAddFeeToMember = view.findViewById(R.id.add_fee_to_member);
+		mAutoCompletePlayer.setOnTouchListener((arg0, arg1) -> {
 			loadMembersAndFees();
-			autoCompletePlayer.showDropDown();
+			mAutoCompletePlayer.showDropDown();
 			return false;
 		});
-		autoCompleteFee.setOnTouchListener((arg0, arg1) -> {
+		mAutoCompleteFee.setOnTouchListener((arg0, arg1) -> {
 			loadMembersAndFees();
-			autoCompleteFee.showDropDown();
+			mAutoCompleteFee.showDropDown();
 			return false;
 		});
-		add_fee_to_member.setOnClickListener(v -> storeFeeToMember());
-		addFee = view.findViewById(R.id.add_fee);
-		addFee.setOnClickListener(v -> {
+		mAddFeeToMember.setOnClickListener(v -> storeFeeToMember());
+		mAddFee = view.findViewById(R.id.add_fee);
+		mAddFee.setOnClickListener(v -> {
 			Intent intent = new Intent(getActivity(), AddFee.class);
 			startActivity(intent);
 		});
@@ -89,14 +94,17 @@ public class AddFeeToMember extends Fragment {
 	}
 
 	private void storeFeeToMember() {
-		Toast.makeText(getActivity(), autoCompleteFee.getText().toString()+ " " +autoCompletePlayer.getText().toString(),Toast.LENGTH_LONG).show();
+		Toast.makeText(getActivity(), mAutoCompleteFee.getText().toString()+ " " +mAutoCompletePlayer.getText().toString(),Toast.LENGTH_LONG).show();
 	}
 
+	/**
+	 * Sending a Volley GET Request to gather Team_members and fees using 1 URL parameter: team_id
+	 */
 	private void loadMembersAndFees() {
 
 		String uri = String.format(AppConfig.URL_GET_TEAM_MEMEBERS_AND_FEES,
-				SharedPreferencesSaver.getLastTeamID(getActivity()));
-		progressBar.setVisibility(View.VISIBLE);
+				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
+		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
@@ -114,14 +122,14 @@ public class AddFeeToMember extends Fragment {
 					feesList.add(new Fee(fee.getInt("id"),fee.getString("name")));
 				}
 				if (membersList.size() > 0) {
-					ArrayAdapter<User> adapter = new ArrayAdapter<User>(getActivity(),
+					ArrayAdapter<User> adapter = new ArrayAdapter<User>(getApplicationContext(),
 							android.R.layout.simple_dropdown_item_1line, membersList);
-					autoCompletePlayer.setAdapter(adapter);
+					mAutoCompletePlayer.setAdapter(adapter);
 				}
 				if (feesList.size() > 0) {
-					ArrayAdapter<Fee> adapter1 = new ArrayAdapter<Fee>(getActivity(),
+					ArrayAdapter<Fee> adapter1 = new ArrayAdapter<Fee>(getApplicationContext(),
 							android.R.layout.simple_dropdown_item_1line, feesList);
-					autoCompleteFee.setAdapter(adapter1);
+					mAutoCompleteFee.setAdapter(adapter1);
 				}
 			} catch (JSONException e) {
 				Toast.makeText(getActivity(),R.string.unknown_error,Toast.LENGTH_LONG).show();
@@ -134,8 +142,8 @@ public class AddFeeToMember extends Fragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}

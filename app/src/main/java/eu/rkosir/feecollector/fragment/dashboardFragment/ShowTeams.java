@@ -41,7 +41,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * A simple {@link Fragment} subclass.
  */
 public class ShowTeams extends Fragment {
-	private ProgressBar progressBar;
+	private ProgressBar mProgressBar;
 
 	private RecyclerView mRecyclerView;
 	private ShowTeamsAdapter mAdapter;
@@ -66,17 +66,21 @@ public class ShowTeams extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		mRecyclerView.setHasFixedSize(true);
 		mLayoutManager = new LinearLayoutManager(getActivity());
-		progressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		loadTeams();
 	}
 
+	/**
+	 *
+	 * Sending a Volley GET Request to load teams in a RecyclerView using 1 parameter: email -> to access all teams that this user is either admin or a team_member
+	 */
 	private void loadTeams() {
 		String uri = String.format(AppConfig.URL_GET_TEAMS,
 				new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
 
 		ArrayList<Team> teams = new ArrayList<>();
-		progressBar.setVisibility(View.VISIBLE);
-		progressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		mProgressBar.bringToFront();
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
@@ -119,8 +123,8 @@ public class ShowTeams extends Fragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}

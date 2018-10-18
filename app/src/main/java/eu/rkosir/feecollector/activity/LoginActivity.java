@@ -46,22 +46,20 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class LoginActivity extends AppCompatActivity {
 
-	private String TAG = LoginActivity.class.getSimpleName();
+	private EditText mEmail_login;
+	private EditText mPassword_login;
 
-	private EditText email_login;
-	private EditText password_login;
+	private Button mLoginButton;
+	private LoginButton mLoginButton_facebook;
+	private TextView mSignUp;
+	private ProgressBar mProgressBar;
 
-	private Button loginButton;
-	private LoginButton loginButton_facebook;
-	private TextView signUp;
-	private ProgressBar progressBar;
-
-	private CallbackManager callbackManager;
+	private CallbackManager mCallbackManager;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		callbackManager.onActivityResult(requestCode,resultCode,data);
+		mCallbackManager.onActivityResult(requestCode,resultCode,data);
 	}
 
 	@Override
@@ -73,6 +71,9 @@ public class LoginActivity extends AppCompatActivity {
 		buttonListeners();
 	}
 
+	/**
+	 * check if logged -> if yes display Dashboard activity
+	 */
 	private void checkIfLogged() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
@@ -84,22 +85,25 @@ public class LoginActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * if not logged initialize all fields
+	 */
 	private void initialize() {
-		email_login = findViewById(R.id.email_login);
-		password_login = findViewById(R.id.password_login);
+		mEmail_login = findViewById(R.id.email_login);
+		mPassword_login = findViewById(R.id.password_login);
 
-		loginButton = findViewById(R.id.login_button);
-		loginButton_facebook = findViewById(R.id.login_button_facebook);
+		mLoginButton = findViewById(R.id.login_button);
+		mLoginButton_facebook = findViewById(R.id.login_button_facebook);
 
 		float fbIconScale = 1.45F;
 		Drawable drawable = this.getResources().getDrawable(
 				com.facebook.R.drawable.com_facebook_button_icon);
 		drawable.setBounds(0, 0, (int)(drawable.getIntrinsicWidth()*fbIconScale),
 				(int)(drawable.getIntrinsicHeight()*fbIconScale));
-		loginButton_facebook.setCompoundDrawables(drawable, null, null, null);
-		loginButton_facebook.setCompoundDrawablePadding(this.getResources().
+		mLoginButton_facebook.setCompoundDrawables(drawable, null, null, null);
+		mLoginButton_facebook.setCompoundDrawablePadding(this.getResources().
 				getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
-		loginButton_facebook.setPadding(
+		mLoginButton_facebook.setPadding(
 				this.getResources().getDimensionPixelSize(
 						R.dimen.fb_margin_override_lr),
 				this.getResources().getDimensionPixelSize(
@@ -109,17 +113,20 @@ public class LoginActivity extends AppCompatActivity {
 				this.getResources().getDimensionPixelSize(
 						R.dimen.fb_margin_override_bottom));
 
-		loginButton_facebook.setReadPermissions(Arrays.asList(
+		mLoginButton_facebook.setReadPermissions(Arrays.asList(
 				"public_profile", "email", "user_birthday", "user_friends"));
-		callbackManager = CallbackManager.Factory.create();
+		mCallbackManager = CallbackManager.Factory.create();
 
-		signUp = findViewById(R.id.signUp);
+		mSignUp = findViewById(R.id.signUp);
 
-		progressBar = findViewById(R.id.pb_loading_indicator);
+		mProgressBar = findViewById(R.id.pb_loading_indicator);
 	}
 
+	/**
+	 * assign click listeners to buttons, e.g. loginButton, registration page button and facebook_button
+	 */
 	private void buttonListeners() {
-		loginButton.setOnClickListener(v -> {
+		mLoginButton.setOnClickListener(v -> {
 			if(InternetConnection.getInstance(LoginActivity.this).isOnline()){
 				login();
 			} else {
@@ -127,19 +134,19 @@ public class LoginActivity extends AppCompatActivity {
 			}
 		});
 
-		signUp.setOnClickListener(v -> {
+		mSignUp.setOnClickListener(v -> {
 			Intent intent = new Intent(this, RegistrationActivity.class);
 			this.startActivity(intent);
 		});
 
-		loginButton_facebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+		mLoginButton_facebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
 				//Remove button so noone can click on it anymore
-				if(loginButton_facebook.getVisibility() == View.VISIBLE) {
-					loginButton_facebook.setVisibility(View.INVISIBLE);
+				if(mLoginButton_facebook.getVisibility() == View.VISIBLE) {
+					mLoginButton_facebook.setVisibility(View.INVISIBLE);
 				}
-				getUserInfo(loginResult);
+				getUserInfo();
 			}
 
 			@Override
@@ -154,7 +161,10 @@ public class LoginActivity extends AppCompatActivity {
 		});
 	}
 
-	private void getUserInfo(LoginResult loginResult) {
+	/**
+	 * get user info from facebook Button
+	 */
+	private void getUserInfo() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		GraphRequest request = GraphRequest.newMeRequest(
 				accessToken,
@@ -174,8 +184,11 @@ public class LoginActivity extends AppCompatActivity {
 		request.executeAsync();
 	}
 
+	/**
+	 * Sending a Volley Post Request to obtain weather the user entered the correct credentials, using 2 parameter: email, password
+	 */
 	private void login() {
-		progressBar.setVisibility(View.VISIBLE);
+		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_LOGIN, response -> {
 			JSONObject object = null;
 
@@ -205,24 +218,27 @@ public class LoginActivity extends AppCompatActivity {
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String,String> params = new HashMap<>();
-				params.put("email", email_login.getText().toString());
-				params.put("password", password_login.getText().toString());
+				params.put("email", mEmail_login.getText().toString());
+				params.put("password", mPassword_login.getText().toString());
 				return params;
 			}
 		};
 
-
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}
 
+	/**
+	 * Sending a Volley Post Request to register a user in the database or update facebook_json using 4 parameter: name, email, password, facebook_json
+	 * @param user
+	 */
 	private void facebookLogin(User user) {
-		progressBar.setVisibility(View.VISIBLE);
+		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {
@@ -270,12 +286,18 @@ public class LoginActivity extends AppCompatActivity {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (progressBar != null) {
-				progressBar.setVisibility(View.INVISIBLE);
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
 	}
 
+	/**
+	 * generetaing random passsowrd for facebook users -> then can change the password without the current password
+	 * @param len
+	 * @param dic
+	 * @return
+	 */
 	private String generatePassword(int len, String dic) {
 		SecureRandom random = new SecureRandom();
 		String result = "";
