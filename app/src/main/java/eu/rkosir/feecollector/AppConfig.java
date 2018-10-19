@@ -1,5 +1,7 @@
 package eu.rkosir.feecollector;
 
+import java.text.SimpleDateFormat;
+
 public class AppConfig {
 	public static final String URL_LOGIN = "http://rkosir.eu/usersApi/login";
 	public static final String URL_REGISTER = "http://rkosir.eu/usersApi/add";
@@ -14,6 +16,7 @@ public class AppConfig {
 	public static final String URL_ADD_MEMBER_TO_TEAM = "http://rkosir.eu/teamMembersApi/add";
 	public static final String URL_GET_MEMBERS = "http://rkosir.eu/teamMembersApi/getUsersInTeam?connection_number=%1$s&email=%2$s";
 	public static final String URL_GET_All_MEMBERS = "http://rkosir.eu/teamMembersApi/getAllUsers?connection_number=%1$s";
+	public static final String URL_GET_EVENTS = "http://rkosir.eu/eventsApi/get?connection_number=%1$s";
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
@@ -21,6 +24,9 @@ public class AppConfig {
 	public static final String SPECIAL_CHARS = "!@#$%^&*_=+-/";
 
 	public static final int PASSWORD_LENGTH = 5;
+
+
+	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 	//HTTP METHODS
 	public static final String POST = "POST";
