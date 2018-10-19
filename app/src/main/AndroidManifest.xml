@@ -46,8 +46,10 @@
 		<activity
 			android:name=".activity.teamManagement.AddFee"
 			android:theme="@style/AppTheme.NoActionBar" />
-		<activity android:name=".activity.teamManagement.AddMember"
+		<activity
+			android:name=".activity.teamManagement.AddMember"
 			android:theme="@style/AppTheme.NoActionBar" />
+		<activity android:name=".activity.teamManagement.calendar.AddEvent"></activity>
 	</application>
 
 </manifest>
