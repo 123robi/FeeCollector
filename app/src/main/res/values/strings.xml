@@ -83,7 +83,7 @@
 	<string name="show_teams_members">Members:</string>
 	<!--Team Activity-->
 	<string name="team_summary_bar">Summary</string>
-	<string name="team_add_member_bar">Add Member</string>
+	<string name="team_add_member_bar">Members</string>
 	<string name="team_add_fee_bar">Add Fee</string>
 	<string name="team_copy_to_clipboard">Copy connection number</string>
 	<string name="team_delete_team">Delete team</string>

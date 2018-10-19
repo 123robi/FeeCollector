@@ -1,4 +1,4 @@
-package eu.rkosir.feecollector.helper;
+package eu.rkosir.feecollector.adapters;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

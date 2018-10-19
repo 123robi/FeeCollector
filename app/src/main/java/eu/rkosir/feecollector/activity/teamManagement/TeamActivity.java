@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +23,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,10 +37,8 @@ import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddMember;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Summary;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
-import eu.rkosir.feecollector.helper.ViewPagerAdapter;
+import eu.rkosir.feecollector.adapters.ViewPagerAdapter;
 import eu.rkosir.feecollector.helper.VolleySingleton;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -50,6 +46,7 @@ public class TeamActivity extends AppCompatActivity {
 	private ViewPager mViewPager;
 	private Toolbar mToolbar;
 	private ProgressBar mLoadingBar;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,12 +61,16 @@ public class TeamActivity extends AppCompatActivity {
 		mTabLayout = findViewById(R.id.navigation_top);
 		mViewPager = findViewById(R.id.content);
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-		adapter.addFragment(new Summary(), getString(R.string.team_summary_bar));
-		adapter.addFragment(new AddFeeToMember(), getString(R.string.team_add_fee_bar));
-		adapter.addFragment(new AddMember(),  getString(R.string.team_add_member_bar));
+		adapter.addFragment(new Summary(), "");
+		adapter.addFragment(new AddMember(), "");
+		adapter.addFragment(new AddFeeToMember(),"");
 
 		mViewPager.setAdapter(adapter);
 		mTabLayout.setupWithViewPager(mViewPager);
+
+		mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
+		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_person_white_24dp);
+		mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
 
 		mLoadingBar = findViewById(R.id.pb_loading_indicator);
 	}
