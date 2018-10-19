@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,23 +55,15 @@ public class AddFeeToMember extends Fragment {
 	}
 
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_add_fee_to_member, container, false);
-	}
 
-	/**
-	 * initialize alč fields and theid listeners
-	 * @param view
-	 * @param savedInstanceState
-	 */
-	@SuppressLint("ClickableViewAccessibility")
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+		View view = inflater.inflate(R.layout.fragment_add_fee_to_member, container, false);
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		mProgressBar.setVisibility(View.INVISIBLE);
 		mAutoCompletePlayer = view.findViewById(R.id.choose_player);
 		mAutoCompleteFee = view.findViewById(R.id.choose_fee);
 		mAddFeeToMember = view.findViewById(R.id.add_fee_to_member);
@@ -91,6 +84,7 @@ public class AddFeeToMember extends Fragment {
 			startActivity(intent);
 		});
 		loadMembersAndFees();
+		return view;
 	}
 
 	private void storeFeeToMember() {

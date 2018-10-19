@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,17 +37,21 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddMember extends Fragment {
+public class ShowMembers extends Fragment {
 
 	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
 	private ShowMembersAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
 
-	public AddMember() {
+	public ShowMembers() {
 		// Required empty public constructor
 	}
 
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,25 +59,20 @@ public class AddMember extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_add_member, container, false);
 		mRecyclerView = view.findViewById(R.id.members_list);
-		return view;
-	}
-
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
 		mLayoutManager = new LinearLayoutManager(getActivity());
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		mProgressBar.setVisibility(View.INVISIBLE);
+
 		getMembers();
+		return view;
 	}
 
 	/**
 	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
 	 */
 	private void getMembers() {
-		mProgressBar.setVisibility(View.VISIBLE);
 		String uri = String.format(AppConfig.URL_GET_All_MEMBERS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
-		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {

@@ -34,7 +34,7 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
-import eu.rkosir.feecollector.fragment.teamManagementFragment.AddMember;
+import eu.rkosir.feecollector.fragment.teamManagementFragment.ShowMembers;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Summary;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.adapters.ViewPagerAdapter;
@@ -62,7 +62,7 @@ public class TeamActivity extends AppCompatActivity {
 		mViewPager = findViewById(R.id.content);
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new Summary(), "");
-		adapter.addFragment(new AddMember(), "");
+		adapter.addFragment(new ShowMembers(), "");
 		adapter.addFragment(new AddFeeToMember(),"");
 
 		mViewPager.setAdapter(adapter);
@@ -73,6 +73,7 @@ public class TeamActivity extends AppCompatActivity {
 		mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
 
 		mLoadingBar = findViewById(R.id.pb_loading_indicator);
+		mLoadingBar.setVisibility(View.INVISIBLE);
 	}
 
 	/**
