@@ -68,10 +68,10 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 		Team currentTeam = teams.get(position);
 
 		if (currentTeam.isAdmin()) {
-			holder.imageView.setImageResource(R.drawable.team_admin_image);
+			holder.imageView.setImageResource(R.mipmap.ic_admin_teams);
 			holder.countMembers.append(context.getString(R.string.show_teams_members) + " " + currentTeam.getMembers());
 		} else {
-			holder.imageView.setImageResource(R.drawable.team_member_image);
+			holder.imageView.setImageResource(R.mipmap.ic_team);
 		}
 		holder.textView.setText(currentTeam.getName());
 	}
