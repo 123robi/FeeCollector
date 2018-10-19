@@ -6,27 +6,10 @@
 	tools:context=".fragment.teamManagementFragment.AddMember"
 	android:orientation="vertical">
 
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:labelFor="@+id/name"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:text="@string/add_member_name_label"
-		android:textSize="17sp" />
-
-	<EditText
-		android:id="@+id/name"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="5dip"
-		android:layout_marginBottom="15dip"
-		android:inputType="text"
-		android:singleLine="true" />
-	<Button
-		android:id="@+id/add_user"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/add_member_add_member" />
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/members_list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:scrollbars="vertical"
+		/>
 </LinearLayout>

@@ -19,8 +19,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/icons8-businessman-64 (1).png" />
-                                      <entry key="outputName" value="ic_team_member" />
+                                      <entry key="iconShape" value="CIRCLE" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/if_profle_1055000.png" />
+                                      <entry key="outputName" value="ic_team_member_no_photo" />
                                     </map>
                                   </option>
                                 </PersistentState>

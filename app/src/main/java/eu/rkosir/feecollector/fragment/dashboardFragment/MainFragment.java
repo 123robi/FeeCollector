@@ -78,7 +78,7 @@ public class MainFragment extends Fragment {
 
 		mJoinTeam = getView().findViewById(R.id.joinTeam);
 		mJoinTeam.setOnClickListener(view -> {
-			selectMember();
+			getMembers();
 		});
 	}
 
@@ -91,7 +91,7 @@ public class MainFragment extends Fragment {
 	/**
 	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
 	 */
-	private void selectMember() {
+	private void getMembers() {
 		mProgressBar.setVisibility(View.VISIBLE);
 		String uri = String.format(AppConfig.URL_GET_MEMBERS,
 				mTeamId.getText().toString(),new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));

@@ -14,7 +14,7 @@ import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.User;
 
 public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.ViewHolder>{
-	private ArrayList<User> names;
+	private ArrayList<User> users;
 	private Context context;
 	private ShowTeamsAdapter.OnItemClickListener mListener;
 
@@ -28,10 +28,12 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private TextView mMembers;
+		private TextView mRole;
 
 		public ViewHolder(View itemView, ShowTeamsAdapter.OnItemClickListener listener) {
 			super(itemView);
 			mMembers = itemView.findViewById(R.id.members);
+			mRole = itemView.findViewById(R.id.role);
 
 			itemView.setOnClickListener(view -> {
 				if (listener != null) {
@@ -44,8 +46,8 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 		}
 	}
 
-	public ShowMembersAdapter(ArrayList<User> names, Context context) {
-		this.names = names;
+	public ShowMembersAdapter(ArrayList<User> users, Context context) {
+		this.users = users;
 		this.context = context;
 	}
 
@@ -59,11 +61,14 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 
 	@Override
 	public void onBindViewHolder(@NonNull ShowMembersAdapter.ViewHolder holder, int position) {
-		holder.mMembers.setText(names.get(position).getName());
+		holder.mMembers.setText(users.get(position).getName());
+		if (users.get(position).getRole() != null) {
+			holder.mRole.setText(users.get(position).getRole());
+		}
 	}
 
 	@Override
 	public int getItemCount() {
-		return names.size();
+		return users.size();
 	}
 }

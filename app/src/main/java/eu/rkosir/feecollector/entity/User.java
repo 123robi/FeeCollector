@@ -9,6 +9,7 @@ public class User {
 	private String password;
 	private Date created_at, updated_at;
 	private String facebook_json;
+	private String role;
 	private int id;
 
 	public User(String name, String email, String password) {
@@ -16,6 +17,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.created_at = new Date();
+		this.role = null;
 	}
 	public User(String name, int id) {
 		this.name = name;
@@ -81,5 +83,13 @@ public class User {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 }
