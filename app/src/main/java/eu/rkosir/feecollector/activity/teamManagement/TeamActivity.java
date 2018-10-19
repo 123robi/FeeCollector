@@ -34,6 +34,7 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
+import eu.rkosir.feecollector.fragment.teamManagementFragment.Events;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.ShowMembers;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Summary;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -62,15 +63,17 @@ public class TeamActivity extends AppCompatActivity {
 		mViewPager = findViewById(R.id.content);
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new Summary(), "");
-		adapter.addFragment(new ShowMembers(), "");
+		adapter.addFragment(new Events(), "");
 		adapter.addFragment(new AddFeeToMember(),"");
+		adapter.addFragment(new ShowMembers(), "");
 
 		mViewPager.setAdapter(adapter);
 		mTabLayout.setupWithViewPager(mViewPager);
 
 		mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
-		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_person_white_24dp);
+		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
 		mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
+		mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
 
 		mLoadingBar = findViewById(R.id.pb_loading_indicator);
 		mLoadingBar.setVisibility(View.INVISIBLE);
