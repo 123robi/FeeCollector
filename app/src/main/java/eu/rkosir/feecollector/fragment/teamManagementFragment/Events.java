@@ -2,15 +2,21 @@ package eu.rkosir.feecollector.fragment.teamManagementFragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +25,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 
 import org.json.JSONArray;
@@ -53,9 +61,14 @@ public class Events extends Fragment {
 	private static final int ADD_NOTE = 44;
 
 	private FloatingActionButton mAddEvent;
+	private FloatingActionButton mAddMatch;
+	private FloatingActionButton mAddTraining;
+	private FloatingActionMenu mMenu;
 	private CalendarView mCalendarView;
 	private List<EventDay> mEventDays = new ArrayList<>();
-
+	private FrameLayout mFrameLayout;
+	private TabLayout mTabLayout;
+	private Toolbar mToolbar;
 	public Events() {
 		// Required empty public constructor
 	}
@@ -66,9 +79,38 @@ public class Events extends Fragment {
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_events, container, false);
-		mAddEvent = view.findViewById(R.id.add_fee);
+		mAddEvent = view.findViewById(R.id.event);
+		mAddMatch = view.findViewById(R.id.match);
+		mAddTraining = view.findViewById(R.id.training);
 		mCalendarView = view.findViewById(R.id.calendarView);
-		mAddEvent.setOnClickListener(view1 -> addEvent());
+		mMenu = view.findViewById(R.id.float_menu);
+		mFrameLayout = view.findViewById(R.id.frame_layout);
+		mTabLayout = getActivity().findViewById(R.id.navigation_top);
+		mToolbar = getActivity().findViewById(R.id.back_action_bar);
+		mMenu.setOnMenuButtonClickListener(v -> {
+			if (mFrameLayout.getVisibility() == View.GONE) {
+				mMenu.open(true);
+				mFrameLayout.setVisibility(View.VISIBLE);
+				mTabLayout.setAlpha(0.7f);
+				mToolbar.setAlpha(0.7f);
+			} else {
+				mMenu.close(true);
+				mFrameLayout.setVisibility(View.GONE);
+				mTabLayout.setAlpha(1f);
+				mToolbar.setAlpha(1f);
+			}
+		});
+		mFrameLayout.setOnClickListener(v -> {
+			if(mMenu.isOpened()) {
+				mMenu.close(true);
+				mFrameLayout.setVisibility(View.GONE);
+				mTabLayout.setAlpha(1f);
+				mToolbar.setAlpha(1f);
+			}
+		});
+		mAddEvent.setOnClickListener(view1 -> addEvent(Event.EVENT));
+		mAddMatch.setOnClickListener(view1 -> addEvent(Event.MATCH));
+		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRANING));
 		getEvents();
 		return view;
 	}
@@ -86,8 +128,9 @@ public class Events extends Fragment {
 			mCalendarView.setEvents(mEventDays);
 		}
 	}
-	private void addEvent() {
+	private void addEvent(String name) {
 		Intent intent = new Intent(getContext(), AddEvent.class);
+		intent.putExtra("title", name);
 		startActivityForResult(intent, ADD_NOTE);
 	}
 
@@ -103,7 +146,16 @@ public class Events extends Fragment {
 					JSONObject event = eventsArray.getJSONObject(i);
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(AppConfig.df.parse(event.getString("date")));
-					Event addingEvent = new Event(calendar,event.getString("name"),event.getString("description"),R.drawable.ic_add_black_24dp);
+					int resource;
+					if (event.getString("name").equals(Event.EVENT)) {
+						resource = R.drawable.ic_fiber_manual_record_green_24dp ;
+					} else if (event.getString("name").equals(Event.MATCH)) {
+						resource = R.drawable.ic_fiber_manual_record_blue_24dp;
+					} else {
+						resource = R.drawable.ic_fiber_manual_record_red_24dp;
+					}
+					Event addingEvent = new Event(calendar,event.getString("name"),event.getString("description"),resource);
+
 					try {
 						mCalendarView.setDate(addingEvent.getCalendar());
 					} catch (OutOfDateRangeException e) {

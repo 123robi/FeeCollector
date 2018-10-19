@@ -71,7 +71,7 @@ public class Event extends EventDay implements Parcelable {
 		return name;
 	}
 
-	public void setTitle(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

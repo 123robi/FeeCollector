@@ -38,7 +38,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddEvent extends AppCompatActivity {
 	private Button mButton;
-	private EditText mTitle;
 	private EditText mDescrition;
 	private CalendarView mCalendarView;
 	private ProgressBar mProgressBar;
@@ -51,13 +50,23 @@ public class AddEvent extends AppCompatActivity {
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		mButton = findViewById(R.id.addNoteButton);
-		mTitle = findViewById(R.id.title);
 		mDescrition = findViewById(R.id.description);
 
 		mButton.setOnClickListener(v -> {
 			Intent returnIntent = new Intent();
-			Event event = new Event(mCalendarView.getFirstSelectedDate(),mTitle.getText().toString(), mDescrition.getText().toString(),
-					R.drawable.ic_add_black_24dp);
+			String title = getIntent().getStringExtra("title");
+			Event event;
+			if (getIntent().getStringExtra("title").equals(Event.EVENT)) {
+				event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
+						R.drawable.ic_fiber_manual_record_green_24dp);
+			} else if (getIntent().getStringExtra("title").equals(Event.MATCH)){
+				event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
+						R.drawable.ic_fiber_manual_record_blue_24dp);
+			} else {
+				event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
+						R.drawable.ic_fiber_manual_record_red_24dp);
+			}
+
 			returnIntent.putExtra(Events.RESULT, event);
 			setResult(Activity.RESULT_OK, returnIntent);
 			saveEvent(event);
@@ -89,7 +98,7 @@ public class AddEvent extends AppCompatActivity {
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String,String> params = new HashMap<>();
-				params.put("name",event.getNote());
+				params.put("name",event.getName());
 				params.put("description", event.getDescription());
 				params.put("date",AppConfig.df.format(event.getmCalendar().getTime()));
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddEvent.this));

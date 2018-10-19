@@ -20,14 +20,6 @@
 			app:headerColor="@color/colorPrimary"
 			app:selectionColor="@color/colorAccent"
 			app:todayLabelColor="@color/colorPrimaryDark"/>
-		<EditText
-			android:id="@+id/title"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="5dip"
-			android:layout_marginBottom="15dip"
-			android:singleLine="true"
-			android:inputType="text"/>
 
 		<EditText
 			android:id="@+id/description"
