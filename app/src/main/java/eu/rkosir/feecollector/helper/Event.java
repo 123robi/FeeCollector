@@ -55,10 +55,6 @@ public class Event extends EventDay implements Parcelable {
 		return 0;
 	}
 
-	public String getNote() {
-		return description;
-	}
-
 	public int getImageResouce() {
 		return imageResouce;
 	}

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -42,6 +45,8 @@ import java.util.List;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.teamManagement.calendar.AddEvent;
+import eu.rkosir.feecollector.adapters.ShowEventsAdapter;
+import eu.rkosir.feecollector.adapters.ShowMembersAdapter;
 import eu.rkosir.feecollector.entity.Fee;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.Event;
@@ -66,9 +71,13 @@ public class Events extends Fragment {
 	private FloatingActionMenu mMenu;
 	private CalendarView mCalendarView;
 	private List<EventDay> mEventDays = new ArrayList<>();
+	private List<Event> mEvents = new ArrayList<>();
 	private FrameLayout mFrameLayout;
 	private TabLayout mTabLayout;
 	private Toolbar mToolbar;
+	private RecyclerView mRecyclerView;
+	private ShowEventsAdapter mAdapter;
+	private RecyclerView.LayoutManager mLayoutManager;
 	public Events() {
 		// Required empty public constructor
 	}
@@ -85,8 +94,11 @@ public class Events extends Fragment {
 		mCalendarView = view.findViewById(R.id.calendarView);
 		mMenu = view.findViewById(R.id.float_menu);
 		mFrameLayout = view.findViewById(R.id.frame_layout);
+		mRecyclerView = view.findViewById(R.id.eventList);
+
 		mTabLayout = getActivity().findViewById(R.id.navigation_top);
 		mToolbar = getActivity().findViewById(R.id.back_action_bar);
+
 		mMenu.setOnMenuButtonClickListener(v -> {
 			if (mFrameLayout.getVisibility() == View.GONE) {
 				mMenu.open(true);
@@ -100,6 +112,7 @@ public class Events extends Fragment {
 				mToolbar.setAlpha(1f);
 			}
 		});
+
 		mFrameLayout.setOnClickListener(v -> {
 			if(mMenu.isOpened()) {
 				mMenu.close(true);
@@ -108,10 +121,26 @@ public class Events extends Fragment {
 				mToolbar.setAlpha(1f);
 			}
 		});
+
+
 		mAddEvent.setOnClickListener(view1 -> addEvent(Event.EVENT));
 		mAddMatch.setOnClickListener(view1 -> addEvent(Event.MATCH));
 		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRANING));
+
 		getEvents();
+
+		mCalendarView.setOnDayClickListener(eventDay -> {
+			List<Event> events = new ArrayList<>();
+			for (Event event : mEvents) {
+				if(event.getCalendar().getTimeInMillis() == eventDay.getCalendar().getTimeInMillis()) {
+					events.add(event);
+				}
+			}
+			mAdapter = new ShowEventsAdapter(events,getApplicationContext());
+			mRecyclerView.setAdapter(mAdapter);
+			mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+		});
 		return view;
 	}
 
@@ -125,6 +154,7 @@ public class Events extends Fragment {
 				e.printStackTrace();
 			}
 			mEventDays.add(myEventDay);
+			mEvents.add(myEventDay);
 			mCalendarView.setEvents(mEventDays);
 		}
 	}
@@ -162,6 +192,7 @@ public class Events extends Fragment {
 						e.printStackTrace();
 					}
 					mEventDays.add(addingEvent);
+					mEvents.add(addingEvent);
 					mCalendarView.setEvents(mEventDays);
 
 				}
