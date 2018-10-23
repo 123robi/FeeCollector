@@ -75,8 +75,8 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 			holder.mEventName.setBackground(context.getDrawable(R.drawable.shape_training));
 		}
 		holder.mEventDescription.setText(events.get(position).getDescription());
-		holder.mEventDate.setText(String.valueOf(events.get(position).getmCalendar().get(Calendar.DATE)));
-		holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getmCalendar().getTimeInMillis())));
+		holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getCalendar().getTimeInMillis())));
+		holder.mEventDate.setText(String.valueOf(events.get(position).getCalendar().get(Calendar.DATE)));
 	}
 
 	@Override

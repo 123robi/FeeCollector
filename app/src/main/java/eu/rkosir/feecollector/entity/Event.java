@@ -28,6 +28,7 @@ public class Event extends EventDay implements Parcelable {
 
 	private Event(Parcel in) {
 		super((Calendar) in.readSerializable(), in.readInt());
+		name = in.readString();
 		description = in.readString();
 	}
 
@@ -76,14 +77,6 @@ public class Event extends EventDay implements Parcelable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Calendar getmCalendar() {
-		return mCalendar;
-	}
-
-	public void setmCalendar(Calendar mCalendar) {
-		this.mCalendar = mCalendar;
 	}
 
 }

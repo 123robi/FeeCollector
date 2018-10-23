@@ -46,14 +46,10 @@ public class AddEvent extends AppCompatActivity {
 		mDescrition = findViewById(R.id.description);
 
 		mButton.setOnClickListener(v -> {
-			Intent returnIntent = new Intent();
 			String title = getIntent().getStringExtra("title");
 			Event event;
 			event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
 					R.drawable.ic_event_available_black_24dp);
-
-			returnIntent.putExtra(Events.RESULT, event);
-			setResult(Activity.RESULT_OK, returnIntent);
 			saveEvent(event);
 		});
 	}
@@ -69,6 +65,10 @@ public class AddEvent extends AppCompatActivity {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
 					Toast.makeText(this, R.string.toast_successful_team_creation,Toast.LENGTH_LONG).show();
+
+					Intent returnIntent = new Intent();
+					returnIntent.putExtra(Events.RESULT, event);
+					setResult(Activity.RESULT_OK, returnIntent);
 					finish();
 				} else {
 					Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
@@ -85,7 +85,7 @@ public class AddEvent extends AppCompatActivity {
 				Map<String,String> params = new HashMap<>();
 				params.put("name",event.getName());
 				params.put("description", event.getDescription());
-				params.put("date",AppConfig.df.format(event.getmCalendar().getTime()));
+				params.put("date",AppConfig.df.format(event.getCalendar().getTime()));
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddEvent.this));
 				return params;
 			}
