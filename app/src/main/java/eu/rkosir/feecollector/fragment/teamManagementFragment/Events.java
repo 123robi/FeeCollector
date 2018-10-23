@@ -2,23 +2,16 @@ package eu.rkosir.feecollector.fragment.teamManagementFragment;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,7 +20,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -36,7 +28,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Console;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,10 +37,7 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.teamManagement.calendar.AddEvent;
 import eu.rkosir.feecollector.adapters.ShowEventsAdapter;
-import eu.rkosir.feecollector.adapters.ShowMembersAdapter;
-import eu.rkosir.feecollector.entity.Fee;
-import eu.rkosir.feecollector.entity.User;
-import eu.rkosir.feecollector.helper.Event;
+import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 

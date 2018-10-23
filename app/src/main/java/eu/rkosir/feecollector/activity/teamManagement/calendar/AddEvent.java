@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,21 +19,15 @@ import com.applandeo.materialcalendarview.CalendarView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Events;
-import eu.rkosir.feecollector.helper.Event;
-import eu.rkosir.feecollector.helper.JsonObjectConverter;
+import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddEvent extends AppCompatActivity {
 	private Button mButton;

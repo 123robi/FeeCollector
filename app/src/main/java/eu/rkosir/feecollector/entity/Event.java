@@ -1,4 +1,4 @@
-package eu.rkosir.feecollector.helper;
+package eu.rkosir.feecollector.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.applandeo.materialcalendarview.EventDay;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Event extends EventDay implements Parcelable {
 
