@@ -19,7 +19,7 @@
 			app:datePicker="true"
 			app:headerColor="@color/colorPrimary"
 			app:selectionColor="@color/colorAccent"
-			app:todayLabelColor="@color/colorPrimaryDark"/>
+			app:todayLabelColor="@color/colorPrimaryLight"/>
 
 		<EditText
 			android:id="@+id/description"

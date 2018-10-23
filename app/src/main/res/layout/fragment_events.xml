@@ -17,7 +17,10 @@
 			<com.applandeo.materialcalendarview.CalendarView
 				android:id="@+id/calendarView"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent" />
+				android:layout_height="match_parent"
+				fab:headerColor="@color/colorPrimaryLight"
+				fab:headerLabelColor="@color/colorPrimary"
+				fab:anotherMonthsDaysLabelsColor="@color/colorPrimaryLight" />
 			<android.support.v7.widget.RecyclerView
 				android:id="@+id/eventList"
 				android:layout_width="match_parent"
@@ -47,13 +50,16 @@
 		fab:menu_labels_showShadow="true"
 		fab:menu_openDirection="up"
 		fab:menu_backgroundColor="@android:color/transparent"
-		fab:menu_labels_colorNormal="@android:color/transparent"
+		fab:menu_colorNormal="@color/floating_action_color"
+		fab:menu_colorPressed="@color/floating_action_color_pressed"
 		fab:menu_labels_textColor="@android:color/black"
-		fab:menu_fab_label="">
+		fab:menu_labels_colorNormal="@color/colorPrimaryLight"
+		fab:menu_labels_colorPressed="@color/colorPrimary">
 
 		<com.github.clans.fab.FloatingActionButton
 			android:id="@+id/event"
-			fab:fab_colorNormal="@color/green"
+			fab:fab_colorNormal="@color/floating_action_purple"
+			fab:fab_colorPressed="@color/floating_action_purple_pressed"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:src="@drawable/ic_add_white_24dp"
@@ -63,7 +69,8 @@
 			android:id="@+id/match"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			fab:fab_colorNormal="@color/pure_blue"
+			fab:fab_colorNormal="@color/floating_action_pure_blue"
+			fab:fab_colorPressed="@color/floating_action_pure_blue_pressed"
 			android:src="@drawable/ic_add_white_24dp"
 			fab:fab_label="@string/floating_action_button_match"
 			fab:fab_size="mini" />
@@ -71,7 +78,8 @@
 			android:id="@+id/training"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			fab:fab_colorNormal="@color/pure_red"
+			fab:fab_colorNormal="@color/floating_action_pure_red"
+			fab:fab_colorPressed="@color/floating_action_pure_red_pressed"
 			android:src="@drawable/ic_add_white_24dp"
 			fab:fab_label="@string/floating_action_button_training"
 			fab:fab_size="mini" />

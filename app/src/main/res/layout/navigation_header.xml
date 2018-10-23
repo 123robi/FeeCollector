@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:padding="16dp"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimary">
 <de.hdodenhof.circleimageview.CircleImageView
     android:id="@+id/header_profile_pic"
     android:layout_width="60dp"

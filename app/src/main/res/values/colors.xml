@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#795548</color>
-    <color name="colorPrimaryDark">#5D4037</color>
+    <color name="colorPrimary">#1A81C3</color>
+    <color name="colorPrimaryLight">#bcdef4</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="darkgrey">#6c6c6c</color>
@@ -9,7 +9,15 @@
     <color name="indicator_color">#2d2d2d</color>
     <color name="card">#dfdfdf</color>
 
-    <color name="green">#00ff00</color>
-    <color name="pure_red">#ff0004</color>
-    <color name="pure_blue">#0000ff</color>
+    <color name="floating_action_purple">#8A66D9</color>
+    <color name="floating_action_pure_red">#ff0004</color>
+    <color name="floating_action_pure_blue">#0000ff</color>
+    <color name="floating_action_purple_pressed">#b299e7</color>
+    <color name="floating_action_pure_red_pressed">#bdf46062</color>
+    <color name="floating_action_pure_blue_pressed">#c36363f4</color>
+
+    <color name="floating_action_color">#00B15C</color>
+    <color name="floating_action_color_pressed">#ba02d971</color>
+
+    <color name="event_match">#8A66D9</color>
 </resources>
