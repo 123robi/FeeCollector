@@ -52,7 +52,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private ProgressBar mProgressBar;
 	private RelativeLayout mStartsRelative, mEndsRelative;
 	private int mDay, mMonth, mYear, mHour, mMinute;
-	private Calendar c;
+	private Calendar cStart, cEnd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,34 +61,37 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mCalendarView = findViewById(R.id.calendarView);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
-		c = Calendar.getInstance();
-		mYear = c.get(Calendar.YEAR);
-		mMonth = c.get(Calendar.MONTH);
-		mDay = c.get(Calendar.DAY_OF_MONTH);
+		cStart = Calendar.getInstance();
+		cEnd = cStart;
+		mYear = cStart.get(Calendar.YEAR);
+		mMonth = cStart.get(Calendar.MONTH);
+		mDay = cStart.get(Calendar.DAY_OF_MONTH);
 
 		mButton = findViewById(R.id.addNoteButton);
 		mDescrition = findViewById(R.id.description);
 
 		mStartsDate = findViewById(R.id.start_date);
-		mStartsDate.setText(getDateFormat(c));
+		mStartsDate.setText(getDateFormat(cStart));
 		mStartsTime = findViewById(R.id.start_time);
-		mStartsTime.setText(getTimeFormat(c));
+		mStartsTime.setText(getTimeFormat(cStart));
 
 		mEndDate = findViewById(R.id.end_date);
-		mEndDate.setText(getDateFormat(c));
+		mEndDate.setText(getDateFormat(cStart));
 		mEndTime = findViewById(R.id.end_time);
-		mEndTime.setText(getTimeFormat(c,2));
+		mEndTime.setText(getTimeFormat(cStart,2));
 
 		mStartsRelative = findViewById(R.id.starts_picker);
 		mStartsRelative.setOnClickListener(view -> {
-			DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent.this, AddEvent.this, mYear, mMonth, mDay);
-			datePickerDialog.show();
+			new DatePickerDialog(AddEvent.this, AddEvent.this, mYear, mMonth, mDay).show();
 		});
 
 		mEndsRelative = findViewById(R.id.end_picker);
 		mEndsRelative.setOnClickListener(view -> {
-			DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent.this, AddEvent.this, mYear, mMonth, mDay);
-			datePickerDialog.show();
+			new TimePickerDialog(AddEvent.this, (timePicker, hour, minute) -> {
+				cEnd.set(Calendar.HOUR_OF_DAY,hour);
+				cEnd.set(Calendar.MINUTE,minute);
+				mEndTime.setText(getTimeFormat(cEnd));
+			}, mHour, mMinute, true).show();
 		});
 
 		mButton.setOnClickListener(v -> {
@@ -148,19 +151,21 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
 	@Override
 	public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-		c.set(year, month, day);
-		mStartsDate.setText(getDateFormat(c));
-		mHour = c.get(Calendar.HOUR_OF_DAY);
-		mMinute = c.get(Calendar.MINUTE);
+		cStart.set(year, month, day);
+		mStartsDate.setText(getDateFormat(cStart));
+		mEndDate.setText(getDateFormat(cStart));
+		mHour = cStart.get(Calendar.HOUR_OF_DAY);
+		mMinute = cStart.get(Calendar.MINUTE);
 		TimePickerDialog timePickerDialog = new TimePickerDialog(AddEvent.this, AddEvent.this, mHour, mMinute, true);
 		timePickerDialog.show();
 	}
 
 	@Override
 	public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-		c.set(Calendar.HOUR,hour);
-		c.set(Calendar.MINUTE,minute);
-		mStartsTime.setText(getTimeFormat(c));
+		Log.d("HOUR",hour+"");
+		cStart.set(Calendar.HOUR_OF_DAY,hour);
+		cStart.set(Calendar.MINUTE,minute);
+		mStartsTime.setText(getTimeFormat(cStart));
 	}
 	private String getDateFormat(Calendar c) {
 		String comma = ", ";
