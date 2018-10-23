@@ -15,13 +15,13 @@
     <color name="floating_action_pure_red">#FE7C1D</color>
     <color name="floating_action_pure_red_pressed">#f59d5c</color>
 
-    <color name="floating_action_pure_green">#00B15C</color>
-    <color name="floating_action_pure_green_pressed">#ba02d971</color>
+    <color name="floating_action_pure_green">#8ABF3E</color>
+    <color name="floating_action_pure_green_pressed">#97bf5d</color>
 
-    <color name="floating_action_button_main">#FECE1D</color>
-    <color name="floating_action_button_main_pressed">#fade78</color>
+    <color name="floating_action_button_main">#00B15C</color>
+    <color name="floating_action_button_main_pressed">#ba02d971</color>
 
     <color name="event">#8A66D9</color>
-    <color name="match">#00B15C</color>
+    <color name="match">#8ABF3E</color>
     <color name="training">#FE7C1D</color>
 </resources>
