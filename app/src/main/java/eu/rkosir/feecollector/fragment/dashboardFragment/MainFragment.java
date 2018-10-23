@@ -58,8 +58,6 @@ public class MainFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mLayoutManager = new LinearLayoutManager(getActivity());
-		initialize();
 	}
 
 	@Override
@@ -68,19 +66,18 @@ public class MainFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_main, container, false);
 		mRecyclerView = view.findViewById(R.id.members_list);
+		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+
+		mTeamId = view.findViewById(R.id.teamId);
+
+		mJoinTeam = view.findViewById(R.id.joinTeam);
+		mJoinTeam.setOnClickListener(view1 -> {
+			getMembers();
+		});
+		mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		return view;
 	}
 
-	private void initialize() {
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-
-		mTeamId = getView().findViewById(R.id.teamId);
-
-		mJoinTeam = getView().findViewById(R.id.joinTeam);
-		mJoinTeam.setOnClickListener(view -> {
-			getMembers();
-		});
-	}
 
 	@Override
 	public void onResume() {
@@ -107,23 +104,23 @@ public class MainFragment extends Fragment {
 						JSONObject user = membersArray.getJSONObject(i);
 						membersList.add(new User(user.getString("name"),user.getInt("id")));
 					}
-					mAdapter = new ShowMembersAdapter(membersList, getActivity());
+					mAdapter = new ShowMembersAdapter(membersList, getApplicationContext());
 					mRecyclerView.setLayoutManager(mLayoutManager);
 					mRecyclerView.setAdapter(mAdapter);
 
 					mAdapter.setOnItemClickListener(position -> {
-						Toast.makeText(getActivity(), membersList.get(position).getName(),Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(), membersList.get(position).getName(),Toast.LENGTH_LONG).show();
 						joinTeam(membersList.get(position));
 					});
 				} else {
-					Toast.makeText(getActivity(),object.getString("error_msg"),Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
 			} catch (JSONException e) {
-				Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		});
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
@@ -148,15 +145,15 @@ public class MainFragment extends Fragment {
 			try {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
-					Toast.makeText(getActivity(), R.string.toast_successful_joining,Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), R.string.toast_successful_joining,Toast.LENGTH_LONG).show();
 				} else {
-					Toast.makeText(getActivity(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

@@ -60,7 +60,7 @@ public class ShowMembers extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_members, container, false);
 		mRecyclerView = view.findViewById(R.id.members_list);
-		mLayoutManager = new LinearLayoutManager(getActivity());
+		mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		mProgressBar.setVisibility(View.INVISIBLE);
 		mAddMember = view.findViewById(R.id.add_member);
@@ -95,22 +95,22 @@ public class ShowMembers extends Fragment {
 						member.setRole("Player");
 						membersList.add(member);
 					}
-					mAdapter = new ShowMembersAdapter(membersList, getActivity());
+					mAdapter = new ShowMembersAdapter(membersList, getApplicationContext());
 					mRecyclerView.setLayoutManager(mLayoutManager);
 					mRecyclerView.setAdapter(mAdapter);
 
 					mAdapter.setOnItemClickListener(position -> {
-						Toast.makeText(getActivity(), membersList.get(position).getName(),Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(), membersList.get(position).getName(),Toast.LENGTH_LONG).show();
 					});
 				} else {
-					Toast.makeText(getActivity(),object.getString("error_msg"),Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
 			} catch (JSONException e) {
-				Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		});
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();

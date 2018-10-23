@@ -58,22 +58,16 @@ public class CreateTeam extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_create_team, container, false);
-	}
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-		super.onViewCreated(view, savedInstanceState);
-		initialize();
-	}
+		View view = inflater.inflate(R.layout.fragment_create_team, container, false);
+		mProgressBar = view.findViewById(R.id.pb_loading_indicator);
+		mTeam_name = view.findViewById(R.id.team_name);
+		mCreate_team_button = view.findViewById(R.id.create_team);
 
-	private void initialize() {
-		mTeam_name = getView().findViewById(R.id.team_name);
-		mCreate_team_button = getView().findViewById(R.id.create_team);
-
-		mCreate_team_button.setOnClickListener(view -> {
+		mCreate_team_button.setOnClickListener(view1 -> {
 			createTeam();
 		});
+
+		return view;
 	}
 
 	/**
@@ -88,21 +82,21 @@ public class CreateTeam extends Fragment {
 			try {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
-					Toast.makeText(getActivity(), R.string.toast_successful_team_creation,Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), R.string.toast_successful_team_creation,Toast.LENGTH_LONG).show();
 
-					Intent intent = new Intent(getActivity(), DashboardActivity.class);
+					Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
 					getActivity().startActivity(intent);
 					getActivity().finish();
 
 				} else {
-					Toast.makeText(getActivity(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
 
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {

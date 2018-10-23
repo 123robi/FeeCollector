@@ -88,7 +88,7 @@ public class AddFeeToMember extends Fragment {
 	}
 
 	private void storeFeeToMember() {
-		Toast.makeText(getActivity(), mAutoCompleteFee.getText().toString()+ " " +mAutoCompletePlayer.getText().toString(),Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), mAutoCompleteFee.getText().toString()+ " " +mAutoCompletePlayer.getText().toString(),Toast.LENGTH_LONG).show();
 	}
 
 	/**
@@ -126,11 +126,11 @@ public class AddFeeToMember extends Fragment {
 					mAutoCompleteFee.setAdapter(adapter1);
 				}
 			} catch (JSONException e) {
-				Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		});
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();

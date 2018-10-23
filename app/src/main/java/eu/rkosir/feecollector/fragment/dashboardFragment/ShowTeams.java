@@ -55,16 +55,15 @@ public class ShowTeams extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_show_teams, container, false);
 		mRecyclerView = view.findViewById(R.id.teamsList);
-
+		mRecyclerView.setHasFixedSize(true);
+		mLayoutManager = new LinearLayoutManager(getApplicationContext());
+		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mRecyclerView.setHasFixedSize(true);
-		mLayoutManager = new LinearLayoutManager(getActivity());
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		loadTeams();
 	}
 
@@ -95,27 +94,27 @@ public class ShowTeams extends Fragment {
 					JSONObject team = teamArray.getJSONObject(i);
 					teams.add(new Team(team.getInt("id"),team.getString("team_name"),false, team.getString("connection_number")));
 				}
-				mAdapter = new ShowTeamsAdapter(teams, getActivity());
+				mAdapter = new ShowTeamsAdapter(teams, getApplicationContext());
 				mRecyclerView.setLayoutManager(mLayoutManager);
 				mRecyclerView.setAdapter(mAdapter);
 
 				mAdapter.setOnItemClickListener(position -> {
-					SharedPreferencesSaver.setLastTeamName(getActivity(),teams.get(position).getName());
-					SharedPreferencesSaver.setLastTeamId(getActivity(),teams.get(position).getConnection_number());
+					SharedPreferencesSaver.setLastTeamName(getApplicationContext(),teams.get(position).getName());
+					SharedPreferencesSaver.setLastTeamId(getApplicationContext(),teams.get(position).getConnection_number());
 					if (teams.get(position).isAdmin()) {
-						Intent intent = new Intent(getActivity(), TeamActivity.class);
+						Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
 						startActivity(intent);
 					} else {
-						Toast.makeText(getActivity(), "You are not allowed to enter this team as an admin",Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(), "You are not allowed to enter this team as an admin",Toast.LENGTH_LONG).show();
 					}
 
 				});
 			} catch (JSONException e) {
-				Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getActivity(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		});
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
