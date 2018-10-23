@@ -29,14 +29,17 @@
 		android:layout_height="wrap_content"
 		android:text="@string/add_fee_to_member_add_fee" />
 </LinearLayout>
-
-
-	<android.support.design.widget.FloatingActionButton
+	<com.github.clans.fab.FloatingActionButton
 		android:id="@+id/add_fee"
-		android:layout_width="match_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="end|bottom"
+		android:layout_gravity="bottom|right"
+		android:layout_marginBottom="8dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginLeft="10dp"
 		android:clickable="true"
+		app:fab_colorNormal="@color/floating_action_button_main"
+		app:fab_colorPressed="@color/floating_action_button_main_pressed"
 		app:useCompatPadding="true"
 		android:src="@drawable/ic_add_black_24dp" />
 </FrameLayout>

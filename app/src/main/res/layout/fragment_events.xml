@@ -50,8 +50,8 @@
 		fab:menu_labels_showShadow="true"
 		fab:menu_openDirection="up"
 		fab:menu_backgroundColor="@android:color/transparent"
-		fab:menu_colorNormal="@color/floating_action_color"
-		fab:menu_colorPressed="@color/floating_action_color_pressed"
+		fab:menu_colorNormal="@color/floating_action_button_main"
+		fab:menu_colorPressed="@color/floating_action_button_main_pressed"
 		fab:menu_labels_textColor="@android:color/black"
 		fab:menu_labels_colorNormal="@color/colorPrimaryLight"
 		fab:menu_labels_colorPressed="@color/colorPrimary">
@@ -69,8 +69,8 @@
 			android:id="@+id/match"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			fab:fab_colorNormal="@color/floating_action_pure_blue"
-			fab:fab_colorPressed="@color/floating_action_pure_blue_pressed"
+			fab:fab_colorNormal="@color/floating_action_pure_green"
+			fab:fab_colorPressed="@color/floating_action_pure_green_pressed"
 			android:src="@drawable/ic_add_white_24dp"
 			fab:fab_label="@string/floating_action_button_match"
 			fab:fab_size="mini" />
