@@ -2,8 +2,13 @@ package eu.rkosir.feecollector.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.Event;
 
 public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.ViewHolder> {
@@ -71,6 +75,13 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		holder.mEventName.setText(events.get(position).getName());
+		if (events.get(position).getName().equals(Event.EVENT)) {
+			holder.mEventName.setBackground(context.getDrawable(R.drawable.shape_event));
+		} else if (events.get(position).getName().equals(Event.MATCH)) {
+			holder.mEventName.setBackground(context.getDrawable(R.drawable.shape_match));
+		} else {
+			holder.mEventName.setBackground(context.getDrawable(R.drawable.shape_training));
+		}
 		holder.mEventDescription.setText(events.get(position).getDescription());
 		holder.mEventDate.setText(String.valueOf(events.get(position).getmCalendar().get(Calendar.DATE)));
 		holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getmCalendar().getTimeInMillis())));
