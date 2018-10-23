@@ -163,7 +163,7 @@ public class Events extends Fragment {
 				for(int i = 0; i < eventsArray.length(); i++) {
 					JSONObject event = eventsArray.getJSONObject(i);
 					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(AppConfig.df.parse(event.getString("date")));
+					calendar.setTime(AppConfig.parse.parse(event.getString("start")));
 					Event addingEvent = new Event(calendar,event.getString("name"),event.getString("description"),R.drawable.ic_event_available_black_24dp);
 
 					try {

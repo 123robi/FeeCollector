@@ -48,7 +48,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private TextView mStartsTime;
 	private TextView mEndDate;
 	private TextView mEndTime;
-	private CalendarView mCalendarView;
 	private ProgressBar mProgressBar;
 	private RelativeLayout mStartsRelative, mEndsRelative;
 	private int mDay, mMonth, mYear, mHour, mMinute;
@@ -58,7 +57,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_event);
-		mCalendarView = findViewById(R.id.calendarView);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		cStart = Calendar.getInstance();
@@ -97,7 +95,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mButton.setOnClickListener(v -> {
 			String title = getIntent().getStringExtra("title");
 			Event event;
-			event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
+			event = new Event(cStart,title, mDescrition.getText().toString(),
 					R.drawable.ic_event_available_black_24dp);
 			saveEvent(event);
 		});
