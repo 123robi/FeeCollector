@@ -70,7 +70,7 @@ public class RegistrationActivity extends AppCompatActivity {
 	private void buttonListeners() {
 		mCreateUserbtn.setOnClickListener(v -> {
 			User user = new User(mInputName.getText().toString(),mInputEmail.getText().toString(), mInputPassword.getText().toString());
-			if(attemptToRegister() && InternetConnection.getInstance(RegistrationActivity.this).isOnline()) {
+			if(attemptToRegister() && InternetConnection.getInstance(getApplicationContext()).isOnline()) {
 				createUser(user);
 			} else {
 				Toast.makeText(RegistrationActivity.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();

@@ -56,16 +56,8 @@ public class AddEvent extends AppCompatActivity {
 			Intent returnIntent = new Intent();
 			String title = getIntent().getStringExtra("title");
 			Event event;
-			if (getIntent().getStringExtra("title").equals(Event.EVENT)) {
-				event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
-						R.drawable.ic_fiber_manual_record_green_24dp);
-			} else if (getIntent().getStringExtra("title").equals(Event.MATCH)){
-				event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
-						R.drawable.ic_fiber_manual_record_blue_24dp);
-			} else {
-				event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
-						R.drawable.ic_fiber_manual_record_red_24dp);
-			}
+			event = new Event(mCalendarView.getFirstSelectedDate(),title, mDescrition.getText().toString(),
+					R.drawable.ic_event_available_black_24dp);
 
 			returnIntent.putExtra(Events.RESULT, event);
 			setResult(Activity.RESULT_OK, returnIntent);

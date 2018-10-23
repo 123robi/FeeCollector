@@ -77,7 +77,7 @@ public class AddMember extends AppCompatActivity {
 			}
 		};
 
-		RequestQueue requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 			if (mProgressBar != null) {

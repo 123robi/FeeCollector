@@ -1,6 +1,8 @@
 package eu.rkosir.feecollector.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import eu.rkosir.feecollector.R;
@@ -33,15 +37,17 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
-		public ImageView imageView;
 		public TextView mEventName;
-		public TextView mEventTime;
+		public TextView mEventDescription;
+		public TextView mEventDate;
+		public TextView mEventDay;
 
 		public ViewHolder(View itemView, ShowEventsAdapter.OnItemClickListener listener) {
 			super(itemView);
-			imageView = itemView.findViewById(R.id.privileges);
 			mEventName = itemView.findViewById(R.id.event_name);
-			mEventTime = itemView.findViewById(R.id.event_time);
+			mEventDescription = itemView.findViewById(R.id.event_time);
+			mEventDate = itemView.findViewById(R.id.date);
+			mEventDay = itemView.findViewById(R.id.date_name);
 
 			itemView.setOnClickListener(view -> {
 				if (listener != null) {
@@ -65,8 +71,9 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		holder.mEventName.setText(events.get(position).getName());
-		holder.mEventTime.setText(events.get(position).getDescription());
-
+		holder.mEventDescription.setText(events.get(position).getDescription());
+		holder.mEventDate.setText(String.valueOf(events.get(position).getmCalendar().get(Calendar.DATE)));
+		holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getmCalendar().getTimeInMillis())));
 	}
 
 	@Override

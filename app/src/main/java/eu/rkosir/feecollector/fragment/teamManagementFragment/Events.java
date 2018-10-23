@@ -176,15 +176,7 @@ public class Events extends Fragment {
 					JSONObject event = eventsArray.getJSONObject(i);
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(AppConfig.df.parse(event.getString("date")));
-					int resource;
-					if (event.getString("name").equals(Event.EVENT)) {
-						resource = R.drawable.ic_fiber_manual_record_green_24dp ;
-					} else if (event.getString("name").equals(Event.MATCH)) {
-						resource = R.drawable.ic_fiber_manual_record_blue_24dp;
-					} else {
-						resource = R.drawable.ic_fiber_manual_record_red_24dp;
-					}
-					Event addingEvent = new Event(calendar,event.getString("name"),event.getString("description"),resource);
+					Event addingEvent = new Event(calendar,event.getString("name"),event.getString("description"),R.drawable.ic_event_available_black_24dp);
 
 					try {
 						mCalendarView.setDate(addingEvent.getCalendar());
