@@ -134,7 +134,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				Map<String,String> params = new HashMap<>();
 				params.put("name",event.getName());
 				params.put("description", event.getDescription());
-				params.put("date",AppConfig.df.format(event.getCalendar().getTime()));
+				params.put("start",AppConfig.df.format(cStart.getTime()));
+				params.put("end",AppConfig.df.format(cEnd.getTime()));
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddEvent.this));
 				return params;
 			}

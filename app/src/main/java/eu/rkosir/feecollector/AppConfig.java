@@ -26,7 +26,7 @@ public class AppConfig {
 	public static final int PASSWORD_LENGTH = 5;
 
 
-	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	//HTTP METHODS
 	public static final String POST = "POST";
