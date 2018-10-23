@@ -1,13 +1,20 @@
 package eu.rkosir.feecollector.activity.teamManagement.calendar;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -19,6 +26,11 @@ import com.applandeo.materialcalendarview.CalendarView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,11 +41,18 @@ import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
-public class AddEvent extends AppCompatActivity {
+public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 	private Button mButton;
 	private EditText mDescrition;
+	private TextView mStartsDate;
+	private TextView mStartsTime;
+	private TextView mEndDate;
+	private TextView mEndTime;
 	private CalendarView mCalendarView;
 	private ProgressBar mProgressBar;
+	private RelativeLayout mStartsRelative, mEndsRelative;
+	private int mDay, mMonth, mYear, mHour, mMinute;
+	private Calendar c;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +61,35 @@ public class AddEvent extends AppCompatActivity {
 		mCalendarView = findViewById(R.id.calendarView);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
+		c = Calendar.getInstance();
+		mYear = c.get(Calendar.YEAR);
+		mMonth = c.get(Calendar.MONTH);
+		mDay = c.get(Calendar.DAY_OF_MONTH);
+
 		mButton = findViewById(R.id.addNoteButton);
 		mDescrition = findViewById(R.id.description);
+
+		mStartsDate = findViewById(R.id.start_date);
+		mStartsDate.setText(getDateFormat(c));
+		mStartsTime = findViewById(R.id.start_time);
+		mStartsTime.setText(getTimeFormat(c));
+
+		mEndDate = findViewById(R.id.end_date);
+		mEndDate.setText(getDateFormat(c));
+		mEndTime = findViewById(R.id.end_time);
+		mEndTime.setText(getTimeFormat(c,2));
+
+		mStartsRelative = findViewById(R.id.starts_picker);
+		mStartsRelative.setOnClickListener(view -> {
+			DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent.this, AddEvent.this, mYear, mMonth, mDay);
+			datePickerDialog.show();
+		});
+
+		mEndsRelative = findViewById(R.id.end_picker);
+		mEndsRelative.setOnClickListener(view -> {
+			DatePickerDialog datePickerDialog = new DatePickerDialog(AddEvent.this, AddEvent.this, mYear, mMonth, mDay);
+			datePickerDialog.show();
+		});
 
 		mButton.setOnClickListener(v -> {
 			String title = getIntent().getStringExtra("title");
@@ -98,5 +144,46 @@ public class AddEvent extends AppCompatActivity {
 				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
+	}
+
+	@Override
+	public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+		c.set(year, month, day);
+		mStartsDate.setText(getDateFormat(c));
+		mHour = c.get(Calendar.HOUR_OF_DAY);
+		mMinute = c.get(Calendar.MINUTE);
+		TimePickerDialog timePickerDialog = new TimePickerDialog(AddEvent.this, AddEvent.this, mHour, mMinute, true);
+		timePickerDialog.show();
+	}
+
+	@Override
+	public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+		c.set(Calendar.HOUR,hour);
+		c.set(Calendar.MINUTE,minute);
+		mStartsTime.setText(getTimeFormat(c));
+	}
+	private String getDateFormat(Calendar c) {
+		String comma = ", ";
+		Date date = c.getTime();
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%ta", date))
+				.append(comma)
+				.append(String.format("%tb", date))
+				.append(" ")
+				.append(c.get(Calendar.DAY_OF_MONTH))
+				.append(comma)
+				.append(c.get(Calendar.YEAR));
+		return sb.toString();
+	}
+
+	private String getTimeFormat(Calendar c) {
+		Date date = c.getTime();
+		return String.format("%tH", date) + ":" + String.format("%tM", date);
+	}
+
+	private String getTimeFormat(Calendar c, int hours) {
+		c.set(Calendar.HOUR_OF_DAY,c.get(Calendar.HOUR_OF_DAY)+hours);
+		Date date = c.getTime();
+		return String.format("%tH", date) + ":" + String.format("%tM", date);
 	}
 }
