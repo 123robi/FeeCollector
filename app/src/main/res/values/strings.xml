@@ -66,6 +66,7 @@
 	<string name="toast_successful_fee_add">You have successfully added fee to your team.</string>
 	<string name="toast_successful_team_deletion">Your team has been successfully deleted!</string>
 	<string name="toast_successful_adding_member_to_team">You have successfully added member to a team.</string>
+	<string name="toast_successful_event_creation">Your event has been successfully added.</string>
 
 	<!--Alert Dialogs-->
 	<string name="dialog_closing_application_title">Closing Application...</string>

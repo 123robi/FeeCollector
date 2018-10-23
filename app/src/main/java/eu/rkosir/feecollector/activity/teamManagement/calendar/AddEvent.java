@@ -64,7 +64,7 @@ public class AddEvent extends AppCompatActivity {
 			try {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
-					Toast.makeText(this, R.string.toast_successful_team_creation,Toast.LENGTH_LONG).show();
+					Toast.makeText(this, R.string.toast_successful_event_creation,Toast.LENGTH_LONG).show();
 
 					Intent returnIntent = new Intent();
 					returnIntent.putExtra(Events.RESULT, event);
