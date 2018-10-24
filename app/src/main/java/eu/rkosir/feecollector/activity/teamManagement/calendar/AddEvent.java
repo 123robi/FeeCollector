@@ -60,7 +60,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		cStart = Calendar.getInstance();
-		cEnd = cStart;
+		cEnd = Calendar.getInstance();
 		mYear = cStart.get(Calendar.YEAR);
 		mMonth = cStart.get(Calendar.MONTH);
 		mDay = cStart.get(Calendar.DAY_OF_MONTH);
@@ -76,7 +76,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mEndDate = findViewById(R.id.end_date);
 		mEndDate.setText(getDateFormat(cStart));
 		mEndTime = findViewById(R.id.end_time);
-		mEndTime.setText(getTimeFormat(cStart,2));
+		mEndTime.setText(String.valueOf(getTimeFormat(cStart)));
 
 		mStartsRelative = findViewById(R.id.starts_picker);
 		mStartsRelative.setOnClickListener(view -> {
@@ -88,14 +88,16 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			new TimePickerDialog(AddEvent.this, (timePicker, hour, minute) -> {
 				cEnd.set(Calendar.HOUR_OF_DAY,hour);
 				cEnd.set(Calendar.MINUTE,minute);
-				mEndTime.setText(getTimeFormat(cEnd));
+				mEndTime.setText(String.valueOf(getTimeFormat(cEnd)));
 			}, mHour, mMinute, true).show();
 		});
 
 		mButton.setOnClickListener(v -> {
 			String title = getIntent().getStringExtra("title");
 			Event event;
-			event = new Event(cStart,title, mDescrition.getText().toString(),
+			Log.d("END TIME",cEnd.get(Calendar.HOUR_OF_DAY)+"");
+			Log.d("START TIME",cStart.get(Calendar.HOUR_OF_DAY)+"");
+			event = new Event(cStart,String.valueOf(AppConfig.df.format(cStart.getTime())),String.valueOf(AppConfig.df.format(cEnd.getTime())),title, mDescrition.getText().toString(),
 					R.drawable.ic_event_available_black_24dp);
 			saveEvent(event);
 		});
@@ -132,8 +134,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				Map<String,String> params = new HashMap<>();
 				params.put("name",event.getName());
 				params.put("description", event.getDescription());
-				params.put("start",AppConfig.df.format(cStart.getTime()));
-				params.put("end",AppConfig.df.format(cEnd.getTime()));
+				params.put("start",event.getStartDateTime());
+				params.put("end",event.getEndDateTime());
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddEvent.this));
 				return params;
 			}

@@ -13,14 +13,16 @@ public class Event extends EventDay implements Parcelable {
 	public static final String TRANING = "Traning";
 	public static final String EVENT = "Event";
 
+	private String startDateTime;
+	private String endDateTime;
 	private int imageResouce;
 	private String name;
 	private String description;
-	private Calendar mCalendar;
 
-	public Event(Calendar day, String name, String description, int imageResource) {
+	public Event(Calendar day, String startDateTime, String endDateTime, String name, String description, int imageResource) {
 		super(day, imageResource);
-		this.mCalendar = day;
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
 		this.imageResouce = imageResource;
 		this.name = name;
 		this.description = description;
@@ -79,4 +81,19 @@ public class Event extends EventDay implements Parcelable {
 		this.description = description;
 	}
 
+	public String getStartDateTime() {
+		return startDateTime;
+	}
+
+	public void setStartDateTime(String startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	public String getEndDateTime() {
+		return endDateTime;
+	}
+
+	public void setEndDateTime(String endDateTime) {
+		this.endDateTime = endDateTime;
+	}
 }

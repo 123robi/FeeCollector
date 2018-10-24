@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,7 @@ public class Events extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("HERE I AM","I AM HERE");
 		if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {
 			Event myEventDay = data.getParcelableExtra(RESULT);
 			try {
@@ -164,7 +166,7 @@ public class Events extends Fragment {
 					JSONObject event = eventsArray.getJSONObject(i);
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(AppConfig.parse.parse(event.getString("start")));
-					Event addingEvent = new Event(calendar,event.getString("name"),event.getString("description"),R.drawable.ic_event_available_black_24dp);
+					Event addingEvent = new Event(calendar,event.getString("start"),event.getString("end"),event.getString("name"),event.getString("description"),R.drawable.ic_event_available_black_24dp);
 
 					try {
 						mCalendarView.setDate(addingEvent.getCalendar());
