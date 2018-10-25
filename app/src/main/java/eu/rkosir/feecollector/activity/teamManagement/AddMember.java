@@ -85,6 +85,7 @@ public class AddMember extends AppCompatActivity {
 				Map<String,String> params = new HashMap<>();
 				params.put("name", mName.getText().toString());
 				params.put("email", mEMail.getText().toString());
+				params.put("real_user", Integer.toString(0));
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddMember.this));
 				return params;
 			}
