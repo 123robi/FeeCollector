@@ -10,6 +10,7 @@
 	<string name="registration_sign_up_link">Sign up</string>
 	<string name="registration_register">Register</string>
 	<string name="registration_password_label">Password</string>
+	<string name="registration_next">Next</string>
 
 	<!--Login Page/ChangePassword-->
 	<string name="login_sign_in">Sign in</string>
@@ -101,7 +102,7 @@
 	<!--Add member Fragment-->
 	<string name="add_member_add_member">Add Member</string>
 	<string name="add_member_name_label">Member Name</string>
-	<string name="add_member_email_label">Member's email</string>
+	<string name="add_member_email_label">Member\'s email</string>
 
 	<!--AddFee Activity-->
 	<string name="add_fee_title">Add new Fee</string>
