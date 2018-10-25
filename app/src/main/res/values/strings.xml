@@ -101,6 +101,7 @@
 	<!--Add member Fragment-->
 	<string name="add_member_add_member">Add Member</string>
 	<string name="add_member_name_label">Member Name</string>
+	<string name="add_member_email_label">Member's email</string>
 
 	<!--AddFee Activity-->
 	<string name="add_fee_title">Add new Fee</string>

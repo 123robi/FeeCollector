@@ -32,6 +32,24 @@
 			android:layout_marginBottom="15dip"
 			android:inputType="text"
 			android:singleLine="true" />
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:labelFor="@+id/email"
+			android:paddingLeft="10dip"
+			android:paddingRight="10dip"
+			android:paddingTop="10dip"
+			android:text="@string/add_member_email_label"
+			android:textSize="17sp" />
+
+		<EditText
+			android:id="@+id/email"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dip"
+			android:layout_marginBottom="15dip"
+			android:inputType="textEmailAddress"
+			android:singleLine="true" />
 		<Button
 			android:id="@+id/add_user"
 			android:layout_width="fill_parent"

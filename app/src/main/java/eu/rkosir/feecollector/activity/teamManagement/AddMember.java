@@ -3,6 +3,8 @@ package eu.rkosir.feecollector.activity.teamManagement;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,12 +24,15 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.RegistrationActivity;
+import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 public class AddMember extends AppCompatActivity {
 
 	private EditText mName;
+	private EditText mEMail;
 	private Button mButton;
 	private ProgressBar mProgressBar;
 	private Toolbar mToolbar;
@@ -41,9 +46,16 @@ public class AddMember extends AppCompatActivity {
 		mToolbar.setTitle(R.string.add_member_title);
 
 		mName = findViewById(R.id.name);
+		mEMail = findViewById(R.id.email);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 		mButton = findViewById(R.id.add_user);
-		mButton.setOnClickListener(v -> saveUserToTeam());
+		mButton.setOnClickListener(v -> {
+			if(attemptToRegister() && InternetConnection.getInstance(getApplicationContext()).isOnline()) {
+				saveUserToTeam();
+			} else {
+				Toast.makeText(AddMember.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
+			}
+		});
 
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 	}
@@ -72,6 +84,7 @@ public class AddMember extends AppCompatActivity {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String,String> params = new HashMap<>();
 				params.put("name", mName.getText().toString());
+				params.put("email", mEMail.getText().toString());
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddMember.this));
 				return params;
 			}
@@ -84,5 +97,39 @@ public class AddMember extends AppCompatActivity {
 				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
+	}
+
+	/**
+	 * validate fields and request focus if any trouble
+	 * @return true|false
+	 */
+	private boolean attemptToRegister() {
+		mName.setError(null);
+		mEMail.setError(null);
+
+		String name = mName.getText().toString();
+		String email = mEMail.getText().toString();
+
+		boolean cancel = false;
+		View focusView = null;
+
+		if (TextUtils.isEmpty(name)) {
+			mName.setError(getString(R.string.error_field_required));
+			focusView = mName;
+			cancel = true;
+		} else if (TextUtils.isEmpty(email)) {
+			mEMail.setError(getString(R.string.error_field_required),null);
+			focusView = mEMail;
+			cancel = true;
+		} else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+			mEMail.setError(getString(R.string.error_email_validation),null);
+			focusView = mEMail;
+			cancel = true;
+		}
+		if (cancel) {
+			focusView.requestFocus();
+			return false;
+		}else
+			return true;
 	}
 }
