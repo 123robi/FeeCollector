@@ -116,6 +116,8 @@
 	<!--Add Event Activity-->
 	<string name="add_event_starts">Starts</string>
 	<string name="add_event_ends">Ends</string>
+	<string name="add_event_location">Location</string>
+	<string name="add_event_new_location">+ Add new Location</string>
 
 	<string name="floating_action_button_event">Event</string>
 	<string name="floating_action_button_match">Match</string>

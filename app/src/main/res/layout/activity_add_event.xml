@@ -105,11 +105,13 @@
 			android:layout_marginBottom="15dip"
 			android:inputType="text"
 			android:singleLine="true" />
-		<Spinner
-			android:id="@+id/spinner"
-			android:layout_width="fill_parent"
+		<AutoCompleteTextView
+			android:id="@+id/choose_location"
+			android:completionThreshold="1"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			/>
+			android:hint="@string/add_event_location"
+			android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"/>
 
 		<android.support.v7.widget.AppCompatButton
 			android:id="@+id/addNoteButton"
