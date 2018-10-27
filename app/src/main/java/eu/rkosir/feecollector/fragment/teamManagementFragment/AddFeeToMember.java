@@ -117,12 +117,12 @@ public class AddFeeToMember extends Fragment {
 				}
 				if (membersList.size() > 0) {
 					ArrayAdapter<User> adapter = new ArrayAdapter<User>(getApplicationContext(),
-							android.R.layout.simple_dropdown_item_1line, membersList);
+							R.layout.auto_complete_text_view_layout, membersList);
 					mAutoCompletePlayer.setAdapter(adapter);
 				}
 				if (feesList.size() > 0) {
 					ArrayAdapter<Fee> adapter1 = new ArrayAdapter<Fee>(getApplicationContext(),
-							android.R.layout.simple_dropdown_item_1line, feesList);
+							R.layout.auto_complete_text_view_layout, feesList);
 					mAutoCompleteFee.setAdapter(adapter1);
 				}
 			} catch (JSONException e) {
