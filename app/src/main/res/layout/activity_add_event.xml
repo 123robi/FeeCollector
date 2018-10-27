@@ -105,6 +105,11 @@
 			android:layout_marginBottom="15dip"
 			android:inputType="text"
 			android:singleLine="true" />
+		<Spinner
+			android:id="@+id/spinner"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			/>
 
 		<android.support.v7.widget.AppCompatButton
 			android:id="@+id/addNoteButton"

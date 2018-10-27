@@ -8,11 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -22,16 +25,26 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
@@ -40,6 +53,8 @@ import eu.rkosir.feecollector.fragment.teamManagementFragment.Events;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 	private Button mButton;
@@ -52,7 +67,9 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private RelativeLayout mStartsRelative, mEndsRelative;
 	private int mDay, mMonth, mYear, mHour, mMinute;
 	private Calendar cStart, cEnd;
-
+	private Spinner mSpinner;
+	private String mPlaceResult;
+	int PLACE_PICKER_REQUEST = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,6 +83,9 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mDay = cStart.get(Calendar.DAY_OF_MONTH);
 
 		mButton = findViewById(R.id.addNoteButton);
+		mSpinner = findViewById(R.id.spinner);
+		getLocations();
+
 		mDescrition = findViewById(R.id.description);
 
 		mStartsDate = findViewById(R.id.start_date);
@@ -102,6 +122,57 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			saveEvent(event);
 		});
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PLACE_PICKER_REQUEST) {
+			if (resultCode == RESULT_OK) {
+				Place place = PlacePicker.getPlace(this,data);
+				if(place.getName() != null) {
+					savePlace(place);
+				}
+			}
+		}
+	}
+
+	private void savePlace(Place place) {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/placesApi/add", response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				if (!object.getBoolean("error")) {
+					getLocations();
+				} else {
+					Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
+				}
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("name",(String) place.getName());
+				params.put("address", (String) place.getAddress());
+				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddEvent.this));
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
+	}
+
 	/**
 	 * Sending a Volley Post Request to create an event using 3 parameter: team_name, email
 	 */
@@ -187,9 +258,57 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		return String.format("%tH", date) + ":" + String.format("%tM", date);
 	}
 
-	private String getTimeFormat(Calendar c, int hours) {
-		c.set(Calendar.HOUR_OF_DAY,c.get(Calendar.HOUR_OF_DAY)+hours);
-		Date date = c.getTime();
-		return String.format("%tH", date) + ":" + String.format("%tM", date);
+	private void getLocations() {
+		String uri = String.format(AppConfig.URL_GET_LOCATIONS,
+				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
+		List<String> places = new ArrayList<>();
+		places.add("Location");
+		places.add("+ New Location");
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				JSONArray placesArray = object.getJSONArray("places");
+				for(int i = 0; i < placesArray.length(); i++) {
+					JSONObject place = placesArray.getJSONObject(i);
+					places.add(place.getString("name"));
+				}
+
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_spinner_item, places.toArray(new String[places.size()]));
+
+				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				mSpinner.setAdapter(adapter);
+				mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+						if(position == 1) {
+							PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+							try {
+								startActivityForResult(builder.build(AddEvent.this), PLACE_PICKER_REQUEST);
+							} catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> parent) {
+
+					}
+				});
+
+			} catch (JSONException e) {
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		});
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+		});
 	}
 }
