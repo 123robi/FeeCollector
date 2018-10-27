@@ -13,9 +13,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.facebook.login.Login;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.LoginActivity;
+import eu.rkosir.feecollector.helper.VolleySingleton;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -50,12 +66,8 @@ public class Registration_1st_step extends Fragment {
 	 */
 	private void buttonListeners() {
 		mNext.setOnClickListener(v -> {
-			if(attemptToRegister()) {
-				Bundle bundle = new Bundle();
-				bundle.putString("email", mInputEmail.getText().toString());
-				Registration_2nd_step registration = new Registration_2nd_step();
-				registration.setArguments(bundle);
-				getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, registration, "registation_2_step").addToBackStack(null).commit();
+			if (attemptToRegister()) {
+				checkUserExistence();
 			}
 		});
 
@@ -69,6 +81,7 @@ public class Registration_1st_step extends Fragment {
 
 	/**
 	 * validate fields and request focus if any trouble
+	 *
 	 * @return true|false
 	 */
 	private boolean attemptToRegister() {
@@ -78,20 +91,70 @@ public class Registration_1st_step extends Fragment {
 		boolean cancel = false;
 		View focusView = null;
 		if (TextUtils.isEmpty(email)) {
-			mInputEmail.setError(getString(R.string.error_field_required),null);
+			mInputEmail.setError(getString(R.string.error_field_required), null);
 			focusView = mInputEmail;
 			cancel = true;
-		} else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-			mInputEmail.setError(getString(R.string.error_email_validation),null);
+		} else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+			mInputEmail.setError(getString(R.string.error_email_validation), null);
 			focusView = mInputEmail;
 			cancel = true;
 		}
 		if (cancel) {
 			focusView.requestFocus();
 			return false;
-		}else
+		} else
 			return true;
 	}
 
+	/**
+	 * Checks for users existance, if exists go to login page, else create user
+	 *
+	 * @return true|false
+	 */
+	private void checkUserExistence() {
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_EXISTS, response -> {
+			JSONObject object = null;
 
+			try {
+				object = new JSONObject(response);
+
+				if (object.getBoolean("exists")) {
+					Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+					intent.putExtra("email", mInputEmail.getText().toString());
+					Toast.makeText(getApplicationContext(), R.string.toast_user_found, Toast.LENGTH_LONG).show();
+					startActivity(intent);
+					getActivity().finish();
+				} else {
+					Bundle bundle = new Bundle();
+					bundle.putString("email", mInputEmail.getText().toString());
+					Registration_2nd_step registration = new Registration_2nd_step();
+					registration.setArguments(bundle);
+					getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, registration, "registation_2_step").addToBackStack(null).commit();
+				}
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(), R.string.toast_unknown_error, Toast.LENGTH_LONG).show();
+		}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String, String> params = new HashMap<>();
+				params.put("email", mInputEmail.getText().toString());
+				return params;
+			}
+		};
+
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
+	}
 }
+

@@ -91,7 +91,10 @@ public class LoginActivity extends AppCompatActivity {
 	private void initialize() {
 		mEmail_login = findViewById(R.id.email_login);
 		mPassword_login = findViewById(R.id.password_login);
-
+		if(getIntent().getStringExtra("email") != null) {
+			mEmail_login.setText(getIntent().getStringExtra("email"));
+			mPassword_login.requestFocus();
+		}
 		mLoginButton = findViewById(R.id.login_button);
 		mLoginButton_facebook = findViewById(R.id.login_button_facebook);
 
