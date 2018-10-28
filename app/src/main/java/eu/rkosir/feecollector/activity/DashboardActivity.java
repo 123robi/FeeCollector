@@ -152,7 +152,7 @@ public class DashboardActivity extends AppCompatActivity {
 	private void setUserProfile(JsonObjectConverter jsondata) {
 		JSONObject pic_data, pic_url = null;
 			try {
-				if (!jsondata.getString("facebook_json").equals("null")) {
+				if (!jsondata.getString("facebook_json").equals("null") && !jsondata.getString("facebook_json").equals("")) {
 					mRespone = new JSONObject(jsondata.getString("facebook_json"));
 					mHeader_username.setText(mRespone.get("name").toString());
 					mHeader_email.setText(mRespone.get("email").toString());

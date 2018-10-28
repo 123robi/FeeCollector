@@ -19,7 +19,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
-import com.facebook.login.Login;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,12 +118,18 @@ public class Registration_1st_step extends Fragment {
 			try {
 				object = new JSONObject(response);
 
-				if (object.getBoolean("exists")) {
+				if (object.getBoolean("exists") && object.getBoolean("real_user")) {
 					Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 					intent.putExtra("email", mInputEmail.getText().toString());
 					Toast.makeText(getApplicationContext(), R.string.toast_user_found, Toast.LENGTH_LONG).show();
 					startActivity(intent);
 					getActivity().finish();
+				} else if(object.getBoolean("exists") && !(object.getBoolean("real_user"))){
+					Bundle bundle = new Bundle();
+					bundle.putString("email", mInputEmail.getText().toString());
+					Registration_update_step registration = new Registration_update_step();
+					registration.setArguments(bundle);
+					getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, registration, "registation_2_step").addToBackStack(null).commit();
 				} else {
 					Bundle bundle = new Bundle();
 					bundle.putString("email", mInputEmail.getText().toString());

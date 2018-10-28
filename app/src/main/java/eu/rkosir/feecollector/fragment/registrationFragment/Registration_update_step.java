@@ -3,11 +3,8 @@ package eu.rkosir.feecollector.fragment.registrationFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +28,6 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.ChangePasswordActivity;
 import eu.rkosir.feecollector.activity.LoginActivity;
-import eu.rkosir.feecollector.activity.RegistrationActivity;
-import eu.rkosir.feecollector.entity.User;
-import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
@@ -42,15 +36,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Registration_2nd_step extends Fragment {
+public class Registration_update_step extends Fragment {
 
-	private EditText mInputName;
-	private EditText mInputPassword;
-	private Button mCreateUserbtn;
+	private EditText mPassword;
+	private Button mButton;
 	private ProgressBar mProgressBar;
 	private String mEmail;
 
-	public Registration_2nd_step() {
+	public Registration_update_step() {
 		// Required empty public constructor
 	}
 
@@ -59,45 +52,41 @@ public class Registration_2nd_step extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_registration_2nd_step, container, false);
-		mInputName = view.findViewById(R.id.name);
-		mInputPassword = view.findViewById(R.id.password);
+		View view = inflater.inflate(R.layout.fragment_registration_update_step, container, false);
+		mPassword = view.findViewById(R.id.password);
+		mButton = view.findViewById(R.id.updateUser);
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-		mCreateUserbtn = view.findViewById(R.id.createUser);
 		mEmail = getArguments().getString("email");
 		return view;
 	}
 
 	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mCreateUserbtn.setOnClickListener(v -> {
-			User user = new User(mInputName.getText().toString(),mEmail, mInputPassword.getText().toString());
-			if(attemptToRegister() && InternetConnection.getInstance(getApplicationContext()).isOnline()) {
-				createUser(user);
-			} else {
-				Toast.makeText(getApplicationContext(), R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
+		mButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				updateUser();
 			}
 		});
 	}
 
 	/**
-	 * Sending a Volley Post Request to create a user using 3 parameter: name, email, password
-	 * @param user
+	 * Sending a Volley Post Request to update a user using 3 parameter: name, email, password, real_user
 	 */
-	private void createUser(User user) {
+	private void updateUser() {
 		mProgressBar.setVisibility(View.VISIBLE);
-		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST,"http://rkosir.eu/usersApi/update", response -> {
 			JSONObject object = null;
 			try {
 				object = new JSONObject(response);
 				if(!object.getBoolean("error")) {
-					Toast.makeText(getApplicationContext(), R.string.toast_successful_registration,Toast.LENGTH_LONG).show();
 					SharedPreferencesSaver.setUser(getApplicationContext(), object.getString("user"));
 					Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-					this.startActivity(intent);
+					intent.putExtra("email", mEmail);
+					Toast.makeText(getApplicationContext(), R.string.toast_user_found, Toast.LENGTH_LONG).show();
+					startActivity(intent);
 					getActivity().finish();
-
 				} else {
 					Toast.makeText(getApplicationContext(), object.getString("error_msg"),Toast.LENGTH_LONG).show();
 				}
@@ -110,9 +99,8 @@ public class Registration_2nd_step extends Fragment {
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String,String> params = new HashMap<>();
-				params.put("name", user.getName());
-				params.put("email", user.getEmail());
-				params.put("password", user.getPassword());
+				params.put("email", mEmail);
+				params.put("password", mPassword.getText().toString());
 				params.put("real_user",Integer.toString(1));
 				return params;
 			}
@@ -125,34 +113,5 @@ public class Registration_2nd_step extends Fragment {
 				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
-	}
-	/**
-	 * validate fields and request focus if any trouble
-	 * @return true|false
-	 */
-	private boolean attemptToRegister() {
-		mInputName.setError(null);
-		mInputPassword.setError(null);
-
-		String name = mInputName.getText().toString();
-		String password = mInputPassword.getText().toString();
-
-		boolean cancel = false;
-		View focusView = null;
-
-		if (TextUtils.isEmpty(name)) {
-			mInputName.setError(getString(R.string.error_field_required));
-			focusView = mInputName;
-			cancel = true;
-		} else if (TextUtils.isEmpty(password)) {
-			mInputPassword.setError(getString(R.string.error_field_required),null);
-			focusView = mInputPassword;
-			cancel = true;
-		}
-		if (cancel) {
-			focusView.requestFocus();
-			return false;
-		}else
-			return true;
 	}
 }

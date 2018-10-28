@@ -99,9 +99,9 @@ public class ShowTeams extends Fragment {
 				mRecyclerView.setAdapter(mAdapter);
 
 				mAdapter.setOnItemClickListener(position -> {
-					SharedPreferencesSaver.setLastTeamName(getApplicationContext(),teams.get(position).getName());
-					SharedPreferencesSaver.setLastTeamId(getApplicationContext(),teams.get(position).getConnection_number());
 					if (teams.get(position).isAdmin()) {
+						SharedPreferencesSaver.setLastTeamName(getApplicationContext(),teams.get(position).getName());
+						SharedPreferencesSaver.setLastTeamId(getApplicationContext(),teams.get(position).getConnection_number());
 						Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
 						startActivity(intent);
 					} else {
