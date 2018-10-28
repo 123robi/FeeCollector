@@ -122,7 +122,4 @@
 	<string name="floating_action_button_event">Event</string>
 	<string name="floating_action_button_match">Match</string>
 	<string name="floating_action_button_training">Training</string>
-
-	<!-- TODO: Remove or change this placeholder text -->
-	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
