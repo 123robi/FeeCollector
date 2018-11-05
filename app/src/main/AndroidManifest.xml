@@ -58,7 +58,7 @@
 
 		<activity
 			android:name=".activity.teamManagement.calendar.ShowEvent"
-			android:theme="@style/AppTheme.NoActionBar"/>
+			android:label="@string/title_activity_show_events"></activity>
 	</application>
 
 </manifest>

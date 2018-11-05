@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,7 +139,6 @@ public class Events extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.d("HERE I AM","I AM HERE");
 		if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {
 			Event myEventDay = data.getParcelableExtra(RESULT);
 			try {

@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -141,7 +143,9 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			Event event;
 			event = new Event(cStart,String.valueOf(AppConfig.df.format(cStart.getTime())),String.valueOf(AppConfig.df.format(cEnd.getTime())),title, mDescrition.getText().toString(),
 					R.drawable.ic_event_available_black_24dp);
-			saveEvent(event);
+			if (attemptToSaveEvent()) {
+				saveEvent(event);
+			}
 		});
 	}
 
@@ -182,6 +186,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				Map<String,String> params = new HashMap<>();
 				params.put("name",(String) place.getName());
 				params.put("address", (String) place.getAddress());
+				params.put("latlng",place.getLatLng().toString());
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddEvent.this));
 				return params;
 			}
@@ -231,6 +236,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				params.put("start",event.getStartDateTime());
 				params.put("end",event.getEndDateTime());
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddEvent.this));
+				params.put("place_name",mAutoCompleteLocation.getText().toString());
 				return params;
 			}
 		};
@@ -319,5 +325,29 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
+	}
+
+	/**
+	 * validate fields and request focus if any trouble
+	 *
+	 * @return true|false
+	 */
+	private boolean attemptToSaveEvent() {
+		mAutoCompleteLocation.setError(null);
+		String location = mAutoCompleteLocation.getText().toString();
+
+		boolean cancel = false;
+		View focusView = null;
+		if (TextUtils.isEmpty(location)) {
+			mAutoCompleteLocation.setError(getString(R.string.error_field_required), null);
+			focusView = mAutoCompleteLocation;
+			cancel = true;
+		}
+
+		if (cancel) {
+			focusView.requestFocus();
+			return false;
+		} else
+			return true;
 	}
 }
