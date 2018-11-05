@@ -1,6 +1,7 @@
 package eu.rkosir.feecollector.activity.teamManagement.calendar;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
@@ -79,6 +82,12 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				LatLng sydney = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
 				mMap.addMarker(new MarkerOptions().position(sydney).title(place.getName()));
 				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+				LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
+				String uri1 = "geo:0,0?q=%f, %f(%s)";
+				Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
+						.format(Locale.US, uri1, destiny.latitude, destiny.longitude, place.getName())));
+					startActivity(navIntent);
+
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
