@@ -77,7 +77,7 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
 				String [] latlngArray = lanltd.split(",");
 				LatLng sydney = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
-				mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+				mMap.addMarker(new MarkerOptions().position(sydney).title(place.getName()));
 				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
