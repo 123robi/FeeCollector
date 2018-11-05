@@ -50,9 +50,15 @@
 		<activity
 			android:name=".activity.teamManagement.AddMember"
 			android:theme="@style/AppTheme.NoActionBar" />
-		<activity android:name=".activity.teamManagement.calendar.AddEvent"></activity>
-		<meta-data android:name="com.google.android.geo.API_KEY"
-			android:value="@string/api_key"/>
+		<activity android:name=".activity.teamManagement.calendar.AddEvent" />
+
+		<meta-data
+			android:name="com.google.android.geo.API_KEY"
+			android:value="@string/api_key" />
+
+		<activity
+			android:name=".activity.teamManagement.calendar.ShowEvent"
+			android:label="@string/title_activity_show_events"></activity>
 	</application>
 
 </manifest>

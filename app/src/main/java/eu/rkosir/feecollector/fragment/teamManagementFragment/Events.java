@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,7 @@ import java.util.List;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.teamManagement.calendar.AddEvent;
+import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.adapters.ShowEventsAdapter;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -128,14 +128,17 @@ public class Events extends Fragment {
 			mAdapter = new ShowEventsAdapter(events,getApplicationContext());
 			mRecyclerView.setAdapter(mAdapter);
 			mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
+			mAdapter.setOnItemClickListener(position -> {
+				Intent intent = new Intent(getApplicationContext(), ShowEvent.class);
+				intent.putExtra("event", events.get(position));
+				startActivity(intent);
+			});
 		});
 		return view;
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.d("HERE I AM","I AM HERE");
 		if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {
 			Event myEventDay = data.getParcelableExtra(RESULT);
 			try {
