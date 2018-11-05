@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,7 +39,6 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 	private GoogleMap mMap;
 	private Event myEvent;
 	private Toolbar mToolbar;
-	private Place place;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,6 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 		mToolbar = findViewById(R.id.back_action_bar);
 		mToolbar.setTitle(myEvent.getDescription());
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
-		getPlace();
 	}
 
 	/**
@@ -74,23 +73,22 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 	 */
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
-		mMap = googleMap;
-		mMap.getUiSettings().setAllGesturesEnabled(false);
-		String [] latlong = place.getLatlng().split(",");
-		LatLng sydney = new LatLng(-34, 151);
-		mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
-	}
-
-	public void getPlace() {
 		String uri = String.format(AppConfig.URL_GET_PLACE_ID,
 				myEvent.getPlaceId());
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
+			Place place;
 			try {
 				object = new JSONObject(response);
 				place = new Place(object.getInt("id"),object.getString("name"), object.getString("address"), object.getString("latlng"), object.getInt("team_id"));
-
+				mMap = googleMap;
+				mMap.getUiSettings().setAllGesturesEnabled(false);
+				String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
+				String [] latlngArray = lanltd.split(",");
+				Log.d("ASDASDASD",Double.parseDouble(latlngArray[0]) + "");
+				LatLng sydney = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
+				mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();

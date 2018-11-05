@@ -159,10 +159,9 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		if (requestCode == PLACE_PICKER_REQUEST) {
 			if (resultCode == RESULT_OK) {
 				Place place = PlacePicker.getPlace(this,data);
-				if(place.getName() != null) {
+				if (place.getName() != null) {
 					savePlace(place);
 				}
-				mAutoCompleteLocation.setText(place.getName());
 			}
 		}
 	}
@@ -299,15 +298,22 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mProgressBar.setVisibility(View.VISIBLE);
 		String uri = String.format(AppConfig.URL_GET_LOCATIONS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
-		places.add(new eu.rkosir.feecollector.entity.Place(0,getResources().getString(R.string.add_event_new_location),null,"",0));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
 				object = new JSONObject(response);
 				JSONArray placesArray = object.getJSONArray("places");
+				places = new ArrayList<>();
+				places.add(new eu.rkosir.feecollector.entity.Place(0,getResources().getString(R.string.add_event_new_location),null,"",0));
 				for(int i = 0; i < placesArray.length(); i++) {
 					JSONObject place = placesArray.getJSONObject(i);
-					places.add(new eu.rkosir.feecollector.entity.Place(place.getInt("id"),place.getString("name"),place.getString("address"),place.getString("latlng"),place.getInt("team_id")));
+					eu.rkosir.feecollector.entity.Place getPlace = new eu.rkosir.feecollector.entity.Place(
+							place.getInt("id"),
+							place.getString("name"),
+							place.getString("address"),
+							place.getString("latlng"),
+							place.getInt("team_id"));
+					places.add(getPlace);
 				}
 
 				ArrayAdapter<eu.rkosir.feecollector.entity.Place> adapter = new ArrayAdapter<eu.rkosir.feecollector.entity.Place>(this,
