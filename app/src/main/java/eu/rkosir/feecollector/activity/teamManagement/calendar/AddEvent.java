@@ -74,6 +74,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private int mDay, mMonth, mYear, mHour, mMinute;
 	private Calendar cStart, cEnd;
 	private AutoCompleteTextView mAutoCompleteLocation;
+	private List<eu.rkosir.feecollector.entity.Place> places;
+	private eu.rkosir.feecollector.entity.Place selectedPlace;
 
 	int PLACE_PICKER_REQUEST = 1;
 
@@ -93,6 +95,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mButton = findViewById(R.id.addNoteButton);
 		mAutoCompleteLocation = findViewById(R.id.choose_location);
 		mAutoCompleteLocation.setInputType(InputType.TYPE_NULL);
+		places = new ArrayList<>();
 		getLocations();
 		mAutoCompleteLocation.setOnTouchListener((arg0, arg1) -> {
 			getLocations();
@@ -108,6 +111,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				} catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
 					e.printStackTrace();
 				}
+			} else {
+				selectedPlace = places.get(position);
 			}
 		});
 
@@ -142,7 +147,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			String title = getIntent().getStringExtra("title");
 			Event event;
 			event = new Event(cStart,String.valueOf(AppConfig.df.format(cStart.getTime())),String.valueOf(AppConfig.df.format(cEnd.getTime())),title, mDescrition.getText().toString(),
-					R.drawable.ic_event_available_black_24dp);
+					R.drawable.ic_event_available_black_24dp,Integer.toString(selectedPlace.getId()));
 			if (attemptToSaveEvent()) {
 				saveEvent(event);
 			}
@@ -294,8 +299,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mProgressBar.setVisibility(View.VISIBLE);
 		String uri = String.format(AppConfig.URL_GET_LOCATIONS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
-		List<eu.rkosir.feecollector.entity.Place> places = new ArrayList<>();
-		places.add(new eu.rkosir.feecollector.entity.Place(0,getResources().getString(R.string.add_event_new_location),null,0));
+		places.add(new eu.rkosir.feecollector.entity.Place(0,getResources().getString(R.string.add_event_new_location),null,"",0));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
@@ -303,7 +307,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				JSONArray placesArray = object.getJSONArray("places");
 				for(int i = 0; i < placesArray.length(); i++) {
 					JSONObject place = placesArray.getJSONObject(i);
-					places.add(new eu.rkosir.feecollector.entity.Place(place.getInt("id"),place.getString("name"),place.getString("address"),place.getInt("team_id")));
+					places.add(new eu.rkosir.feecollector.entity.Place(place.getInt("id"),place.getString("name"),place.getString("address"),place.getString("latlng"),place.getInt("team_id")));
 				}
 
 				ArrayAdapter<eu.rkosir.feecollector.entity.Place> adapter = new ArrayAdapter<eu.rkosir.feecollector.entity.Place>(this,

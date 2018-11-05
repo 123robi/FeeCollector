@@ -169,8 +169,14 @@ public class Events extends Fragment {
 					JSONObject event = eventsArray.getJSONObject(i);
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(AppConfig.parse.parse(event.getString("start")));
-					Event addingEvent = new Event(calendar,event.getString("start"),event.getString("end"),event.getString("name"),event.getString("description"),R.drawable.ic_event_available_black_24dp);
-
+					Event addingEvent = new Event(
+							calendar,event.getString("start"),
+							event.getString("end"),
+							event.getString("name"),
+							event.getString("description"),
+							R.drawable.ic_event_available_black_24dp,
+							event.getString("place_id")
+					);
 					try {
 						mCalendarView.setDate(addingEvent.getCalendar());
 					} catch (OutOfDateRangeException e) {
