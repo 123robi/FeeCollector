@@ -1,16 +1,14 @@
 package eu.rkosir.feecollector.activity.teamManagement.calendar;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,21 +16,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.util.Calendar;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
-import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 
@@ -85,7 +76,6 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				mMap.getUiSettings().setAllGesturesEnabled(false);
 				String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
 				String [] latlngArray = lanltd.split(",");
-				Log.d("ASDASDASD",Double.parseDouble(latlngArray[0]) + "");
 				LatLng sydney = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
 				mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
