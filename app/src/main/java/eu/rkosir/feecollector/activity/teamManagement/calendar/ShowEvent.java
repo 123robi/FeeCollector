@@ -58,7 +58,7 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 		Toast.makeText(this, myEvent.getPlaceId(),Toast.LENGTH_LONG).show();
 
 		mToolbar = findViewById(R.id.back_action_bar);
-		mToolbar.setTitle(myEvent.getDescription());
+		mToolbar.setTitle(myEvent.getName());
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 	}
 
