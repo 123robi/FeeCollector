@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:map="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	tools:context=".activity.teamManagement.calendar.ShowEvent">
+
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:orientation="vertical">
 
-		<include android:id="@+id/back_action_bar" layout="@layout/toolbar"/>
-		<fragment
-		android:id="@+id/map"
-		android:name="com.google.android.gms.maps.SupportMapFragment"
-		android:layout_width="match_parent"
-		android:layout_height="200dp"
-		/>
-	</LinearLayout>
+		<include
+			android:id="@+id/back_action_bar"
+			layout="@layout/toolbar" />
 
-</FrameLayout>
+		<fragment
+			android:id="@+id/map"
+			android:name="com.google.android.gms.maps.SupportMapFragment"
+			android:layout_width="match_parent"
+			android:layout_height="200dp" />
+	</LinearLayout>
+	<com.github.clans.fab.FloatingActionButton
+		android:id="@+id/navigate"
+		app:fab_colorNormal="@color/floating_action_button_main"
+		app:fab_colorPressed="@color/floating_action_button_main_pressed"
+		app:useCompatPadding="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="8dp"
+		android:layout_marginRight="8dp"
+		android:layout_marginLeft="10dp"
+		android:clickable="true"
+		app:layout_anchor="@id/map"
+		app:layout_anchorGravity="bottom|right|end"
+		android:src="@drawable/ic_directions_white_24dp" />
+
+</android.support.design.widget.CoordinatorLayout>

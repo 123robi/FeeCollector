@@ -5,11 +5,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,6 +35,9 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 	private GoogleMap mMap;
 	private Event myEvent;
 	private Toolbar mToolbar;
+	private FloatingActionButton mNavigate;
+	private Place mPlace;
+	private String [] latlngArray;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +55,22 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 			}
 		}
 		Toast.makeText(this, myEvent.getPlaceId(),Toast.LENGTH_LONG).show();
-
+		mNavigate = findViewById(R.id.navigate);
 		mToolbar = findViewById(R.id.back_action_bar);
 		mToolbar.setTitle(myEvent.getName());
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
+		mNavigate.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (mPlace != null) {
+					LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
+					String uri1 = "geo:0,0?q=%f, %f(%s)";
+					Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
+							.format(Locale.US, uri1, destiny.latitude, destiny.longitude, mPlace.getName())));
+					startActivity(navIntent);
+				}
+			}
+		});
 	}
 
 	/**
@@ -71,22 +88,17 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				myEvent.getPlaceId());
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
-			Place place;
 			try {
 				object = new JSONObject(response);
-				place = new Place(object.getInt("id"),object.getString("name"), object.getString("address"), object.getString("latlng"), object.getInt("team_id"));
+				mPlace = new Place(object.getInt("id"),object.getString("name"), object.getString("address"), object.getString("latlng"), object.getInt("team_id"));
 				mMap = googleMap;
 				mMap.getUiSettings().setAllGesturesEnabled(false);
-				String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
-				String [] latlngArray = lanltd.split(",");
+				mMap.getUiSettings().setMapToolbarEnabled(false);
+				String lanltd = mPlace.getLatlng().substring(mPlace.getLatlng().indexOf("(")+1, mPlace.getLatlng().indexOf(")"));
+				latlngArray = lanltd.split(",");
 				LatLng sydney = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
-				mMap.addMarker(new MarkerOptions().position(sydney).title(place.getName()));
+				mMap.addMarker(new MarkerOptions().position(sydney).title(mPlace.getName()));
 				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
-				LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
-				String uri1 = "geo:0,0?q=%f, %f(%s)";
-				Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
-						.format(Locale.US, uri1, destiny.latitude, destiny.longitude, place.getName())));
-					startActivity(navIntent);
 
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
