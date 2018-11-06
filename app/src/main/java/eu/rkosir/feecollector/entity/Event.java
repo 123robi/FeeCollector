@@ -18,20 +18,23 @@ public class Event extends EventDay implements Parcelable {
 	private int imageResouce;
 	private String name;
 	private String description;
+	private String placeId;
 
-	public Event(Calendar day, String startDateTime, String endDateTime, String name, String description, int imageResource) {
+	public Event(Calendar day, String startDateTime, String endDateTime, String name, String description, int imageResource, String placeId) {
 		super(day, imageResource);
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
 		this.imageResouce = imageResource;
 		this.name = name;
 		this.description = description;
+		this.placeId = placeId;
 	}
 
 	private Event(Parcel in) {
 		super((Calendar) in.readSerializable(), in.readInt());
 		name = in.readString();
 		description = in.readString();
+		placeId = in.readString();
 	}
 
 	public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -51,6 +54,7 @@ public class Event extends EventDay implements Parcelable {
 		parcel.writeInt(imageResouce);
 		parcel.writeString(name);
 		parcel.writeString(description);
+		parcel.writeString(placeId);
 	}
 	@Override
 	public int describeContents() {
@@ -95,5 +99,13 @@ public class Event extends EventDay implements Parcelable {
 
 	public void setEndDateTime(String endDateTime) {
 		this.endDateTime = endDateTime;
+	}
+
+	public String getPlaceId() {
+		return placeId;
+	}
+
+	public void setPlaceId(String placeId) {
+		this.placeId = placeId;
 	}
 }

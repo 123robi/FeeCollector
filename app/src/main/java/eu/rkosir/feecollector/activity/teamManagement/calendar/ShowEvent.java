@@ -1,10 +1,15 @@
 package eu.rkosir.feecollector.activity.teamManagement.calendar;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -12,8 +17,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Locale;
+
+import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Event;
+import eu.rkosir.feecollector.entity.Place;
+import eu.rkosir.feecollector.helper.VolleySingleton;
 
 public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 
@@ -36,12 +49,12 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				myEvent = (Event) event;
 			}
 		}
+		Toast.makeText(this, myEvent.getPlaceId(),Toast.LENGTH_LONG).show();
 
 		mToolbar = findViewById(R.id.back_action_bar);
-		mToolbar.setTitle(myEvent.getDescription());
+		mToolbar.setTitle(myEvent.getName());
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 	}
-
 
 	/**
 	 * Manipulates the map once available.
@@ -54,10 +67,38 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 	 */
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
-		mMap = googleMap;
-		mMap.getUiSettings().setAllGesturesEnabled(false);
-		LatLng sydney = new LatLng(-34, 151);
-		mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+		String uri = String.format(AppConfig.URL_GET_PLACE_ID,
+				myEvent.getPlaceId());
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+			JSONObject object = null;
+			Place place;
+			try {
+				object = new JSONObject(response);
+				place = new Place(object.getInt("id"),object.getString("name"), object.getString("address"), object.getString("latlng"), object.getInt("team_id"));
+				mMap = googleMap;
+				mMap.getUiSettings().setAllGesturesEnabled(false);
+				String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
+				String [] latlngArray = lanltd.split(",");
+				LatLng sydney = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
+				mMap.addMarker(new MarkerOptions().position(sydney).title(place.getName()));
+				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+				LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
+				String uri1 = "geo:0,0?q=%f, %f(%s)";
+				Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
+						.format(Locale.US, uri1, destiny.latitude, destiny.longitude, place.getName())));
+					startActivity(navIntent);
+
+			} catch (JSONException e) {
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		});
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+		});
 	}
 }
