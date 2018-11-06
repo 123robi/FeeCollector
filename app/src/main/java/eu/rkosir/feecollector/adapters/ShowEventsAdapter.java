@@ -86,7 +86,6 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		for (Place placeCheck : places) {
 			if (placeCheck.getId() == Integer.parseInt(events.get(position).getPlaceId())) {
 				holder.mEventLocation.setText(placeCheck.getName());
-
 			}
 		}
 	}

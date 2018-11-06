@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.facebook.internal.LockOnGetVariable;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -53,6 +55,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class Events extends Fragment {
 
 	public static final String RESULT = "result";
+	public static final String RESULTPLACE = "resultplace";
 	public static final String EVENT = "event";
 	private static final int ADD_NOTE = 44;
 
@@ -145,6 +148,7 @@ public class Events extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {
 			Event myEventDay = data.getParcelableExtra(RESULT);
+			Place myPlace = data.getParcelableExtra(RESULTPLACE);
 			try {
 				mCalendarView.setDate(myEventDay.getCalendar());
 			} catch (OutOfDateRangeException e) {
@@ -153,6 +157,7 @@ public class Events extends Fragment {
 			mEventDays.add(myEventDay);
 			mEvents.add(myEventDay);
 			mCalendarView.setEvents(mEventDays);
+			mPlaces.add(myPlace);
 		}
 	}
 	private void addEvent(String name) {

@@ -223,6 +223,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
 					Intent returnIntent = new Intent();
 					returnIntent.putExtra(Events.RESULT, event);
+					returnIntent.putExtra(Events.RESULTPLACE, selectedPlace);
 					setResult(Activity.RESULT_OK, returnIntent);
 					finish();
 				} else {
