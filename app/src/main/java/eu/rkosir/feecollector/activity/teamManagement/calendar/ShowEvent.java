@@ -59,16 +59,13 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 		mToolbar = findViewById(R.id.back_action_bar);
 		mToolbar.setTitle(myEvent.getName());
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
-		mNavigate.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (mPlace != null) {
-					LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
-					String uri1 = "geo:0,0?q=%f, %f(%s)";
-					Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
-							.format(Locale.US, uri1, destiny.latitude, destiny.longitude, mPlace.getName())));
-					startActivity(navIntent);
-				}
+		mNavigate.setOnClickListener(view -> {
+			if (mPlace != null) {
+				LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
+				String uri1 = "geo:0,0?q=%f, %f(%s)";
+				Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
+						.format(Locale.US, uri1, destiny.latitude, destiny.longitude, mPlace.getName())));
+				startActivity(navIntent);
 			}
 		});
 	}
