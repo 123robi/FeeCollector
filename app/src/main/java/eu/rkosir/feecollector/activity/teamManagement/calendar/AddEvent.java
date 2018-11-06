@@ -6,8 +6,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -63,14 +67,12 @@ import eu.rkosir.feecollector.helper.VolleySingleton;
 
 
 public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+	private Toolbar mToolbar;
 	private Button mButton;
 	private EditText mDescrition;
-	private TextView mStartsDate;
-	private TextView mStartsTime;
-	private TextView mEndDate;
-	private TextView mEndTime;
 	private ProgressBar mProgressBar;
-	private RelativeLayout mStartsRelative, mEndsRelative;
+	private TextInputEditText mStartsDateTime;
+	private TextInputEditText mEndsDateTime;
 	private int mDay, mMonth, mYear, mHour, mMinute;
 	private Calendar cStart, cEnd;
 	private AutoCompleteTextView mAutoCompleteLocation;
@@ -85,6 +87,13 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_event);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
+		String title = getIntent().getStringExtra("title");
+		mToolbar = findViewById(R.id.back_action_bar);
+		mToolbar.setTitle(title);
+		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
+
+		mButton = findViewById(R.id.addNoteButton);
+		mDescrition = findViewById(R.id.description);
 
 		cStart = Calendar.getInstance();
 		cEnd = Calendar.getInstance();
@@ -92,16 +101,24 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		mMonth = cStart.get(Calendar.MONTH);
 		mDay = cStart.get(Calendar.DAY_OF_MONTH);
 
-		mButton = findViewById(R.id.addNoteButton);
 		mAutoCompleteLocation = findViewById(R.id.choose_location);
 		mAutoCompleteLocation.setInputType(InputType.TYPE_NULL);
-		places = new ArrayList<>();
-		getLocations();
+
+		mStartsDateTime = findViewById(R.id.starts_picker);
+		mStartsDateTime.setText(String.valueOf(getDateFormat(cStart)));
+		mStartsDateTime.append(" " + String.valueOf(getTimeFormat(cStart)));
+
+		mEndsDateTime = findViewById(R.id.ends_picker);
+		mEndsDateTime.setText(String.valueOf(getTimeFormat(cStart)));
+
+
 		mAutoCompleteLocation.setOnTouchListener((arg0, arg1) -> {
+			removeKeyboard();
 			getLocations();
 			mAutoCompleteLocation.showDropDown();
 			return false;
 		});
+
 		mAutoCompleteLocation.setOnItemClickListener((parent, view, position, id) -> {
 			if(position == 0) {
 				mAutoCompleteLocation.setText(null);
@@ -116,42 +133,28 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			}
 		});
 
-
-		mDescrition = findViewById(R.id.description);
-
-		mStartsDate = findViewById(R.id.start_date);
-		mStartsDate.setText(getDateFormat(cStart));
-		mStartsTime = findViewById(R.id.start_time);
-		mStartsTime.setText(getTimeFormat(cStart));
-
-		mEndDate = findViewById(R.id.end_date);
-		mEndDate.setText(getDateFormat(cStart));
-		mEndTime = findViewById(R.id.end_time);
-		mEndTime.setText(String.valueOf(getTimeFormat(cStart)));
-
-		mStartsRelative = findViewById(R.id.starts_picker);
-		mStartsRelative.setOnClickListener(view -> {
+		mStartsDateTime.setOnClickListener(view -> {
 			new DatePickerDialog(AddEvent.this, AddEvent.this, mYear, mMonth, mDay).show();
 		});
 
-		mEndsRelative = findViewById(R.id.end_picker);
-		mEndsRelative.setOnClickListener(view -> {
+		mEndsDateTime.setOnClickListener(view -> {
 			new TimePickerDialog(AddEvent.this, (timePicker, hour, minute) -> {
 				cEnd.set(Calendar.HOUR_OF_DAY,hour);
 				cEnd.set(Calendar.MINUTE,minute);
-				mEndTime.setText(String.valueOf(getTimeFormat(cEnd)));
+				mEndsDateTime.setText(String.valueOf(getTimeFormat(cEnd)));
 			}, mHour, mMinute, true).show();
 		});
 
 		mButton.setOnClickListener(v -> {
-			String title = getIntent().getStringExtra("title");
-			Event event;
-			event = new Event(cStart,String.valueOf(AppConfig.df.format(cStart.getTime())),String.valueOf(AppConfig.df.format(cEnd.getTime())),title, mDescrition.getText().toString(),
-					R.drawable.ic_event_available_black_24dp,Integer.toString(selectedPlace.getId()));
 			if (attemptToSaveEvent()) {
+				Event event = new Event(cStart,String.valueOf(AppConfig.df.format(cStart.getTime())),String.valueOf(AppConfig.df.format(cEnd.getTime())),title, mDescrition.getText().toString(),
+						R.drawable.ic_event_available_black_24dp,Integer.toString(selectedPlace.getId()));
 				saveEvent(event);
 			}
 		});
+
+		places = new ArrayList<>();
+		getLocations();
 	}
 
 	@Override
@@ -257,8 +260,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	@Override
 	public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 		cStart.set(year, month, day);
-		mStartsDate.setText(getDateFormat(cStart));
-		mEndDate.setText(getDateFormat(cStart));
+		mStartsDateTime.setText(getDateFormat(cStart));
 		mHour = cStart.get(Calendar.HOUR_OF_DAY);
 		mMinute = cStart.get(Calendar.MINUTE);
 		TimePickerDialog timePickerDialog = new TimePickerDialog(AddEvent.this, AddEvent.this, mHour, mMinute, true);
@@ -269,7 +271,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	public void onTimeSet(TimePicker timePicker, int hour, int minute) {
 		cStart.set(Calendar.HOUR_OF_DAY,hour);
 		cStart.set(Calendar.MINUTE,minute);
-		mStartsTime.setText(getTimeFormat(cStart));
+		mStartsDateTime.append(" " + getTimeFormat(cStart));
 	}
 	private String getDateFormat(Calendar c) {
 		String comma = ", ";
@@ -359,5 +361,16 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			return false;
 		} else
 			return true;
+	}
+
+	/**
+	 * Remove keyboard when clicking on edit Text where no keyboard is needed e.g. location picker
+	 */
+	private void removeKeyboard() {
+		View view = this.getCurrentFocus();
+		if (view != null) {
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
 	}
 }

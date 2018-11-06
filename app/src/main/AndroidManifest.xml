@@ -50,7 +50,8 @@
 		<activity
 			android:name=".activity.teamManagement.AddMember"
 			android:theme="@style/AppTheme.NoActionBar" />
-		<activity android:name=".activity.teamManagement.calendar.AddEvent" />
+		<activity android:name=".activity.teamManagement.calendar.AddEvent"
+			android:theme="@style/AppTheme.NoActionBar"/>
 
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
