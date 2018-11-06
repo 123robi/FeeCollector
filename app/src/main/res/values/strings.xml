@@ -123,4 +123,5 @@
 	<string name="floating_action_button_match">Match</string>
 	<string name="floating_action_button_training">Training</string>
 	<string name="title_activity_show_events">Map</string>
+	<string name="add_event_description">Description</string>
 </resources>
