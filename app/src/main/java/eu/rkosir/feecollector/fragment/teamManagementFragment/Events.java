@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import eu.rkosir.feecollector.activity.teamManagement.calendar.AddEvent;
 import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.adapters.ShowEventsAdapter;
 import eu.rkosir.feecollector.entity.Event;
+import eu.rkosir.feecollector.entity.Place;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
@@ -61,6 +63,7 @@ public class Events extends Fragment {
 	private CalendarView mCalendarView;
 	private List<EventDay> mEventDays = new ArrayList<>();
 	private List<Event> mEvents = new ArrayList<>();
+	private List<Place> mPlaces = new ArrayList<>();
 	private FrameLayout mFrameLayout;
 	private TabLayout mTabLayout;
 	private Toolbar mToolbar;
@@ -117,6 +120,7 @@ public class Events extends Fragment {
 		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRANING));
 
 		getEvents();
+		getLocations();
 
 		mCalendarView.setOnDayClickListener(eventDay -> {
 			List<Event> events = new ArrayList<>();
@@ -125,7 +129,7 @@ public class Events extends Fragment {
 					events.add(event);
 				}
 			}
-			mAdapter = new ShowEventsAdapter(events,getApplicationContext());
+			mAdapter = new ShowEventsAdapter(events,mPlaces,getApplicationContext());
 			mRecyclerView.setAdapter(mAdapter);
 			mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 			mAdapter.setOnItemClickListener(position -> {
@@ -199,7 +203,41 @@ public class Events extends Fragment {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
-		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+	}
+	/**
+	 * Sending a Volley GET Request to get locations using 1 parameter: team_name
+	 */
+	private void getLocations() {
+		String uri = String.format(AppConfig.URL_GET_LOCATIONS,
+				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				JSONArray placesArray = object.getJSONArray("places");
+				mPlaces = new ArrayList<>();
+				mPlaces.add(new eu.rkosir.feecollector.entity.Place(0,getResources().getString(R.string.add_event_new_location),null,"",0));
+				for(int i = 0; i < placesArray.length(); i++) {
+					JSONObject place = placesArray.getJSONObject(i);
+					eu.rkosir.feecollector.entity.Place getPlace = new eu.rkosir.feecollector.entity.Place(
+							place.getInt("id"),
+							place.getString("name"),
+							place.getString("address"),
+							place.getString("latlng"),
+							place.getInt("team_id"));
+					mPlaces.add(getPlace);
+				}
+
+
+			} catch (JSONException e) {
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		});
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
 	}
 }

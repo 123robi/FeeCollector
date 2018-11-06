@@ -1,6 +1,7 @@
 package eu.rkosir.feecollector;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class AppConfig {
 	public static final String URL_LOGIN = "http://rkosir.eu/usersApi/login";
@@ -30,6 +31,7 @@ public class AppConfig {
 
 	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	public static SimpleDateFormat dayFormat = new SimpleDateFormat("E", Locale.getDefault());
 
 	//HTTP METHODS
 	public static final String POST = "POST";

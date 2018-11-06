@@ -19,13 +19,26 @@
 		android:textColor="@color/white"/>
 
 	<TextView
-		android:id="@+id/event_time"
+		android:id="@+id/event_description"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentStart="true"
 		android:layout_alignParentTop="true"
-		android:layout_marginStart="121dp"
-		android:text="asd"
+		android:layout_alignStart="@+id/event_location"
+		android:textSize="22sp"
+		android:maxLength="20"
+		android:ellipsize="end"
+		android:textStyle="bold" />
+
+	<TextView
+		android:id="@+id/event_location"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBottom="@+id/event_name"
+		android:layout_alignParentStart="true"
+		android:layout_marginStart="120dp"
+		android:drawableStart="@drawable/ic_location_on_black_24dp"
+		android:maxLength="20"
+		android:ellipsize="end"
 		android:textSize="15sp"
 		android:textStyle="italic" />
 
@@ -43,7 +56,6 @@
 			android:id="@+id/date"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="asd"
 			android:textSize="22sp"
 			android:textStyle="bold" />
 
@@ -51,7 +63,6 @@
 			android:id="@+id/date_name"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="asd"
 			android:textSize="14sp" />
 	</LinearLayout>
 </RelativeLayout>

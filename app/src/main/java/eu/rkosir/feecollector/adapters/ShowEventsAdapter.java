@@ -14,11 +14,14 @@ import java.util.List;
 
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Event;
+import eu.rkosir.feecollector.entity.Place;
 
 public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.ViewHolder> {
 	private List<Event> events;
+	private List<Place> places;
 	private Context context;
 	private ShowEventsAdapter.OnItemClickListener mListener;
+	private Place place;
 
 	public interface OnItemClickListener {
 		void onItemClick(int position);
@@ -27,21 +30,24 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		mListener = listener;
 	}
 
-	public ShowEventsAdapter(List<Event> events, Context context) {
+	public ShowEventsAdapter(List<Event> events,List<Place> places, Context context) {
 		this.events = events;
+		this.places = places;
 		this.context = context;
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public TextView mEventName;
 		public TextView mEventDescription;
+		public TextView mEventLocation;
 		public TextView mEventDate;
 		public TextView mEventDay;
 
 		public ViewHolder(View itemView, ShowEventsAdapter.OnItemClickListener listener) {
 			super(itemView);
 			mEventName = itemView.findViewById(R.id.event_name);
-			mEventDescription = itemView.findViewById(R.id.event_time);
+			mEventDescription = itemView.findViewById(R.id.event_description);
+			mEventLocation = itemView.findViewById(R.id.event_location);
 			mEventDate = itemView.findViewById(R.id.date);
 			mEventDay = itemView.findViewById(R.id.date_name);
 
@@ -77,6 +83,12 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		holder.mEventDescription.setText(events.get(position).getDescription());
 		holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getCalendar().getTimeInMillis())));
 		holder.mEventDate.setText(String.valueOf(events.get(position).getCalendar().get(Calendar.DATE)));
+		for (Place placeCheck : places) {
+			if (placeCheck.getId() == Integer.parseInt(events.get(position).getPlaceId())) {
+				holder.mEventLocation.setText(placeCheck.getName());
+
+			}
+		}
 	}
 
 	@Override

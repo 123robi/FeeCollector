@@ -1,11 +1,14 @@
 package eu.rkosir.feecollector.activity.teamManagement.calendar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,6 +25,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import eu.rkosir.feecollector.AppConfig;
@@ -38,6 +45,13 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 	private FloatingActionButton mNavigate;
 	private Place mPlace;
 	private String [] latlngArray;
+	private TextView mEventDate;
+	private TextView mEventDay;
+	private TextView mStartsTime;
+	private TextView mEndsTime;
+	private TextView mDescription;
+	private TextView mName;
+	private TextView mLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +68,12 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				myEvent = (Event) event;
 			}
 		}
-		Toast.makeText(this, myEvent.getPlaceId(),Toast.LENGTH_LONG).show();
-		mNavigate = findViewById(R.id.navigate);
+
 		mToolbar = findViewById(R.id.back_action_bar);
 		mToolbar.setTitle(myEvent.getName());
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
+
+		mNavigate = findViewById(R.id.navigate);
 		mNavigate.setOnClickListener(view -> {
 			if (mPlace != null) {
 				LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
@@ -68,6 +83,29 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				startActivity(navIntent);
 			}
 		});
+
+		mEventDate = findViewById(R.id.date);
+		mEventDay = findViewById(R.id.date_name);
+		mStartsTime = findViewById(R.id.startsTime);
+		mEndsTime = findViewById(R.id.endsTime);
+		mDescription = findViewById(R.id.description);
+		mName = findViewById(R.id.name);
+		mLocation = findViewById(R.id.location);
+
+		Calendar calendarStart = Calendar.getInstance();
+		Calendar calendarEnd = Calendar.getInstance();
+		try {
+			calendarStart.setTime(AppConfig.parse.parse(myEvent.getStartDateTime()));
+			calendarEnd.setTime(AppConfig.parse.parse(myEvent.getEndDateTime()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		mEventDay.setText(AppConfig.dayFormat.format(new Date(myEvent.getCalendar().getTimeInMillis())));
+		mEventDate.setText(String.valueOf(myEvent.getCalendar().get(Calendar.DATE)));
+		mStartsTime.setText(String.valueOf(getTimeFormat(calendarStart)));
+		mEndsTime.setText(String.valueOf(getTimeFormat(calendarEnd)));
+		mDescription.setText(myEvent.getDescription());
+		mName.setText(myEvent.getName());
 	}
 
 	/**
@@ -96,7 +134,8 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 				LatLng sydney = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
 				mMap.addMarker(new MarkerOptions().position(sydney).title(mPlace.getName()));
 				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
-
+				mLocation.setText(mPlace.getName());
+				mLocation.append("\n" + mPlace.getAddress());
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
@@ -109,5 +148,12 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
 		});
+	}
+
+	private String getTimeFormat(Calendar c) {
+		Date date = c.getTime();
+		DateFormat timeFormatter =
+				DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
+		return timeFormatter.format(date);
 	}
 }

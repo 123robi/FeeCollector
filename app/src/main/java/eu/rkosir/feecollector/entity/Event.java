@@ -35,6 +35,8 @@ public class Event extends EventDay implements Parcelable {
 		name = in.readString();
 		description = in.readString();
 		placeId = in.readString();
+		startDateTime = in.readString();
+		endDateTime = in.readString();
 	}
 
 	public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -55,6 +57,8 @@ public class Event extends EventDay implements Parcelable {
 		parcel.writeString(name);
 		parcel.writeString(description);
 		parcel.writeString(placeId);
+		parcel.writeString(startDateTime);
+		parcel.writeString(endDateTime);
 	}
 	@Override
 	public int describeContents() {
