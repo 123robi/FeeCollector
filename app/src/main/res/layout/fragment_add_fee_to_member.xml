@@ -43,5 +43,5 @@
 		app:fab_colorNormal="@color/floating_action_button_main"
 		app:fab_colorPressed="@color/floating_action_button_main_pressed"
 		app:useCompatPadding="true"
-		android:src="@drawable/ic_add_black_24dp" />
+		android:src="@drawable/ic_add_white_24dp" />
 </FrameLayout>
