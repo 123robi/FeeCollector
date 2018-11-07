@@ -8,10 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
@@ -38,7 +42,7 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public TextView mEventName;
-		public TextView mEventDescription;
+		public TextView mEventTime;
 		public TextView mEventLocation;
 		public TextView mEventDate;
 		public TextView mEventDay;
@@ -46,7 +50,7 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		public ViewHolder(View itemView, ShowEventsAdapter.OnItemClickListener listener) {
 			super(itemView);
 			mEventName = itemView.findViewById(R.id.event_name);
-			mEventDescription = itemView.findViewById(R.id.event_description);
+			mEventTime = itemView.findViewById(R.id.event_time);
 			mEventLocation = itemView.findViewById(R.id.event_location);
 			mEventDate = itemView.findViewById(R.id.date);
 			mEventDay = itemView.findViewById(R.id.date_name);
@@ -80,7 +84,17 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		} else {
 			holder.mEventName.setBackground(context.getDrawable(R.drawable.shape_training));
 		}
-		holder.mEventDescription.setText(events.get(position).getDescription());
+		Calendar calendarStart = Calendar.getInstance();
+		Calendar calendarEnd = Calendar.getInstance();
+		try {
+			calendarStart.setTime(AppConfig.parse.parse(events.get(position).getStartDateTime()));
+			calendarEnd.setTime(AppConfig.parse.parse(events.get(position).getEndDateTime()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		holder.mEventTime.setText(String.valueOf(getTimeFormat(calendarStart)));
+		holder.mEventTime.append(" - ");
+		holder.mEventTime.append(String.valueOf(getTimeFormat(calendarEnd)));
 		holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getCalendar().getTimeInMillis())));
 		holder.mEventDate.setText(String.valueOf(events.get(position).getCalendar().get(Calendar.DATE)));
 		for (Place placeCheck : places) {
@@ -93,5 +107,11 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 	@Override
 	public int getItemCount() {
 		return events.size();
+	}
+	private String getTimeFormat(Calendar c) {
+		Date date = c.getTime();
+		DateFormat timeFormatter =
+				DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
+		return timeFormatter.format(date);
 	}
 }
