@@ -73,6 +73,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private ProgressBar mProgressBar;
 	private TextInputEditText mStartsDateTime;
 	private TextInputEditText mEndsDateTime;
+	private TextInputLayout mStartsDateLayout,mEndsDateLayout;
 	private int mDay, mMonth, mYear, mHour, mMinute;
 	private Calendar cStart, cEnd;
 	private AutoCompleteTextView mAutoCompleteLocation;
@@ -118,6 +119,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			mAutoCompleteLocation.showDropDown();
 			return false;
 		});
+		mAutoCompleteLocation.setOnDismissListener(() -> mAutoCompleteLocation.setError(null));
 
 		mAutoCompleteLocation.setOnItemClickListener((parent, view, position, id) -> {
 			if(position == 0) {
@@ -139,6 +141,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
 		mEndsDateTime.setOnClickListener(view -> {
 			new TimePickerDialog(AddEvent.this, (timePicker, hour, minute) -> {
+				cEnd.set(cStart.get(Calendar.YEAR),cStart.get(Calendar.MONTH),cStart.get(Calendar.DATE));
 				cEnd.set(Calendar.HOUR_OF_DAY,hour);
 				cEnd.set(Calendar.MINUTE,minute);
 				mEndsDateTime.setText(String.valueOf(getTimeFormat(cEnd)));
@@ -346,7 +349,11 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	 * @return true|false
 	 */
 	private boolean attemptToSaveEvent() {
+		mStartsDateLayout = findViewById(R.id.starts_error);
+		mEndsDateLayout = findViewById(R.id.ends_error);
 		mAutoCompleteLocation.setError(null);
+		mEndsDateLayout.setError(null);
+		mStartsDateLayout.setError(null);
 		String location = mAutoCompleteLocation.getText().toString();
 
 		boolean cancel = false;
@@ -354,6 +361,11 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		if (TextUtils.isEmpty(location)) {
 			mAutoCompleteLocation.setError(getString(R.string.error_field_required), null);
 			focusView = mAutoCompleteLocation;
+			cancel = true;
+		} else if(cEnd.compareTo(cStart) == 0 || cEnd.compareTo(cStart) < 0) {
+			mStartsDateLayout.setError(getString(R.string.error_wrong_time));
+			mEndsDateLayout.setError(" ");
+			focusView = mStartsDateLayout;
 			cancel = true;
 		}
 

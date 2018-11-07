@@ -56,6 +56,7 @@
 	<string name="error_pass_too_short">Password should contain at least 5 characters</string>
 	<string name="error_password_not_match">Passwords should match</string>
 	<string name="error_current_password_not_match">Password is incorrect</string>
+	<string name="error_wrong_time">Check the start and end time.</string>
 
 	<!--Toast Messages-->
 	<string name="toast_successful_registration">You have been successfully registered</string>
