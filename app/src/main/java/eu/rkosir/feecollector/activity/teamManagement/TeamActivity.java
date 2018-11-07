@@ -108,13 +108,7 @@ public class TeamActivity extends AppCompatActivity {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		ClipboardManager clipboard = (ClipboardManager)
-				this.getSystemService(Context.CLIPBOARD_SERVICE);
-		if (item.getItemId() == R.id.copy) {
-			Toast.makeText(this, "Your team_id " + SharedPreferencesSaver.getLastTeamID(this) + " has been copied to clipboard",Toast.LENGTH_LONG).show();
-			ClipData clip = ClipData.newPlainText("id",SharedPreferencesSaver.getLastTeamID(this));
-			clipboard.setPrimaryClip(clip);
-		} else if (item.getItemId() == R.id.delete_team) {
+		if (item.getItemId() == R.id.delete_team) {
 			AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
 			View mView = getLayoutInflater().inflate(R.layout.dialog_delete_team,null);
 			EditText team_name = mView.findViewById(R.id.team_name);

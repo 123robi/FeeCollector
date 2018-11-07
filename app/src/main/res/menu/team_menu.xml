@@ -6,9 +6,4 @@
 		android:title="@string/team_menu_delete_team"
 		android:icon="@drawable/ic_delete_white_24dp"
 		app:showAsAction="ifRoom"/>
-	<item
-		android:id="@+id/copy"
-		android:title="@string/team_menu_copy_to_clipboard"
-		android:icon="@drawable/ic_content_copy_white_24dp"
-		app:showAsAction="ifRoom"/>
 </menu>

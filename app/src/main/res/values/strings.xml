@@ -94,7 +94,6 @@
 	<string name="team_delete_team">Delete team</string>
 	<string name="team_wrong_team_name">Team names does not match.</string>
 	<!--Team Activity toolbar-->
-	<string name="team_menu_copy_to_clipboard">Copy to a clipboard</string>
 	<string name="team_menu_delete_team">Delete team</string>
 
 	<!--Add fee to a member Fragment-->
