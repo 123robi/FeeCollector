@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,6 +31,7 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
@@ -38,7 +44,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	private TextInputLayout mInputNameLayout, mInputAddressLayout, mInputPhoneNumberLayout, mInputCurrentPasswordLayout,mInputPasswordLayout, mInputPasswordCheckLayout;
 	private TextInputEditText mInputName, mInputAddress, mInputPhoneNumber, mInputCurrentPassword, mInputPassword, mInputPasswordCheck;
 
-	private Button mButton;
 	private ProgressBar mProgressBar;
 
 	private String name, address, phoneNumber;
@@ -51,18 +56,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
 		facebook_login = SharedPreferencesSaver.getLogin(this);
 		initialize();
-		mButton.setOnClickListener(view -> {
-			if(mInputCurrentPassword.getText().toString().length() > 0 || mInputPassword.getText().toString().length() > 0 || mInputPasswordCheck.getText().toString().length() > 0) {
-				if (attemptToChangePassword()) {
-					changePassword(facebook_login);
-				}
-			}
-			else if (!address.equals(mInputAddress.getText().toString()) || !address.equals(mInputAddress.getText().toString()) || !address.equals(mInputAddress.getText().toString())){
-				if (attemptToChangeDetails()) {
-					changeDetails();
-				}
-			}
-		});
+
 	}
 
 	/**
@@ -79,12 +73,40 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		}
 	}
 
+	/**
+	 * Inflate a menu with team_menu
+	 * @param menu
+	 * @return
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.save_menu,menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.save) {
+			if(mInputCurrentPassword.getText().toString().length() > 0 || mInputPassword.getText().toString().length() > 0 || mInputPasswordCheck.getText().toString().length() > 0) {
+				if (attemptToChangePassword()) {
+					changePassword(facebook_login);
+				}
+			}
+			else if (!address.equals(mInputAddress.getText().toString()) || !address.equals(mInputAddress.getText().toString()) || !address.equals(mInputAddress.getText().toString())){
+				if (attemptToChangeDetails()) {
+					changeDetails();
+				}
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	private void initialize() {
 		mToolbar = findViewById(R.id.back_action_bar);
 		mToolbar.setTitle(R.string.settings_change_password);
+		setSupportActionBar(mToolbar);
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
-
-		mButton = findViewById(R.id.confirmButton);
 
 		mInputName = findViewById(R.id.name);
 		name = new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("name");
