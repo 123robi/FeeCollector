@@ -73,18 +73,34 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
 		mButton = findViewById(R.id.confirmButton);
+
 		mInputname = findViewById(R.id.name);
+		mInputname.setText(new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("name"));
 		mInputNameLayout = findViewById(R.id.name_layout);
+
 		mInputAddress = findViewById(R.id.address);
+		String address = new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("address");
+		if (!address.equals("null")) {
+			mInputAddress.setText(address);
+		}
 		mInputAddressLayout = findViewById(R.id.address_layout);
+
 		mInputPhoneNumber = findViewById(R.id.phone_number);
+		String phoneNumber = new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("phone_number");
+		if (!phoneNumber.equals("null")) {
+			mInputPhoneNumber.setText(phoneNumber);
+		}
 		mInputPhoneNumberLayout = findViewById(R.id.phone_number_layout);
+
 		mInputPassword = findViewById(R.id.password);
 		mInputPasswordLayout = findViewById(R.id.password_layout);
+
 		mInputPasswordCheck = findViewById(R.id.password_check);
 		mInputPasswordCheckLayout = findViewById(R.id.password_check_layout);
+
 		mInputCurrentPassword = findViewById(R.id.current_password);
 		mInputCurrentPasswordLayout = findViewById(R.id.current_password_layout);
+
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		if (facebook_login) {
