@@ -15,6 +15,9 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -68,7 +71,6 @@ import eu.rkosir.feecollector.helper.VolleySingleton;
 
 public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 	private Toolbar mToolbar;
-	private Button mButton;
 	private EditText mDescrition;
 	private ProgressBar mProgressBar;
 	private TextInputEditText mStartsDateTime;
@@ -80,7 +82,8 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private List<eu.rkosir.feecollector.entity.Place> places;
 	private eu.rkosir.feecollector.entity.Place selectedPlace;
 
-	int PLACE_PICKER_REQUEST = 1;
+	private int PLACE_PICKER_REQUEST = 1;
+	private String title;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -88,12 +91,12 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_event);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
-		String title = getIntent().getStringExtra("title");
+		title = getIntent().getStringExtra("title");
 		mToolbar = findViewById(R.id.back_action_bar);
 		mToolbar.setTitle(title);
+		setSupportActionBar(mToolbar);
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
-		mButton = findViewById(R.id.addNoteButton);
 		mDescrition = findViewById(R.id.description);
 
 		cStart = Calendar.getInstance();
@@ -148,14 +151,6 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 			}, mHour, mMinute, true).show();
 		});
 
-		mButton.setOnClickListener(v -> {
-			if (attemptToSaveEvent()) {
-				Event event = new Event(cStart,String.valueOf(AppConfig.df.format(cStart.getTime())),String.valueOf(AppConfig.df.format(cEnd.getTime())),title, mDescrition.getText().toString(),
-						R.drawable.ic_event_available_black_24dp,Integer.toString(selectedPlace.getId()));
-				saveEvent(event);
-			}
-		});
-
 		places = new ArrayList<>();
 		getLocations();
 	}
@@ -170,6 +165,29 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 				}
 			}
 		}
+	}
+	/**
+	 * Inflate a menu with team_menu
+	 * @param menu
+	 * @return
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.save_menu,menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.save) {
+			if (attemptToSaveEvent()) {
+				Event event = new Event(cStart,String.valueOf(AppConfig.df.format(cStart.getTime())),String.valueOf(AppConfig.df.format(cEnd.getTime())),title, mDescrition.getText().toString(),
+						R.drawable.ic_event_available_black_24dp,Integer.toString(selectedPlace.getId()));
+				saveEvent(event);
+			}
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void savePlace(Place place) {
