@@ -9,15 +9,19 @@ import java.util.Date;
 public class User implements Parcelable{
 	private String name;
 	private String email;
+	private String phoneNumber;
+	private String address;
 	private String password;
 	private Date created_at, updated_at;
 	private String facebook_json;
 	private String role;
 	private int id;
 
-	public User(String name, String email, String password) {
+	public User(String name, String email, String phoneNumber, String address ,String password) {
 		this.name = name;
 		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.address = address;
 		this.password = password;
 		this.created_at = new Date();
 		this.role = null;
@@ -30,6 +34,8 @@ public class User implements Parcelable{
 	protected User(Parcel in) {
 		name = in.readString();
 		email = in.readString();
+		phoneNumber = in.readString();
+		address = in.readString();
 		password = in.readString();
 		facebook_json = in.readString();
 		role = in.readString();
@@ -57,6 +63,8 @@ public class User implements Parcelable{
 	public void writeToParcel(Parcel parcel, int i) {
 		parcel.writeString(name);
 		parcel.writeString(email);
+		parcel.writeString(phoneNumber);
+		parcel.writeString(address);
 		parcel.writeString(password);
 	}
 	public String getName() {
@@ -105,6 +113,22 @@ public class User implements Parcelable{
 
 	public void setFacebook_json(String facebook_json) {
 		this.facebook_json = facebook_json;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	@Override

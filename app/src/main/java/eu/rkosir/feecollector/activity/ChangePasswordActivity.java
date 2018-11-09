@@ -2,6 +2,8 @@ package eu.rkosir.feecollector.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -35,9 +37,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 	private Toolbar mToolbar;
-	private EditText mInputPassword;
-	private EditText mInputPasswordCheck;
-	private EditText mInputCurrentPassword;
+	private TextInputLayout mInputNameLayout, mInputAddressLayout, mInputPhoneNumberLayout, mInputCurrentPasswordLayout,mInputPasswordLayout, mInputPasswordCheckLayout;
+	private TextInputEditText mInputname, mInputAddress, mInputPhoneNumber, mInputCurrentPassword, mInputPassword, mInputPasswordCheck;
+
 	private Button mButton;
 	private ProgressBar mProgressBar;
 	private boolean facebook_login;
@@ -76,14 +78,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
 		mButton = findViewById(R.id.confirmButton);
-		mInputPassword = findViewById(R.id.password_change);
-		mInputPasswordCheck = findViewById(R.id.password_change_check);
+		mInputname = findViewById(R.id.name);
+		mInputNameLayout = findViewById(R.id.name_layout);
+		mInputAddress = findViewById(R.id.address);
+		mInputAddressLayout = findViewById(R.id.address_layout);
+		mInputPhoneNumber = findViewById(R.id.phone_number);
+		mInputPhoneNumberLayout = findViewById(R.id.phone_number_layout);
+		mInputPassword = findViewById(R.id.password);
+		mInputPasswordLayout = findViewById(R.id.password_layout);
+		mInputPasswordCheck = findViewById(R.id.password_check);
+		mInputPasswordCheckLayout = findViewById(R.id.password_check_layout);
 		mInputCurrentPassword = findViewById(R.id.current_password);
+		mInputCurrentPasswordLayout = findViewById(R.id.current_password_layout);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		if (facebook_login) {
-			findViewById(R.id.current_password_label).setVisibility(View.GONE);
-			mInputCurrentPassword.setVisibility(View.GONE);
+			mInputCurrentPasswordLayout.setVisibility(View.GONE);
 		}
 	}
 
@@ -92,11 +102,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	 * @return boolean
 	 */
 	private boolean attemptToRegister() {
-		mInputPasswordCheck.setError(null);
-		mInputPassword.setError(null);
+		mInputPasswordCheckLayout.setError(null);
+		mInputPasswordLayout.setError(null);
 		String currentPassword = null;
 		if (!facebook_login) {
-			mInputCurrentPassword.setError(null);
+			mInputCurrentPasswordLayout.setError(null);
 			currentPassword = mInputCurrentPassword.getText().toString();
 		}
 		String password = mInputPassword.getText().toString();
@@ -106,24 +116,24 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		View focusView = null;
 
 		if (TextUtils.isEmpty(currentPassword) && !facebook_login) {
-			mInputCurrentPassword.setError(getString(R.string.error_field_required),null);
-			focusView = mInputCurrentPassword;
+			mInputCurrentPasswordLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputCurrentPasswordLayout;
 			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
-			mInputPassword.setError(getString(R.string.error_field_required),null);
-			focusView = mInputPassword;
+			mInputPasswordLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputPasswordLayout;
 			cancel = true;
 		} else if (password.length() < AppConfig.PASSWORD_LENGTH) {
-			mInputPassword.setError(getString(R.string.error_pass_too_short),null);
-			focusView = mInputPassword;
+			mInputPasswordLayout.setError(getString(R.string.error_pass_too_short));
+			focusView = mInputPasswordLayout;
 			cancel = true;
 		} else if (TextUtils.isEmpty(passwordCheck)) {
-			mInputPasswordCheck.setError(getString(R.string.error_field_required));
-			focusView = mInputPasswordCheck;
+			mInputPasswordCheckLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputPasswordCheckLayout;
 			cancel = true;
 		} else if (!password.equals(passwordCheck)) {
-			mInputPasswordCheck.setError(getString(R.string.error_password_not_match));
-			focusView = mInputPasswordCheck;
+			mInputPasswordCheckLayout.setError(getString(R.string.error_password_not_match));
+			focusView = mInputPasswordCheckLayout;
 			cancel = true;
 		}
 

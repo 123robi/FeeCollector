@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -44,7 +46,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class Registration_2nd_step extends Fragment {
 
-	private EditText mInputName;
+	private TextInputEditText mInputName, mInputAddress, mInputPhoneNumber;
+	private TextInputLayout mInputNameLayout, mInputAddressLayout, mInputPhoneNumberLayout;
 	private EditText mInputPassword;
 	private Button mCreateUserbtn;
 	private ProgressBar mProgressBar;
@@ -61,6 +64,11 @@ public class Registration_2nd_step extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_registration_2nd_step, container, false);
 		mInputName = view.findViewById(R.id.name);
+		mInputNameLayout = view.findViewById(R.id.name_layout);
+		mInputAddress = view.findViewById(R.id.address);
+		mInputAddressLayout = view.findViewById(R.id.address_layout);
+		mInputPhoneNumber = view.findViewById(R.id.phone_number);
+		mInputPhoneNumberLayout = view.findViewById(R.id.phone_number_layout);
 		mInputPassword = view.findViewById(R.id.password);
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		mCreateUserbtn = view.findViewById(R.id.createUser);
@@ -72,11 +80,19 @@ public class Registration_2nd_step extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mCreateUserbtn.setOnClickListener(v -> {
-			User user = new User(mInputName.getText().toString(),mEmail, mInputPassword.getText().toString());
-			if(attemptToRegister() && InternetConnection.getInstance(getApplicationContext()).isOnline()) {
-				createUser(user);
-			} else {
-				Toast.makeText(getApplicationContext(), R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
+			if(attemptToRegister()) {
+				if(InternetConnection.getInstance(getApplicationContext()).isOnline()) {
+					User user = new User(
+							mInputName.getText().toString(),
+							mEmail,
+							mInputPhoneNumber.getText().toString(),
+							mInputAddress.getText().toString(),
+							mInputPassword.getText().toString()
+					);
+					createUser(user);
+				} else {
+					Toast.makeText(getApplicationContext(), R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 	}
@@ -112,6 +128,8 @@ public class Registration_2nd_step extends Fragment {
 				Map<String,String> params = new HashMap<>();
 				params.put("name", user.getName());
 				params.put("email", user.getEmail());
+				params.put("phone_number", user.getPhoneNumber());
+				params.put("address", user.getAddress());
 				params.put("password", user.getPassword());
 				params.put("real_user",Integer.toString(1));
 				return params;
@@ -131,18 +149,30 @@ public class Registration_2nd_step extends Fragment {
 	 * @return true|false
 	 */
 	private boolean attemptToRegister() {
-		mInputName.setError(null);
+		mInputNameLayout.setError(null);
+		mInputAddressLayout.setError(null);
+		mInputPhoneNumberLayout.setError(null);
 		mInputPassword.setError(null);
 
 		String name = mInputName.getText().toString();
+		String address = mInputAddress.getText().toString();
+		String phoneNumber = mInputPhoneNumber.getText().toString();
 		String password = mInputPassword.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
 		if (TextUtils.isEmpty(name)) {
-			mInputName.setError(getString(R.string.error_field_required));
-			focusView = mInputName;
+			mInputNameLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputNameLayout;
+			cancel = true;
+		} else if (TextUtils.isEmpty(address)) {
+			mInputAddressLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputAddressLayout;
+			cancel = true;
+		} else if (TextUtils.isEmpty(phoneNumber)) {
+			mInputPhoneNumberLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputPhoneNumberLayout;
 			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
 			mInputPassword.setError(getString(R.string.error_field_required),null);

@@ -174,7 +174,8 @@ public class LoginActivity extends AppCompatActivity {
 				(object, response) -> {
 					User user = null;
 					try {
-						user = new User(object.getString("name"),object.getString("email"), generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+						Log.d("OBJECT",object + "");
+						user = new User(object.getString("name"),object.getString("email"), "null", "null",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
 						user.setFacebook_json(object.toString());
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -245,6 +246,7 @@ public class LoginActivity extends AppCompatActivity {
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {
+				Log.d("ASDASDASD",response);
 				object = new JSONObject(response);
 				JsonObjectConverter converter = new JsonObjectConverter(object.getString("user"));
 				if(!object.getBoolean("error")) {
@@ -279,8 +281,12 @@ public class LoginActivity extends AppCompatActivity {
 				Map<String,String> params = new HashMap<>();
 				params.put("name", user.getName());
 				params.put("email", user.getEmail());
+				params.put("phone_number", user.getPhoneNumber());
+				params.put("address", user.getAddress());
 				params.put("password", user.getPassword());
 				params.put("facebook_json", user.getFacebook_json());
+				params.put("real_user", Integer.toString(1));
+				Log.d("PARAMS",params.toString());
 				return params;
 			}
 		};

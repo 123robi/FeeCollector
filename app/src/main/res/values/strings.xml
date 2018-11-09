@@ -83,7 +83,7 @@
 	<string name="confirm">Confirm</string>
 
 	<!--Infomration header-->
-	<string name="information_addPassword">Since you have registered with facebook, we recommend you to set a password in case facebook login fails. Thanks! <u><b>Password Settings</b></u></string>
+	<string name="information_addPassword">Please set yout password and additional information. Thanks! <u><b>User Settings</b></u></string>
 	<!--Show Teams activity-->
 	<string name="show_teams_members">Members:</string>
 	<!--Team Activity-->
@@ -132,4 +132,11 @@
 	<string name="floating_action_button_match">Match</string>
 	<string name="floating_action_button_training">Training</string>
 	<string name="title_activity_show_events">Map</string>
+	<string name="registration_phone_number">Phone number</string>
+	<string name="registration_address">Address</string>
+	<string name="registration_card_header_user_info">User Information</string>
+	<string name="registration_card_header_credentials">Login credentials</string>
+	<string name="settings_password">Password</string>
+	<string name="settings_password_repeat">Repeat password</string>
+	<string name="settings_password_current">Current password</string>
 </resources>
