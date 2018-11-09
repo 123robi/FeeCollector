@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -96,24 +97,33 @@ public class Events extends Fragment {
 
 		mMenu.setOnMenuButtonClickListener(v -> {
 			if (mFrameLayout.getVisibility() == View.GONE) {
-				mMenu.open(true);
-				mFrameLayout.setVisibility(View.VISIBLE);
-				mTabLayout.setAlpha(0.7f);
-				mToolbar.setAlpha(0.7f);
+				openMenu();
 			} else {
-				mMenu.close(true);
-				mFrameLayout.setVisibility(View.GONE);
-				mTabLayout.setAlpha(1f);
-				mToolbar.setAlpha(1f);
+				closeMenu();
+			}
+		});
+
+		ViewPager pager = getActivity().findViewById(R.id.content);
+		pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+				closeMenu();
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				closeMenu();
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+				closeMenu();
 			}
 		});
 
 		mFrameLayout.setOnClickListener(v -> {
 			if(mMenu.isOpened()) {
-				mMenu.close(true);
-				mFrameLayout.setVisibility(View.GONE);
-				mTabLayout.setAlpha(1f);
-				mToolbar.setAlpha(1f);
+				closeMenu();
 			}
 		});
 
@@ -244,5 +254,17 @@ public class Events extends Fragment {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
+	}
+	private void openMenu() {
+		mMenu.open(true);
+		mFrameLayout.setVisibility(View.VISIBLE);
+		mTabLayout.setAlpha(0.7f);
+		mToolbar.setAlpha(0.7f);
+	}
+	private void closeMenu() {
+		mMenu.close(true);
+		mFrameLayout.setVisibility(View.GONE);
+		mTabLayout.setAlpha(1f);
+		mToolbar.setAlpha(1f);
 	}
 }

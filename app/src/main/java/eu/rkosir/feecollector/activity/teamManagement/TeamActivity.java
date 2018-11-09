@@ -23,6 +23,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +62,7 @@ public class TeamActivity extends AppCompatActivity {
 
 		mTabLayout = findViewById(R.id.navigation_top);
 		mViewPager = findViewById(R.id.content);
+
 		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new Summary(), "");
 		adapter.addFragment(new Events(), "");
