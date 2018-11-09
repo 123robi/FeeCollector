@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.teamManagement.AddMember;
+import eu.rkosir.feecollector.activity.teamManagement.UserDetail;
+import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.adapters.ShowMembersAdapter;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -100,7 +102,9 @@ public class ShowMembers extends Fragment {
 					mRecyclerView.setAdapter(mAdapter);
 
 					mAdapter.setOnItemClickListener(position -> {
-						Toast.makeText(getApplicationContext(), membersList.get(position).getName(),Toast.LENGTH_LONG).show();
+						Intent intent = new Intent(getApplicationContext(), UserDetail.class);
+						intent.putExtra("user", membersList.get(position));
+						startActivity(intent);
 					});
 				} else {
 					Toast.makeText(getApplicationContext(),object.getString("error_msg"),Toast.LENGTH_LONG).show();
