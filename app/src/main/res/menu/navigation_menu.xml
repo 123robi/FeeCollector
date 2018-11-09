@@ -2,17 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<group android:checkableBehavior="single">
 		<item
-			android:id="@+id/dashboard"
-			android:title="@string/navigation_menu_dashboard"
-			android:icon="@drawable/ic_info_24dp"/>
+			android:id="@+id/teams"
+			android:title="@string/navigation_menu_your_teams"
+			android:icon="@drawable/ic_directions_bike_black_24dp"/>
 		<item
 		android:id="@+id/create_team"
 		android:title="@string/navigation_menu_create_team"
 		android:icon="@drawable/ic_add_black_24dp"/>
-		<item
-		android:id="@+id/teams"
-		android:title="@string/navigation_menu_your_teams"
-		android:icon="@drawable/ic_directions_bike_black_24dp"/>
 	</group>
     <group android:id="@+id/group2" android:checkableBehavior="single">
 		<item

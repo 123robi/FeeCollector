@@ -11,9 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,7 +26,6 @@ import org.json.JSONObject;
 
 import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.fragment.dashboardFragment.CreateTeam;
-import eu.rkosir.feecollector.fragment.dashboardFragment.MainFragment;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.fragment.dashboardFragment.ShowTeams;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
@@ -63,7 +60,7 @@ public class DashboardActivity extends AppCompatActivity {
 		}
 		setContentView(R.layout.activity_dashboard);
 		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new MainFragment(), "dashboard").commit();
+			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new ShowTeams(), "dashboard").commit();
 		}
 		initialize();
 		mConverter = new JsonObjectConverter(SharedPreferencesSaver.getUser(this));
@@ -82,10 +79,10 @@ public class DashboardActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 			mDrawerLayout.closeDrawer(GravityCompat.START);
-		} else if (!(getCurrentFragment() instanceof MainFragment)) {
-			mNavigationView.setCheckedItem(R.id.dashboard);
+		} else if (!(getCurrentFragment() instanceof ShowTeams)) {
+			mNavigationView.setCheckedItem(R.id.teams);
 			super.onBackPressed();
-		} else if (getCurrentFragment() instanceof MainFragment) {
+		} else if (getCurrentFragment() instanceof ShowTeams) {
 			new AlertDialog.Builder(this)
 					.setTitle(R.string.dialog_closing_application_title)
 					.setMessage(R.string.dialog_closing_application_message)
@@ -116,7 +113,7 @@ public class DashboardActivity extends AppCompatActivity {
 		mToggle.syncState();
 
 		mNavigationView = findViewById(R.id.nav_view);
-		mNavigationView.setCheckedItem(R.id.dashboard);
+		mNavigationView.setCheckedItem(R.id.teams);
 		mNavigationViewListener();
 
 		if (!SharedPreferencesSaver.getLogin(this)) {
@@ -178,14 +175,6 @@ public class DashboardActivity extends AppCompatActivity {
 			Fragment fragment = null;
 
 			switch (id) {
-				case R.id.dashboard: {
-					if (getCurrentFragment() instanceof MainFragment) {
-						mDrawerLayout.closeDrawer(GravityCompat.START);
-					} else {
-						mFragmentManager.popBackStackImmediate(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-					}
-					break;
-				}
 				case R.id.create_team: {
 					if (getCurrentFragment() instanceof CreateTeam) {
 						mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -236,12 +225,10 @@ public class DashboardActivity extends AppCompatActivity {
 	 */
 	@Override
 	protected void onResume() {
-		if (getCurrentFragment() instanceof  MainFragment) {
-			mNavigationView.setCheckedItem(R.id.dashboard);
-		} else if (getCurrentFragment() instanceof  CreateTeam) {
+		if (getCurrentFragment() instanceof  CreateTeam) {
 			mNavigationView.setCheckedItem(R.id.create_team);
-		} else if (getCurrentFragment() instanceof AddFeeToMember) {
-			mNavigationView.setCheckedItem(R.id.add_fee);
+		} else if (getCurrentFragment() instanceof ShowTeams) {
+			mNavigationView.setCheckedItem(R.id.teams);
 		}
 		super.onResume();
 	}
