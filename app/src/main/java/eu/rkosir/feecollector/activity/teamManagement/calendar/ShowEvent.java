@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.zxing.common.StringUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,7 +107,11 @@ public class ShowEvent extends FragmentActivity implements OnMapReadyCallback {
 		mEventDate.setText(String.valueOf(myEvent.getCalendar().get(Calendar.DATE)));
 		mStartsTime.setText(String.valueOf(getTimeFormat(calendarStart)));
 		mEndsTime.setText(String.valueOf(getTimeFormat(calendarEnd)));
-		mDescription.setText(myEvent.getDescription());
+		if (!TextUtils.isEmpty(myEvent.getDescription())) {
+			mDescription.setText(myEvent.getDescription());
+		} else {
+			findViewById(R.id.card_description).setVisibility(View.GONE);
+		}
 		mName.setText(myEvent.getName());
 	}
 
