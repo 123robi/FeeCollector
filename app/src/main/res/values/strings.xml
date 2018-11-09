@@ -3,6 +3,7 @@
 	<string name="api_key">AIzaSyDe_7atIUkDg9kljPsVDF6NnRrAzg2yOyo</string>
 	<string name="facebook_app_id">513037572471782</string>
 	<string name="facebook_login_protocol">fb513037572471782</string>
+	<string name="save">Save</string>
 
 	<!--Registration Page-->
 	<string name="registration_sign_in">Already have an account?</string>
@@ -12,6 +13,10 @@
 	<string name="registration_register">Register</string>
 	<string name="registration_password_label">Password</string>
 	<string name="registration_next">Next</string>
+	<string name="registration_phone_number">Phone number</string>
+	<string name="registration_address">Address</string>
+	<string name="registration_card_header_user_info">User Information</string>
+	<string name="registration_card_header_credentials">Login credentials</string>
 
 	<!--Login Page/ChangePassword-->
 	<string name="login_sign_in">Sign in</string>
@@ -49,6 +54,10 @@
 	<string name="settings_change_password">Change Password</string>
 	<string name="settings_notification">Notifications</string>
 	<string name="settings_title">Settings</string>
+	<string name="settings_password">Password</string>
+	<string name="settings_password_repeat">Repeat password</string>
+	<string name="settings_password_current">Current password</string>
+	<string name="settings_edit_user">Edit User</string>
 
 	<!--ERRORS-->
 	<string name="error_field_required">This field is required</string>
@@ -71,6 +80,8 @@
 	<string name="toast_successful_adding_member_to_team">You have successfully added member to a team.</string>
 	<string name="toast_successful_event_creation">Your event has been successfully added.</string>
 	<string name="toast_user_found">User with this email has already register, please login.</string>
+	<string name="toast_successful_user_update">You have updated your data</string>
+	<string name="toast_unsuccessful_user_update">There was a problem saving data to the database</string>
 
 	<!--Alert Dialogs-->
 	<string name="dialog_closing_application_title">Closing Application...</string>
@@ -93,6 +104,9 @@
 	<string name="team_copy_to_clipboard">Copy connection number</string>
 	<string name="team_delete_team">Delete team</string>
 	<string name="team_wrong_team_name">Team names does not match.</string>
+	<string name="floating_action_button_event">Event</string>
+	<string name="floating_action_button_match">Match</string>
+	<string name="floating_action_button_training">Training</string>
 	<!--Team Activity toolbar-->
 	<string name="team_menu_delete_team">Delete team</string>
 
@@ -127,19 +141,4 @@
 	<string name="show_event_name">Name</string>
 	<string name="show_event_ends">Ends</string>
 	<string name="show_event_starts">Starts</string>
-
-	<string name="floating_action_button_event">Event</string>
-	<string name="floating_action_button_match">Match</string>
-	<string name="floating_action_button_training">Training</string>
-	<string name="title_activity_show_events">Map</string>
-	<string name="registration_phone_number">Phone number</string>
-	<string name="registration_address">Address</string>
-	<string name="registration_card_header_user_info">User Information</string>
-	<string name="registration_card_header_credentials">Login credentials</string>
-	<string name="settings_password">Password</string>
-	<string name="settings_password_repeat">Repeat password</string>
-	<string name="settings_password_current">Current password</string>
-	<string name="toast_successful_user_update">You have updated your data</string>
-	<string name="toast_unsuccessful_user_update">There was a problem saving data to the database</string>
-	<string name="save">Save</string>
 </resources>

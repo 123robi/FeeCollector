@@ -59,8 +59,7 @@
 			android:value="@string/api_key" />
 
 		<activity
-			android:name=".activity.teamManagement.calendar.ShowEvent"
-			android:label="@string/title_activity_show_events" />
+			android:name=".activity.teamManagement.calendar.ShowEvent"/>
 		<activity android:name=".activity.teamManagement.UserDetail"
 			android:theme="@style/AppTheme.NoActionBar" />
 	</application>

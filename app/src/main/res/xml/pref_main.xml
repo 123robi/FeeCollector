@@ -2,7 +2,7 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:key="asdasd">
-	<Preference android:title="@string/settings_change_password" >
+	<Preference android:title="@string/settings_edit_user" >
 		<intent
 			android:action="change_password"/>
 	</Preference>
