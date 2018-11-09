@@ -139,4 +139,6 @@
 	<string name="settings_password">Password</string>
 	<string name="settings_password_repeat">Repeat password</string>
 	<string name="settings_password_current">Current password</string>
+	<string name="toast_successful_user_update">You have updated your data</string>
+	<string name="toast_unsuccessful_user_update">There was a problem saving data to the database</string>
 </resources>
