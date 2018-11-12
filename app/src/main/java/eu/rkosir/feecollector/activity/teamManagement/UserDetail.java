@@ -1,7 +1,13 @@
 package eu.rkosir.feecollector.activity.teamManagement;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,17 +15,19 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 
 public class UserDetail extends AppCompatActivity {
-
+	static final int REQUEST_IMAGE_CAPTURE = 1;
 	private User myUser;
 	private Toolbar mToolbar;
 	private TextView mName, mTeam, mAge, mEmail, mNumber, mAddress, mBirthday;
 	private RelativeLayout mRelativeLayoutEmail, mRelativeLayoutAddress, mRelativeLayoutPhoneNumber;
+	private CircleImageView mCircleImageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,8 @@ public class UserDetail extends AppCompatActivity {
 		mNumber = findViewById(R.id.phone_number);
 		mAddress = findViewById(R.id.address);
 		mBirthday = findViewById(R.id.birthday);
+
+		mCircleImageView = findViewById(R.id.user_picture);
 
 		mRelativeLayoutEmail = findViewById(R.id.relative_email);
 		mRelativeLayoutEmail.setOnClickListener(view -> {
@@ -70,7 +80,12 @@ public class UserDetail extends AppCompatActivity {
 				startActivity(phoneIntent);
 			}
 		});
-
+		mCircleImageView.setOnClickListener(view -> {
+			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+				startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+			}
+		});
 		if (myUser.getName() != null || !myUser.getName().equals("")) {
 			mName.setText(myUser.getName());
 		}
@@ -91,5 +106,14 @@ public class UserDetail extends AppCompatActivity {
 			mRelativeLayoutAddress.setVisibility(View.GONE);
 		}
 		// #todo birhtday date
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+			Bundle extras = data.getExtras();
+			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			mCircleImageView.setImageBitmap(imageBitmap);
+		}
 	}
 }
