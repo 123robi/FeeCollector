@@ -11,14 +11,35 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.entity.User;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.VolleySingleton;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class UserDetail extends AppCompatActivity {
@@ -28,6 +49,7 @@ public class UserDetail extends AppCompatActivity {
 	private TextView mName, mTeam, mAge, mEmail, mNumber, mAddress, mBirthday;
 	private RelativeLayout mRelativeLayoutEmail, mRelativeLayoutAddress, mRelativeLayoutPhoneNumber;
 	private CircleImageView mCircleImageView;
+	private Bitmap bitmap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +103,14 @@ public class UserDetail extends AppCompatActivity {
 			}
 		});
 		mCircleImageView.setOnClickListener(view -> {
-			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			/*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-			}
+			}*/
+			Intent selectPicture = new Intent();
+			selectPicture.setType("image/*");
+			selectPicture.setAction(Intent.ACTION_GET_CONTENT);
+			startActivityForResult(selectPicture, REQUEST_IMAGE_CAPTURE);
 		});
 		if (myUser.getName() != null || !myUser.getName().equals("")) {
 			mName.setText(myUser.getName());
@@ -110,10 +136,51 @@ public class UserDetail extends AppCompatActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-			Bundle extras = data.getExtras();
-			Bitmap imageBitmap = (Bitmap) extras.get("data");
-			mCircleImageView.setImageBitmap(imageBitmap);
+		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
+//			Bundle extras = data.getExtras();
+//			Bitmap imageBitmap = (Bitmap) extras.get("data");
+//			mCircleImageView.setImageBitmap(imageBitmap);
+			Uri path = data.getData();
+			try {
+				bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
+				uploadImage();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
+	}
+
+	private void uploadImage(){
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/usersApi/insertImage", response -> {
+			JSONObject object = null;
+
+			try {
+				object = new JSONObject(response);
+				mCircleImageView.setImageBitmap(bitmap);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("image", imageToString(bitmap));
+				params.put("email", myUser.getEmail());
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+	}
+
+	private String imageToString(Bitmap bitmap) {
+		ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+		byte[] imgBytes = byteArrayOutputStream.toByteArray();
+		return Base64.encodeToString(imgBytes,Base64.DEFAULT);
 	}
 }
