@@ -26,9 +26,13 @@ public class User implements Parcelable{
 		this.created_at = new Date();
 		this.role = null;
 	}
-	public User(String name, int id) {
+	public User(String name, String email, String phoneNumber, String address) {
 		this.name = name;
-		this.id = id;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.address = address;
+		this.created_at = new Date();
+		this.role = null;
 	}
 
 	protected User(Parcel in) {
@@ -134,14 +138,6 @@ public class User implements Parcelable{
 	@Override
 	public String toString() {
 		return getName();
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getRole() {

@@ -87,13 +87,23 @@ public class ShowMembers extends Fragment {
 				if (!object.getBoolean("error")) {
 					ArrayList<User> membersList = new ArrayList<>();
 					JSONObject admin = object.getJSONArray("admin").getJSONObject(0);
-					User addUser = new User(admin.getString("name"),admin.getInt("id"));
+					User addUser = new User(
+							admin.getString("name"),
+							admin.getString("email"),
+							admin.getString("phone_number"),
+							admin.getString("address")
+					);
 					addUser.setRole("Manager");
 					membersList.add(addUser);
 					JSONArray membersArray = object.getJSONArray("members");
 					for(int i = 0; i < membersArray.length(); i++) {
 						JSONObject user = membersArray.getJSONObject(i);
-						User member = new User(user.getString("name"),user.getInt("id"));
+						User member = new User(
+								user.getString("name"),
+								user.getString("email"),
+								user.getString("phone_number"),
+								user.getString("address")
+						);
 						member.setRole("Player");
 						membersList.add(member);
 					}
