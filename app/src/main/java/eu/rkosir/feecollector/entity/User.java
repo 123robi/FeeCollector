@@ -15,7 +15,6 @@ public class User implements Parcelable{
 	private Date created_at, updated_at;
 	private String facebook_json;
 	private String role;
-	private int id;
 
 	public User(String name, String email, String phoneNumber, String address ,String password) {
 		this.name = name;
@@ -35,17 +34,6 @@ public class User implements Parcelable{
 		this.role = null;
 	}
 
-	protected User(Parcel in) {
-		name = in.readString();
-		email = in.readString();
-		phoneNumber = in.readString();
-		address = in.readString();
-		password = in.readString();
-		facebook_json = in.readString();
-		role = in.readString();
-		id = in.readInt();
-	}
-
 	public static final Creator<User> CREATOR = new Creator<User>() {
 		@Override
 		public User createFromParcel(Parcel in) {
@@ -57,7 +45,15 @@ public class User implements Parcelable{
 			return new User[size];
 		}
 	};
-
+	protected User(Parcel in) {
+		name = in.readString();
+		email = in.readString();
+		phoneNumber = in.readString();
+		address = in.readString();
+		password = in.readString();
+		facebook_json = in.readString();
+		role = in.readString();
+	}
 	@Override
 	public int describeContents() {
 		return 0;
@@ -70,6 +66,8 @@ public class User implements Parcelable{
 		parcel.writeString(phoneNumber);
 		parcel.writeString(address);
 		parcel.writeString(password);
+		parcel.writeString(facebook_json);
+		parcel.writeString(role);
 	}
 	public String getName() {
 		return name;
