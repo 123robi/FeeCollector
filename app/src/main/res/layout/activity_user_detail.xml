@@ -4,10 +4,224 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".activity.teamManagement.UserDetail">
+	tools:context=".activity.teamManagement.UserDetail"
+	android:orientation="vertical"
+	>
 
 	<include
 		android:id="@+id/back_action_bar"
 		layout="@layout/toolbar" />
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:padding="4dp">
 
+		<android.support.v7.widget.CardView
+			android:id="@+id/cardview"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:elevation="100dp"
+			app:cardBackgroundColor="@android:color/white"
+			app:cardCornerRadius="8dp">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="50dp"
+					android:gravity="center_vertical"
+					android:paddingStart="25dp"
+					android:paddingEnd="25dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/user_detail_contant_information"
+						android:textColor="@color/colorPrimary"
+						android:textSize="18sp"/>
+				</LinearLayout>
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@android:color/darker_gray" />
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingBottom="10dp"
+					android:paddingTop="10dp">
+
+					<de.hdodenhof.circleimageview.CircleImageView
+						android:id="@+id/header_profile_pic"
+						android:layout_width="80dp"
+						android:layout_height="80dp"
+						android:layout_alignParentStart="true"
+						android:layout_alignParentTop="true"
+						android:layout_marginStart="18dp"
+						android:src="@mipmap/ic_launcher" />
+
+					<TextView
+						android:id="@+id/player_name"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignTop="@+id/header_profile_pic"
+						android:layout_centerHorizontal="true"
+						android:text="Robert Kosir"
+						android:textSize="20sp"
+						android:textStyle="bold" />
+
+					<TextView
+						android:id="@+id/player_team"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_above="@+id/player_age"
+						android:layout_alignStart="@+id/player_name"
+						android:text="FBC BOROVNICA"
+						android:layout_marginBottom="5dp"
+						android:textSize="14sp" />
+
+					<TextView
+						android:id="@+id/player_age"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textSize="14sp"
+						android:layout_alignBottom="@+id/header_profile_pic"
+						android:layout_alignStart="@+id/player_name"
+						android:text="12 years" />
+
+				</RelativeLayout>
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@android:color/darker_gray" />
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingBottom="15dp"
+					android:paddingEnd="25dp"
+					android:paddingStart="25dp"
+					android:paddingTop="15dp">
+
+					<ImageView
+						android:id="@+id/email_icon"
+						android:layout_width="28dp"
+						android:layout_height="28dp"
+						android:src="@drawable/ic_email_black_24dp" />
+
+					<TextView
+						android:id="@+id/email"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerVertical="true"
+						android:layout_toEndOf="@+id/email_icon"
+						android:text="robikoser@gmail.com"
+						android:gravity="center"
+						android:layout_marginStart="16dp"
+						android:textSize="18sp" />
+				</RelativeLayout>
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@android:color/darker_gray"
+					android:layout_marginStart="69dp"/>
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingBottom="15dp"
+					android:paddingEnd="25dp"
+					android:paddingStart="25dp"
+					android:paddingTop="15dp">
+
+					<ImageView
+						android:id="@+id/phone_number_icon"
+						android:layout_width="28dp"
+						android:layout_height="28dp"
+						android:src="@drawable/ic_phone_black_24dp" />
+
+					<TextView
+						android:id="@+id/phone_number"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerVertical="true"
+						android:layout_toEndOf="@+id/phone_number_icon"
+						android:text="03216871212"
+						android:gravity="center"
+						android:layout_marginStart="16dp"
+						android:textSize="18sp" />
+				</RelativeLayout>
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@android:color/darker_gray"
+					android:layout_marginStart="69dp"/>
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingBottom="15dp"
+					android:paddingEnd="25dp"
+					android:paddingStart="25dp"
+					android:paddingTop="15dp">
+
+					<ImageView
+						android:id="@+id/address_icon"
+						android:layout_width="28dp"
+						android:layout_height="28dp"
+						android:src="@drawable/ic_location_on_black_24dp" />
+
+					<TextView
+						android:id="@+id/address"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerVertical="true"
+						android:layout_toEndOf="@+id/address_icon"
+						android:text="Brezovica pri Borovnici 66"
+						android:gravity="center"
+						android:layout_marginStart="16dp"
+						android:textSize="18sp" />
+				</RelativeLayout>
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@android:color/darker_gray"
+					android:layout_marginStart="69dp"/>
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingBottom="15dp"
+					android:paddingEnd="25dp"
+					android:paddingStart="25dp"
+					android:paddingTop="15dp">
+
+					<ImageView
+						android:id="@+id/birthday_icon"
+						android:layout_width="28dp"
+						android:layout_height="28dp"
+						android:src="@drawable/ic_cake_black_24dp" />
+
+					<TextView
+						android:id="@+id/birthday"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerVertical="true"
+						android:layout_toEndOf="@+id/birthday_icon"
+						android:text="15.09.1997"
+						android:gravity="center"
+						android:layout_marginStart="16dp"
+						android:textSize="18sp" />
+				</RelativeLayout>
+			</LinearLayout>
+		</android.support.v7.widget.CardView>
+	</LinearLayout>
 </LinearLayout>

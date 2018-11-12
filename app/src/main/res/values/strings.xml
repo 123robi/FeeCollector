@@ -141,4 +141,5 @@
 	<string name="show_event_name">Name</string>
 	<string name="show_event_ends">Ends</string>
 	<string name="show_event_starts">Starts</string>
+	<string name="user_detail_contant_information">Contact Information</string>
 </resources>
