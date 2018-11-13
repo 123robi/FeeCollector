@@ -22,6 +22,7 @@ public class AppConfig {
 	public static final String URL_GET_EVENTS = "http://rkosir.eu/FeeCollector/eventsApi/get?connection_number=%1$s";
 	public static final String URL_GET_LOCATIONS = "http://rkosir.eu/FeeCollector/placesApi/getPlaces?connection_number=%1$s";
 	public static final String URL_GET_PLACE_ID = "http://rkosir.eu/FeeCollector/placesApi/getPlaceById?id=%1$s";
+	public static final String ULR_SAVE_IAMGE = "http://rkosir.eu/FeeCollector/usersApi/insertImage";
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";

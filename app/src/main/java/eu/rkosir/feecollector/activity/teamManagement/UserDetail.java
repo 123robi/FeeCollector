@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -150,7 +151,7 @@ public class UserDetail extends AppCompatActivity {
 	private void uploadImage(){
 		mProgressBar.bringToFront();
 		mProgressBar.setVisibility(View.VISIBLE);
-		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/FeeCollector/usersApi/insertImage", response -> {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.ULR_SAVE_IAMGE, response -> {
 			JSONObject object = null;
 
 			try {
