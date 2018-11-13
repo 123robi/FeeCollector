@@ -71,6 +71,7 @@ public class TeamActivity extends AppCompatActivity {
 
 		mViewPager.setAdapter(adapter);
 		mTabLayout.setupWithViewPager(mViewPager);
+		mViewPager.setOffscreenPageLimit(4);
 
 		mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
 		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);

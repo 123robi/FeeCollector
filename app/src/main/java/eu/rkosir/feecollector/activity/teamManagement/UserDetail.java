@@ -1,16 +1,11 @@
 package eu.rkosir.feecollector.activity.teamManagement;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
@@ -19,10 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,15 +28,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.entity.User;
-import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class UserDetail extends AppCompatActivity {
@@ -77,6 +68,8 @@ public class UserDetail extends AppCompatActivity {
 		mBirthday = findViewById(R.id.birthday);
 
 		mCircleImageView = findViewById(R.id.user_picture);
+		String imageUrl = "http://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
+		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).into(mCircleImageView);
 
 		mRelativeLayoutEmail = findViewById(R.id.relative_email);
 		mRelativeLayoutEmail.setOnClickListener(view -> {
@@ -151,7 +144,7 @@ public class UserDetail extends AppCompatActivity {
 	}
 
 	private void uploadImage(){
-		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/usersApi/insertImage", response -> {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/FeeCollector/usersApi/insertImage", response -> {
 			JSONObject object = null;
 
 			try {
@@ -182,7 +175,7 @@ public class UserDetail extends AppCompatActivity {
 
 	private String imageToString(Bitmap bitmap) {
 		ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG,30,byteArrayOutputStream);
+		bitmap.compress(Bitmap.CompressFormat.JPEG,10,byteArrayOutputStream);
 		byte[] imgBytes = byteArrayOutputStream.toByteArray();
 		return Base64.encodeToString(imgBytes,Base64.DEFAULT);
 	}

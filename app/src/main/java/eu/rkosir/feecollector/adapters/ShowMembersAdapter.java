@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.User;
 
-public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.ViewHolder>{
+public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.ViewHolder> {
 	private ArrayList<User> users;
 	private Context context;
 	private ShowTeamsAdapter.OnItemClickListener mListener;
@@ -29,17 +32,19 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private TextView mMembers;
 		private TextView mRole;
+		private CircleImageView mImage;
 
 		public ViewHolder(View itemView, ShowTeamsAdapter.OnItemClickListener listener) {
 			super(itemView);
 			mMembers = itemView.findViewById(R.id.members);
 			mRole = itemView.findViewById(R.id.role);
+			mImage = itemView.findViewById(R.id.image);
 
 			itemView.setOnClickListener(view -> {
 				if (listener != null) {
 					int position = getAdapterPosition();
 					if (position != RecyclerView.NO_POSITION) {
-						listener.onItemClick(position );
+						listener.onItemClick(position);
 					}
 				}
 			});
@@ -55,7 +60,7 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 	@Override
 	public ShowMembersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_member_item, parent, false);
-		ShowMembersAdapter.ViewHolder viewHolder = new ShowMembersAdapter.ViewHolder(v,mListener);
+		ShowMembersAdapter.ViewHolder viewHolder = new ShowMembersAdapter.ViewHolder(v, mListener);
 		return viewHolder;
 	}
 
@@ -65,6 +70,8 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 		if (users.get(position).getRole() != null) {
 			holder.mRole.setText(users.get(position).getRole());
 		}
+		String imageUrl = "http://rkosir.eu/images/" + users.get(position).getEmail() + ".jpg";
+		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).into(holder.mImage);
 	}
 
 	@Override
