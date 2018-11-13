@@ -1,6 +1,7 @@
 package eu.rkosir.feecollector.adapters;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -71,7 +72,7 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 			holder.mRole.setText(users.get(position).getRole());
 		}
 		String imageUrl = "http://rkosir.eu/images/" + users.get(position).getEmail() + ".jpg";
-		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).into(holder.mImage);
+		Picasso.get().load(imageUrl).resize(200,200).error(R.mipmap.ic_team_member_no_photo).into(holder.mImage);
 	}
 
 	@Override
