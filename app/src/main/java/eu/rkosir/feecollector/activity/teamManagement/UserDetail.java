@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -137,9 +139,6 @@ public class UserDetail extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-//			Bundle extras = data.getExtras();
-//			Bitmap imageBitmap = (Bitmap) extras.get("data");
-//			mCircleImageView.setImageBitmap(imageBitmap);
 			Uri path = data.getData();
 			try {
 				bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
@@ -157,12 +156,16 @@ public class UserDetail extends AppCompatActivity {
 
 			try {
 				object = new JSONObject(response);
-				mCircleImageView.setImageBitmap(bitmap);
+				if (!object.getBoolean("error")) {
+					mCircleImageView.setImageBitmap(bitmap);
+				} else {
+					Toast.makeText(getApplicationContext(),R.string.toast_uploading_error,Toast.LENGTH_LONG).show();
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_size_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {
@@ -179,7 +182,7 @@ public class UserDetail extends AppCompatActivity {
 
 	private String imageToString(Bitmap bitmap) {
 		ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+		bitmap.compress(Bitmap.CompressFormat.JPEG,30,byteArrayOutputStream);
 		byte[] imgBytes = byteArrayOutputStream.toByteArray();
 		return Base64.encodeToString(imgBytes,Base64.DEFAULT);
 	}

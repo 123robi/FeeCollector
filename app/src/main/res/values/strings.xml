@@ -142,4 +142,6 @@
 	<string name="show_event_ends">Ends</string>
 	<string name="show_event_starts">Starts</string>
 	<string name="user_detail_contant_information">Contact Information</string>
+	<string name="toast_uploading_error">There was a problem saving the image</string>
+	<string name="toast_size_error">Please select  lower quality image</string>
 </resources>
