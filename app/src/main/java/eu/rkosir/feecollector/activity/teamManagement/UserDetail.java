@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class UserDetail extends AppCompatActivity {
 	private RelativeLayout mRelativeLayoutEmail, mRelativeLayoutAddress, mRelativeLayoutPhoneNumber;
 	private CircleImageView mCircleImageView;
 	private Bitmap bitmap;
+	private ProgressBar mProgressBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class UserDetail extends AppCompatActivity {
 				myUser = (User) user;
 			}
 		}
+		mProgressBar = findViewById(R.id.pb_loading_indicator);
+
 		mToolbar.setTitle(myUser.getName());
 		mName = findViewById(R.id.player_name);
 		mTeam = findViewById(R.id.player_team);
@@ -144,6 +148,8 @@ public class UserDetail extends AppCompatActivity {
 	}
 
 	private void uploadImage(){
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/FeeCollector/usersApi/insertImage", response -> {
 			JSONObject object = null;
 
@@ -171,6 +177,11 @@ public class UserDetail extends AppCompatActivity {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	private String imageToString(Bitmap bitmap) {
