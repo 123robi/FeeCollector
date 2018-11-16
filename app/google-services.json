@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "704077451661",
+    "firebase_url": "https://feecollector-220715.firebaseio.com",
+    "project_id": "feecollector-220715",
+    "storage_bucket": "feecollector-220715.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704077451661:android:abf5ff8f379740e9",
+        "android_client_info": {
+          "package_name": "eu.rkosir.feecollector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "704077451661-vv1d2jga75bno8elokgabjf4ipmd6pf6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.rkosir.feecollector",
+            "certificate_hash": "8a94673607ec2e7d31ee6dd8be77a4ab7b66c7ca"
+          }
+        },
+        {
+          "client_id": "704077451661-4afh5jolpp790pusfcbuqfms7gerjacf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPGFB2GIM1u6bFp3kkPCegabfvs4cTFmE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "704077451661-4afh5jolpp790pusfcbuqfms7gerjacf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

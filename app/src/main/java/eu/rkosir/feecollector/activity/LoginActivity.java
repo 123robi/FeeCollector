@@ -2,6 +2,7 @@ package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.WifiManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -241,10 +243,11 @@ public class LoginActivity extends AppCompatActivity {
 	 */
 	private void facebookLogin(User user) {
 		mProgressBar.setVisibility(View.VISIBLE);
+		FirebaseInstanceId.getInstance().getToken();
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {
-				Log.d("ASDASDASD",response);
+				Log.d("Response",response);
 				object = new JSONObject(response);
 				JsonObjectConverter converter = new JsonObjectConverter(object.getString("user"));
 				if(!object.getBoolean("error")) {
@@ -279,12 +282,17 @@ public class LoginActivity extends AppCompatActivity {
 				Map<String,String> params = new HashMap<>();
 				params.put("name", user.getName());
 				params.put("email", user.getEmail());
-				params.put("phone_number", user.getPhoneNumber());
-				params.put("address", user.getAddress());
+				if(user.getAddress() != null) {
+					params.put("address", user.getAddress());
+				}
+				if(user.getPhoneNumber() != null) {
+					params.put("phone_number", user.getPhoneNumber());
+				}
 				params.put("password", user.getPassword());
 				params.put("facebook_json", user.getFacebook_json());
 				params.put("real_user", Integer.toString(1));
-				Log.d("PARAMS",params.toString());
+				params.put("fcm", SharedPreferencesSaver.getFcmToken(getApplicationContext()));
+				Log.d("ASDASDASD",params.toString());
 				return params;
 			}
 		};

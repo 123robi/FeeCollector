@@ -20,6 +20,10 @@ public class SharedPreferencesSaver {
 	private final static String TOKEN_KEY_TEAM_NAME = "team_name";
 	private final static String TOKEN_KEY_TEAM_ID = "team_id";
 
+
+	private final static String fcmToken = "fcm_token";
+	private final static String FCM_TOKEN_KEY = "FCM_TOKEN_KEY";
+
 	public static boolean getToken(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(IS_LOGGED, Context.MODE_PRIVATE);
 		return prefs.getBoolean(TOKEN_KEY, false);
@@ -29,6 +33,18 @@ public class SharedPreferencesSaver {
 		SharedPreferences prefs = c.getSharedPreferences(IS_LOGGED, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putBoolean(TOKEN_KEY, token);
+		editor.apply();
+	}
+
+	public static String getFcmToken(Context c) {
+		SharedPreferences prefs = c.getSharedPreferences(fcmToken, Context.MODE_PRIVATE);
+		return prefs.getString(FCM_TOKEN_KEY, "");
+	}
+
+	public static void setFcmToken(Context c, String token) {
+		SharedPreferences prefs = c.getSharedPreferences(fcmToken, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(FCM_TOKEN_KEY, token);
 		editor.apply();
 	}
 
