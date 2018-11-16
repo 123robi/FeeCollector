@@ -132,6 +132,9 @@ public class Registration_2nd_step extends Fragment {
 				params.put("address", user.getAddress());
 				params.put("password", user.getPassword());
 				params.put("real_user",Integer.toString(1));
+				if(SharedPreferencesSaver.getFcmToken(getApplicationContext()) != null) {
+					params.put("fcm",SharedPreferencesSaver.getFcmToken(getApplicationContext()));
+				}
 				return params;
 			}
 		};
