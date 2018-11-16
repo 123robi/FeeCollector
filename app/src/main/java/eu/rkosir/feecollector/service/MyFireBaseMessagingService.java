@@ -42,7 +42,26 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        showNotificationEvent(remoteMessage.getData());
+        if (remoteMessage.getData().get("event") != null && remoteMessage.getData().get("place") != null ) {
+            showNotificationEvent(remoteMessage.getData());
+        } else {
+            messageNotification(remoteMessage.getData().get("message"));
+        }
+    }
+
+    private void messageNotification(String message) {
+        Notification notification = new NotificationCompat.Builder(this, Application.CHANNEL_2_ID)
+                .setAutoCancel(true)
+                .setContentTitle("HAHAHAHAHH")
+                .setContentText(message)
+                .setColor(Color.GREEN)
+                .setSmallIcon(R.drawable.ic_attach_money_white_24dp)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(1, notification);
     }
 
     private void showNotificationEvent(Map<String, String> message) {
@@ -86,7 +105,7 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
                 .setColor(Color.GREEN)
                 .setSmallIcon(R.drawable.ic_attach_money_white_24dp)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setContentIntent(pendingIntent)
                 .build();
 

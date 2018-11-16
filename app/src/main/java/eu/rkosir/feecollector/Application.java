@@ -22,8 +22,16 @@ public class Application extends android.app.Application {
 			);
 			channel1.setDescription("Receiving notifications on new events");
 
+			NotificationChannel channel2 = new NotificationChannel(
+					CHANNEL_2_ID,
+					"New Events",
+					NotificationManager.IMPORTANCE_HIGH
+			);
+			channel2.setDescription("Receiving notifications on new events");
+
 			NotificationManager manager = getSystemService(NotificationManager.class);
 			manager.createNotificationChannel(channel1);
+			manager.createNotificationChannel(channel2);
 		}
 	}
 }
