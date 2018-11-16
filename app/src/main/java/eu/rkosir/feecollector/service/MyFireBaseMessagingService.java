@@ -26,8 +26,16 @@ import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class MyFireBaseMessagingService extends FirebaseMessagingService {
+
+	@Override
+	public void onNewToken(String s) {
+		super.onNewToken(s);
+		SharedPreferencesSaver.setFcmToken(this,s);
+	}
+
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 		showNotificationEvent(remoteMessage.getData());

@@ -2,7 +2,6 @@ package eu.rkosir.feecollector.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.wifi.WifiManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 	private ProgressBar mProgressBar;
 
 	private CallbackManager mCallbackManager;
+	private String firebaseToken;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -123,6 +123,11 @@ public class LoginActivity extends AppCompatActivity {
 		mSignUp = findViewById(R.id.signUp);
 
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
+
+		FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this, instanceIdResult -> {
+			SharedPreferencesSaver.setFcmToken(this,firebaseToken);
+			firebaseToken = instanceIdResult.getToken();
+		});
 	}
 
 	/**
@@ -243,7 +248,6 @@ public class LoginActivity extends AppCompatActivity {
 	 */
 	private void facebookLogin(User user) {
 		mProgressBar.setVisibility(View.VISIBLE);
-		FirebaseInstanceId.getInstance().getToken();
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {

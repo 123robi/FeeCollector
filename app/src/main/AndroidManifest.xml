@@ -64,12 +64,7 @@
 			android:name=".activity.teamManagement.calendar.ShowEvent"/>
 		<activity android:name=".activity.teamManagement.UserDetail"
 			android:theme="@style/AppTheme.NoActionBar" />
-		<service
-			android:name=".service.MyFirebaseInstanceIDService">
-			<intent-filter>
-				<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-			</intent-filter>
-		</service>
+
 		<service
 			android:name=".service.MyFireBaseMessagingService"
 			android:stopWithTask="false">
