@@ -1,13 +1,14 @@
 package eu.rkosir.feecollector.service;
-
-import com.google.firebase.messaging.FirebaseMessagingService;
-
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
-public class MyFirebaseInstanceIDService extends FirebaseMessagingService {
+public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
 	@Override
-	public void onNewToken(String s) {
-		SharedPreferencesSaver.setFcmToken(this,s);
+	public void onTokenRefresh() {
+		super.onTokenRefresh();
+		String token = FirebaseInstanceId.getInstance().getToken();
+		SharedPreferencesSaver.setFcmToken(this,token);
 	}
 }
