@@ -71,7 +71,7 @@
 			</intent-filter>
 		</service>
 		<service
-			android:name=".service.MyFirebaseMessagaingService">
+			android:name=".service.MyFireBaseMessagingService">
 			<intent-filter>
 				<action android:name="com.google.firebase.MESSAGING_EVENT"/>
 			</intent-filter>

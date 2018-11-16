@@ -22,7 +22,7 @@ import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
 
-public class MyFirebaseMessagaingService extends FirebaseMessagingService {
+public class MyFireBaseMessagingService extends FirebaseMessagingService {
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 		showNotificationEvent(remoteMessage.getData());
