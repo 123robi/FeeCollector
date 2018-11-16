@@ -125,8 +125,8 @@ public class LoginActivity extends AppCompatActivity {
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this, instanceIdResult -> {
-			SharedPreferencesSaver.setFcmToken(this,firebaseToken);
 			firebaseToken = instanceIdResult.getToken();
+			SharedPreferencesSaver.setFcmToken(this,firebaseToken);
 		});
 	}
 
@@ -295,8 +295,9 @@ public class LoginActivity extends AppCompatActivity {
 				params.put("password", user.getPassword());
 				params.put("facebook_json", user.getFacebook_json());
 				params.put("real_user", Integer.toString(1));
-				params.put("fcm", SharedPreferencesSaver.getFcmToken(getApplicationContext()));
-				Log.d("ASDASDASD",params.toString());
+				if(SharedPreferencesSaver.getFcmToken(getApplicationContext()) != null) {
+                    params.put("fcm",SharedPreferencesSaver.getFcmToken(getApplicationContext()));
+                }
 				return params;
 			}
 		};
