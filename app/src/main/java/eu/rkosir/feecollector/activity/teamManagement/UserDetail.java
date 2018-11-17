@@ -125,7 +125,7 @@ public class UserDetail extends AppCompatActivity {
 			mRelativeLayoutPhoneNumber.setVisibility(View.GONE);
 		}
 
-		if (myUser.getAddress() != null && !(myUser.getAddress().equals("")) && !(myUser.getPhoneNumber().equals("null"))) {
+		if (myUser.getAddress() != null && !(myUser.getAddress().equals("")) && !(myUser.getAddress().equals("null"))) {
 			mAddress.setText(myUser.getAddress());
 		} else {
 			findViewById(R.id.line_address).setVisibility(View.GONE);
