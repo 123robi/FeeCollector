@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
 						R.dimen.fb_margin_override_bottom));
 
 		mLoginButton_facebook.setReadPermissions(Arrays.asList(
-				"public_profile", "email", "user_birthday", "user_friends"));
+				"public_profile", "email"));
 		mCallbackManager = CallbackManager.Factory.create();
 
 		mSignUp = findViewById(R.id.signUp);
