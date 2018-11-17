@@ -251,7 +251,7 @@
 		</LinearLayout>
 	</RelativeLayout>
 	<com.github.clans.fab.FloatingActionButton
-		android:id="@+id/event"
+		android:id="@+id/send_notification"
 		app:fab_colorNormal="@color/send_message_action_orange"
 		app:fab_colorPressed="@color/send_message_action_orange_pressed"
 		android:layout_width="wrap_content"
