@@ -23,6 +23,7 @@ public class AppConfig {
 	public static final String URL_GET_LOCATIONS = "http://rkosir.eu/FeeCollector/placesApi/getPlaces?connection_number=%1$s";
 	public static final String URL_GET_PLACE_ID = "http://rkosir.eu/FeeCollector/placesApi/getPlaceById?id=%1$s";
 	public static final String ULR_SAVE_IAMGE = "http://rkosir.eu/FeeCollector/usersApi/insertImage";
+	public static final String URL_SEND_MESSAGE_NOTIFICATION = "http://rkosir.eu/FeeCollector/notificationApi/sendMessage";
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
@@ -31,7 +32,7 @@ public class AppConfig {
 
 	public static final int PASSWORD_LENGTH = 5;
 
-	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	public static SimpleDateFormat dayFormat = new SimpleDateFormat("E", Locale.getDefault());
 	public static SimpleDateFormat notificationEventFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm");

@@ -30,6 +30,7 @@ import eu.rkosir.feecollector.activity.DashboardActivity;
 import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class MyFireBaseMessagingService extends FirebaseMessagingService {
@@ -45,17 +46,18 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().get("event") != null && remoteMessage.getData().get("place") != null ) {
             showNotificationEvent(remoteMessage.getData());
         } else {
-            messageNotification(remoteMessage.getData().get("message"));
+            messageNotification(remoteMessage.getData().get("message"), remoteMessage.getData().get("title"));
         }
     }
 
-    private void messageNotification(String message) {
+    private void messageNotification(String message, String title) {
         Notification notification = new NotificationCompat.Builder(this, Application.CHANNEL_2_ID)
                 .setAutoCancel(true)
-                .setContentTitle("HAHAHAHAHH")
-                .setContentText(message)
+                .setContentTitle(title)
+                .setStyle(new NotificationCompat.MessagingStyle(title).setConversationTitle(title)
+                        .addMessage(message,0, new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("name")))
                 .setColor(Color.GREEN)
-                .setSmallIcon(R.drawable.ic_attach_money_white_24dp)
+                .setSmallIcon(R.drawable.messenger_bubble_large_blue)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build();

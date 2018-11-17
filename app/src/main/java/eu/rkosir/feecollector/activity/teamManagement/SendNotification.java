@@ -14,16 +14,33 @@ import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.User;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.VolleySingleton;
 
 public class SendNotification extends AppCompatActivity {
     private static final int SMS_PERMISSION_CODE = 61231;
     private Toolbar mToolbar;
     private User myUser;
     private TextInputEditText mInputTo, mInputMessage;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +54,7 @@ public class SendNotification extends AppCompatActivity {
                 myUser = (User) user;
             }
         }
+        mProgressBar = findViewById(R.id.pb_loading_indicator);
 
         mToolbar = findViewById(R.id.back_action_bar);
         mToolbar.setTitle(getResources().getString(R.string.send_notification_title));
@@ -66,7 +84,8 @@ public class SendNotification extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.save) {
             if (checkPremission(Manifest.permission.SEND_SMS)) {
-                sendSMS(myUser.getPhoneNumber());
+                sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
+                sendNotification(myUser.getEmail(), mInputMessage.getText().toString(), SharedPreferencesSaver.getLastTeamName(this));
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
@@ -75,10 +94,48 @@ public class SendNotification extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void sendSMS(String phoneNumber) {
+    private void sendSMS(String phoneNumber, String message) {
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, mInputMessage.getText().toString(), null, null);
+        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
         Toast.makeText(this, R.string.send_notification_success, Toast.LENGTH_LONG).show();
+    }
+
+    private void sendNotification(String email, String message,String title) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SEND_MESSAGE_NOTIFICATION, response -> {
+            JSONObject object = null;
+
+            try {
+                object = new JSONObject(response);
+                if (!object.getBoolean("error")) {
+                    Toast.makeText(this, R.string.toast_successful_fee_add,Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, error -> {
+            Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("email", email);
+                params.put("title",title);
+                params.put("message", message);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+        requestQueue.add(stringRequest);
+        requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+            if (mProgressBar != null) {
+                mProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private boolean checkPremission(String permission) {
