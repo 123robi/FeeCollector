@@ -1,148 +1,152 @@
 <resources>
-	<string name="app_name">Fee Collector</string>
-	<string name="api_key">AIzaSyDe_7atIUkDg9kljPsVDF6NnRrAzg2yOyo</string>
-	<string name="facebook_app_id">513037572471782</string>
-	<string name="facebook_login_protocol">fb513037572471782</string>
-	<string name="save">Save</string>
+    <string name="app_name">Fee Collector</string>
+    <string name="api_key">AIzaSyDe_7atIUkDg9kljPsVDF6NnRrAzg2yOyo</string>
+    <string name="facebook_app_id">513037572471782</string>
+    <string name="facebook_login_protocol">fb513037572471782</string>
+    <string name="save">Save</string>
 
-	<!--Registration Page-->
-	<string name="registration_sign_in">Already have an account?</string>
-	<string name="registration_name">Name</string>
-	<string name="registration_sign_in_link">Sign in</string>
-	<string name="registration_sign_up_link">Sign up</string>
-	<string name="registration_register">Register</string>
-	<string name="registration_password_label">Password</string>
-	<string name="registration_next">Next</string>
-	<string name="registration_phone_number">Phone number</string>
-	<string name="registration_address">Address</string>
-	<string name="registration_card_header_user_info">User Information</string>
-	<string name="registration_card_header_credentials">Login credentials</string>
+    <!--Registration Page-->
+    <string name="registration_sign_in">Already have an account?</string>
+    <string name="registration_name">Name</string>
+    <string name="registration_sign_in_link">Sign in</string>
+    <string name="registration_sign_up_link">Sign up</string>
+    <string name="registration_register">Register</string>
+    <string name="registration_password_label">Password</string>
+    <string name="registration_next">Next</string>
+    <string name="registration_phone_number">Phone number</string>
+    <string name="registration_address">Address</string>
+    <string name="registration_card_header_user_info">User Information</string>
+    <string name="registration_card_header_credentials">Login credentials</string>
 
-	<!--Login Page/ChangePassword-->
-	<string name="login_sign_in">Sign in</string>
-	<string name="login_sign_up">Don not have an account?</string>
-	<string name="login_email_label">Email</string>
-	<string name="login_password_label">Password</string>
-	<string name="change_password_password_label_check">Repeat password</string>
-	<string name="change_password_current_password">Current Password</string>
-	<string name="change_password_password_label">Password</string>
+    <!--Login Page/ChangePassword-->
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_sign_up">Don not have an account?</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Password</string>
+    <string name="change_password_password_label_check">Repeat password</string>
+    <string name="change_password_current_password">Current Password</string>
+    <string name="change_password_password_label">Password</string>
 
-	<!--Navigation Menu-->
-	<string name="navigation_menu_logout">Log out</string>
-	<string name="navigation_menu_settings">Settings</string>
-	<string name="navigation_menu_dashboard">Dashboard</string>
-	<string name="navigation_menu_your_teams">Your teams</string>
-	<string name="navigation_menu_create_team">Create team</string>
+    <!--Navigation Menu-->
+    <string name="navigation_menu_logout">Log out</string>
+    <string name="navigation_menu_settings">Settings</string>
+    <string name="navigation_menu_dashboard">Dashboard</string>
+    <string name="navigation_menu_your_teams">Your teams</string>
+    <string name="navigation_menu_create_team">Create team</string>
 
-	<!--Dashboard Page-->
-	<string name="dashboard_open">Open</string>
-	<string name="dashboard_close">Close</string>
-	<string name="dashboard_create_team">Create team</string>
-	<string name="dashboard_join_team">Join team</string>
-	<string name="dashboard_team_id_hint">Team ID</string>
-	<string name="dashboard_add_fee">Add Fee</string>
+    <!--Dashboard Page-->
+    <string name="dashboard_open">Open</string>
+    <string name="dashboard_close">Close</string>
+    <string name="dashboard_create_team">Create team</string>
+    <string name="dashboard_join_team">Join team</string>
+    <string name="dashboard_team_id_hint">Team ID</string>
+    <string name="dashboard_add_fee">Add Fee</string>
 
-	<!--Create Team Fragment-->
-	<string name="create_team_team_name">Team Name</string>
-	<string name="create_team_title">Create Team</string>
+    <!--Create Team Fragment-->
+    <string name="create_team_team_name">Team Name</string>
+    <string name="create_team_title">Create Team</string>
 
-	<!--Add fee Fragment-->
-	<string name="add_fee_fee_name">Fee name</string>
-	<string name="add_fee_fee_cost">Cost</string>
+    <!--Add fee Fragment-->
+    <string name="add_fee_fee_name">Fee name</string>
+    <string name="add_fee_fee_cost">Cost</string>
 
-	<!--Settings Page-->
-	<string name="settings_change_password">Change Password</string>
-	<string name="settings_notification">Notifications</string>
-	<string name="settings_title">Settings</string>
-	<string name="settings_password">Password</string>
-	<string name="settings_password_repeat">Repeat password</string>
-	<string name="settings_password_current">Current password</string>
-	<string name="settings_edit_user">Edit User</string>
+    <!--Settings Page-->
+    <string name="settings_change_password">Change Password</string>
+    <string name="settings_notification">Notifications</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_password">Password</string>
+    <string name="settings_password_repeat">Repeat password</string>
+    <string name="settings_password_current">Current password</string>
+    <string name="settings_edit_user">Edit User</string>
 
-	<!--ERRORS-->
-	<string name="error_field_required">This field is required</string>
-	<string name="error_email_validation">Email format is wrong.</string>
-	<string name="error_pass_too_short">Password should contain at least 5 characters</string>
-	<string name="error_password_not_match">Passwords should match</string>
-	<string name="error_current_password_not_match">Password is incorrect</string>
-	<string name="error_wrong_time">Check the start and end time.</string>
+    <!--ERRORS-->
+    <string name="error_field_required">This field is required</string>
+    <string name="error_email_validation">Email format is wrong.</string>
+    <string name="error_pass_too_short">Password should contain at least 5 characters</string>
+    <string name="error_password_not_match">Passwords should match</string>
+    <string name="error_current_password_not_match">Password is incorrect</string>
+    <string name="error_wrong_time">Check the start and end time.</string>
 
-	<!--Toast Messages-->
-	<string name="toast_successful_registration">You have been successfully registered</string>
-	<string name="toast_successful_login">You have been logged in</string>
-	<string name="toast_connection_warning">Please check your connection</string>
-	<string name="toast_successful_change_of_password">Your password has been changed</string>
-	<string name="toast_unknown_error">Unknown error has occured</string>
-	<string name="toast_successful_team_creation">Your team has been successfully created.</string>
-	<string name="toast_successful_joining">You have successfully joined the team.</string>
-	<string name="toast_successful_fee_add">You have successfully added fee to your team.</string>
-	<string name="toast_successful_team_deletion">Your team has been successfully deleted!</string>
-	<string name="toast_successful_adding_member_to_team">You have successfully added member to a team.</string>
-	<string name="toast_successful_event_creation">Your event has been successfully added.</string>
-	<string name="toast_user_found">User with this email has already register, please login.</string>
-	<string name="toast_successful_user_update">You have updated your data</string>
-	<string name="toast_unsuccessful_user_update">There was a problem saving data to the database</string>
+    <!--Toast Messages-->
+    <string name="toast_successful_registration">You have been successfully registered</string>
+    <string name="toast_successful_login">You have been logged in</string>
+    <string name="toast_connection_warning">Please check your connection</string>
+    <string name="toast_successful_change_of_password">Your password has been changed</string>
+    <string name="toast_unknown_error">Unknown error has occured</string>
+    <string name="toast_successful_team_creation">Your team has been successfully created.</string>
+    <string name="toast_successful_joining">You have successfully joined the team.</string>
+    <string name="toast_successful_fee_add">You have successfully added fee to your team.</string>
+    <string name="toast_successful_team_deletion">Your team has been successfully deleted!</string>
+    <string name="toast_successful_adding_member_to_team">You have successfully added member to a team.</string>
+    <string name="toast_successful_event_creation">Your event has been successfully added.</string>
+    <string name="toast_user_found">User with this email has already register, please login.</string>
+    <string name="toast_successful_user_update">You have updated your data</string>
+    <string name="toast_unsuccessful_user_update">There was a problem saving data to the database</string>
 
-	<!--Alert Dialogs-->
-	<string name="dialog_closing_application_title">Closing Application...</string>
-	<string name="dialog_closing_application_message">Are you sure you want to exit the application?</string>
-	<string name="dialog_no_button">No</string>
-	<string name="dialog_yes_button">Yes</string>
-	<string name="dialog_team_name">Team name</string>
+    <!--Alert Dialogs-->
+    <string name="dialog_closing_application_title">Closing Application...</string>
+    <string name="dialog_closing_application_message">Are you sure you want to exit the application?</string>
+    <string name="dialog_no_button">No</string>
+    <string name="dialog_yes_button">Yes</string>
+    <string name="dialog_team_name">Team name</string>
 
-	<!--Base texts-->
-	<string name="confirm">Confirm</string>
+    <!--Base texts-->
+    <string name="confirm">Confirm</string>
 
-	<!--Infomration header-->
-	<string name="information_addPassword">Please set yout password and additional information. Thanks! <u><b>User Settings</b></u></string>
-	<!--Show Teams activity-->
-	<string name="show_teams_members">Members:</string>
-	<!--Team Activity-->
-	<string name="team_summary_bar">Summary</string>
-	<string name="team_add_member_bar">Members</string>
-	<string name="team_add_fee_bar">Add Fee</string>
-	<string name="team_copy_to_clipboard">Copy connection number</string>
-	<string name="team_delete_team">Delete team</string>
-	<string name="team_wrong_team_name">Team names does not match.</string>
-	<string name="floating_action_button_event">Event</string>
-	<string name="floating_action_button_match">Match</string>
-	<string name="floating_action_button_training">Training</string>
-	<!--Team Activity toolbar-->
-	<string name="team_menu_delete_team">Delete team</string>
+    <!--Infomration header-->
+    <string name="information_addPassword">Please set yout password and additional information. Thanks! <u><b>User Settings</b></u></string>
+    <!--Show Teams activity-->
+    <string name="show_teams_members">Members:</string>
+    <!--Team Activity-->
+    <string name="team_summary_bar">Summary</string>
+    <string name="team_add_member_bar">Members</string>
+    <string name="team_add_fee_bar">Add Fee</string>
+    <string name="team_copy_to_clipboard">Copy connection number</string>
+    <string name="team_delete_team">Delete team</string>
+    <string name="team_wrong_team_name">Team names does not match.</string>
+    <string name="floating_action_button_event">Event</string>
+    <string name="floating_action_button_match">Match</string>
+    <string name="floating_action_button_training">Training</string>
+    <!--Team Activity toolbar-->
+    <string name="team_menu_delete_team">Delete team</string>
 
-	<!--Add fee to a member Fragment-->
-	<string name="add_fee_to_member_choose_player">Choose player</string>
-	<string name="add_fee_to_member_choose_fee">Choose fee</string>
-	<string name="add_fee_to_member_add_fee">Submit</string>
+    <!--Add fee to a member Fragment-->
+    <string name="add_fee_to_member_choose_player">Choose player</string>
+    <string name="add_fee_to_member_choose_fee">Choose fee</string>
+    <string name="add_fee_to_member_add_fee">Submit</string>
 
-	<!--Add member Fragment-->
-	<string name="add_member_add_member">Add Member</string>
-	<string name="add_member_name_label">Member Name</string>
-	<string name="add_member_email_label">Member\'s email</string>
+    <!--Add member Fragment-->
+    <string name="add_member_add_member">Add Member</string>
+    <string name="add_member_name_label">Member Name</string>
+    <string name="add_member_email_label">Member\'s email</string>
 
-	<!--AddFee Activity-->
-	<string name="add_fee_title">Add new Fee</string>
-	<string name="add_fee_add">Add Fee</string>
+    <!--AddFee Activity-->
+    <string name="add_fee_title">Add new Fee</string>
+    <string name="add_fee_add">Add Fee</string>
 
-	<!--Add Member Activity-->
-	<string name="add_member_title">Add member</string>
+    <!--Add Member Activity-->
+    <string name="add_member_title">Add member</string>
 
-	<!--Add Event Activity-->
-	<string name="add_event_starts">Starts</string>
-	<string name="add_event_ends">Ends</string>
-	<string name="add_event_location">Location</string>
-	<string name="add_event_new_location">+ Add new Location</string>
-	<string name="add_event_description">Description</string>
-	<string name="add_event_name">Name</string>
+    <!--Add Event Activity-->
+    <string name="add_event_starts">Starts</string>
+    <string name="add_event_ends">Ends</string>
+    <string name="add_event_location">Location</string>
+    <string name="add_event_new_location">+ Add new Location</string>
+    <string name="add_event_description">Description</string>
+    <string name="add_event_name">Name</string>
 
-	<!--Show Event activity-->
-	<string name="show_event_loading">loading...</string>
-	<string name="show_event_description">Description</string>
-	<string name="show_event_name">Name</string>
-	<string name="show_event_ends">Ends</string>
-	<string name="show_event_starts">Starts</string>
-	<string name="user_detail_contant_information">Contact Information</string>
-	<string name="toast_uploading_error">There was a problem saving the image</string>
-	<string name="toast_size_error">Please select  lower quality image</string>
+    <!--Show Event activity-->
+    <string name="show_event_loading">loading...</string>
+    <string name="show_event_description">Description</string>
+    <string name="show_event_name">Name</string>
+    <string name="show_event_ends">Ends</string>
+    <string name="show_event_starts">Starts</string>
+    <string name="user_detail_contant_information">Contact Information</string>
+    <string name="toast_uploading_error">There was a problem saving the image</string>
+    <string name="toast_size_error">Please select  lower quality image</string>
     <string name="notification_new_event">New</string>
+    <string name="send_notification_title">Send Notification</string>
+    <string name="send_notification_message">Message</string>
+    <string name="send_notification_to">To</string>
+    <string name="send_notification_success">You have successfully notified user.</string>
 </resources>

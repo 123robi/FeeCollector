@@ -18,6 +18,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.github.clans.fab.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -31,6 +32,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.RegistrationActivity;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
@@ -46,6 +48,7 @@ public class UserDetail extends AppCompatActivity {
 	private CircleImageView mCircleImageView;
 	private Bitmap bitmap;
 	private ProgressBar mProgressBar;
+	private FloatingActionButton mSendNotificaiton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class UserDetail extends AppCompatActivity {
 			}
 		}
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
+		mSendNotificaiton = findViewById(R.id.send_notification);
 
 		mToolbar.setTitle(myUser.getName());
 		mName = findViewById(R.id.player_name);
@@ -71,6 +75,12 @@ public class UserDetail extends AppCompatActivity {
 		mNumber = findViewById(R.id.phone_number);
 		mAddress = findViewById(R.id.address);
 		mBirthday = findViewById(R.id.birthday);
+
+		mSendNotificaiton.setOnClickListener(view -> {
+			Intent sendNotification = new Intent(this, SendNotification.class);
+			sendNotification.putExtra("user", myUser);
+			this.startActivity(sendNotification);
+		});
 
 		mCircleImageView = findViewById(R.id.user_picture);
 		String imageUrl = "http://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
