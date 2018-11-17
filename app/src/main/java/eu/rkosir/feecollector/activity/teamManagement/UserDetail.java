@@ -118,14 +118,14 @@ public class UserDetail extends AppCompatActivity {
 		mTeam.setText(SharedPreferencesSaver.getLastTeamName(getApplicationContext()));
 		// #todo age
 		mEmail.setText(myUser.getEmail());
-		if (myUser.getPhoneNumber() != null && !(myUser.getPhoneNumber().equals(""))) {
+		if (myUser.getPhoneNumber() != null && !(myUser.getPhoneNumber().equals("")) && !(myUser.getPhoneNumber().equals("null"))) {
 			mNumber.setText(myUser.getPhoneNumber());
 		} else {
 			findViewById(R.id.line_phone_number).setVisibility(View.GONE);
 			mRelativeLayoutPhoneNumber.setVisibility(View.GONE);
 		}
 
-		if (myUser.getAddress() != null && !(myUser.getAddress().equals(""))) {
+		if (myUser.getAddress() != null && !(myUser.getAddress().equals("")) && !(myUser.getPhoneNumber().equals("null"))) {
 			mAddress.setText(myUser.getAddress());
 		} else {
 			findViewById(R.id.line_address).setVisibility(View.GONE);
