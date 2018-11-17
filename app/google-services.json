@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "704077451661-0cfvqmo88pjl30utu2ci4fqjaoh6bkqi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.rkosir.feecollector",
+            "certificate_hash": "9fba2ce851ed72143fb642d5c96a9ea73eb0b0db"
+          }
+        },
+        {
           "client_id": "704077451661-4afh5jolpp790pusfcbuqfms7gerjacf.apps.googleusercontent.com",
           "client_type": 3
         }

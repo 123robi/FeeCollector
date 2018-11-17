@@ -80,6 +80,9 @@
 
         <activity android:name=".activity.teamManagement.SendNotification"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d34ddf9903c9bc83720f039409c1453e6fb63e82" />
     </application>
 
 </manifest>

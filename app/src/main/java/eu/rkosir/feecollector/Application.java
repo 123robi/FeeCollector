@@ -3,6 +3,8 @@ package eu.rkosir.feecollector;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class Application extends android.app.Application {
 	public static final String CHANNEL_1_ID = "channel1";
@@ -10,6 +12,7 @@ public class Application extends android.app.Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Fabric.with(this, new Crashlytics());
 		createNotificationChannels();
 	}
 

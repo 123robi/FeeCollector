@@ -17,6 +17,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -150,10 +151,6 @@ public class LoginActivity extends AppCompatActivity {
 		mLoginButton_facebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
-				//Remove button so noone can click on it anymore
-				if(mLoginButton_facebook.getVisibility() == View.VISIBLE) {
-					mLoginButton_facebook.setVisibility(View.INVISIBLE);
-				}
 				getUserInfo();
 			}
 
@@ -251,7 +248,6 @@ public class LoginActivity extends AppCompatActivity {
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {
-				Log.d("Response",response);
 				object = new JSONObject(response);
 				JsonObjectConverter converter = new JsonObjectConverter(object.getString("user"));
 				if(!object.getBoolean("error")) {
@@ -279,6 +275,7 @@ public class LoginActivity extends AppCompatActivity {
 				e.printStackTrace();
 			}
 		}, error -> {
+			Crashlytics.logException(error);
 			Toast.makeText(this,R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
@@ -301,8 +298,6 @@ public class LoginActivity extends AppCompatActivity {
 				return params;
 			}
 		};
-
-
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
