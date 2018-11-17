@@ -18,6 +18,9 @@
     <color name="floating_action_pure_green">#8ABF3E</color>
     <color name="floating_action_pure_green_pressed">#97bf5d</color>
 
+    <color name="send_message_action_orange">#fc6d00</color>
+    <color name="send_message_action_orange_pressed">#91fc6d00</color>
+
     <color name="floating_action_button_main">#00B15C</color>
     <color name="floating_action_button_main_pressed">#ba02d971</color>
 
