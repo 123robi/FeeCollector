@@ -24,6 +24,7 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 	private ProgressBar mProgressBar;
 
 	private CallbackManager mCallbackManager;
+	private String firebaseToken;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -115,12 +117,17 @@ public class LoginActivity extends AppCompatActivity {
 						R.dimen.fb_margin_override_bottom));
 
 		mLoginButton_facebook.setReadPermissions(Arrays.asList(
-				"public_profile", "email", "user_birthday", "user_friends"));
+				"public_profile", "email"));
 		mCallbackManager = CallbackManager.Factory.create();
 
 		mSignUp = findViewById(R.id.signUp);
 
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
+
+		FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this, instanceIdResult -> {
+			firebaseToken = instanceIdResult.getToken();
+			SharedPreferencesSaver.setFcmToken(this,firebaseToken);
+		});
 	}
 
 	/**
@@ -244,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, response -> {
 			JSONObject object = null;
 			try {
-				Log.d("ASDASDASD",response);
+				Log.d("Response",response);
 				object = new JSONObject(response);
 				JsonObjectConverter converter = new JsonObjectConverter(object.getString("user"));
 				if(!object.getBoolean("error")) {
@@ -279,12 +286,18 @@ public class LoginActivity extends AppCompatActivity {
 				Map<String,String> params = new HashMap<>();
 				params.put("name", user.getName());
 				params.put("email", user.getEmail());
-				params.put("phone_number", user.getPhoneNumber());
-				params.put("address", user.getAddress());
+				if(user.getAddress() != null) {
+					params.put("address", user.getAddress());
+				}
+				if(user.getPhoneNumber() != null) {
+					params.put("phone_number", user.getPhoneNumber());
+				}
 				params.put("password", user.getPassword());
 				params.put("facebook_json", user.getFacebook_json());
 				params.put("real_user", Integer.toString(1));
-				Log.d("PARAMS",params.toString());
+				if(SharedPreferencesSaver.getFcmToken(getApplicationContext()) != null) {
+                    params.put("fcm",SharedPreferencesSaver.getFcmToken(getApplicationContext()));
+                }
 				return params;
 			}
 		};

@@ -1,233 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".activity.teamManagement.UserDetail"
-	android:orientation="vertical"
-	>
-
-	<include
-		android:id="@+id/back_action_bar"
-		layout="@layout/toolbar" />
-	<LinearLayout
+	tools:context=".activity.teamManagement.UserDetail">
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:padding="4dp">
+		android:layout_height="match_parent">
+		<ProgressBar
+			android:id="@+id/pb_loading_indicator"
+			android:layout_width="42dp"
+			android:layout_height="42dp"
+			android:layout_alignParentStart="true"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="center_vertical|center_horizontal"
+			android:layout_marginStart="42dp"
+			android:layout_marginTop="140dp"
+			android:visibility="invisible" />
 
-		<android.support.v7.widget.CardView
-			android:id="@+id/cardview"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:elevation="100dp"
-			app:cardBackgroundColor="@android:color/white"
-			app:cardCornerRadius="8dp">
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_alignParentStart="true"
+			android:layout_alignParentTop="true"
+			android:orientation="vertical">
+
+			<include
+				android:id="@+id/back_action_bar"
+				layout="@layout/toolbar" />
 
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:orientation="vertical">
+				android:padding="4dp">
 
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="50dp"
-					android:gravity="center_vertical"
-					android:paddingStart="25dp"
-					android:paddingEnd="25dp">
-
-					<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="@string/user_detail_contant_information"
-						android:textColor="@color/colorPrimary"
-						android:textSize="18sp"/>
-				</LinearLayout>
-
-				<View
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:background="@android:color/darker_gray" />
-
-				<RelativeLayout
-					android:layout_width="match_parent"
+				<android.support.v7.widget.CardView
+					android:id="@+id/cardview"
+					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:paddingBottom="10dp"
-					android:paddingTop="10dp">
+					android:elevation="100dp"
+					app:cardBackgroundColor="@android:color/white"
+					app:cardCornerRadius="8dp">
 
-					<de.hdodenhof.circleimageview.CircleImageView
-						android:id="@+id/user_picture"
-						android:layout_width="80dp"
-						android:layout_height="80dp"
-						android:layout_alignParentStart="true"
-						android:layout_alignParentTop="true"
-						android:layout_marginStart="18dp"
-						android:src="@mipmap/ic_launcher" />
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical">
 
-					<TextView
-						android:id="@+id/player_name"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignTop="@+id/user_picture"
-						android:layout_toEndOf="@+id/user_picture"
-						android:layout_marginStart="10dp"
-						android:text="Robert Kosir"
-						android:textSize="20sp"
-						android:textStyle="bold" />
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="50dp"
+							android:gravity="center_vertical"
+							android:paddingEnd="25dp"
+							android:paddingStart="25dp">
 
-					<TextView
-						android:id="@+id/player_team"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_above="@+id/player_age"
-						android:layout_alignStart="@+id/player_name"
-						android:text="FBC BOROVNICA"
-						android:layout_marginBottom="5dp"
-						android:textSize="14sp" />
+							<TextView
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:text="@string/user_detail_contant_information"
+								android:textColor="@color/colorPrimary"
+								android:textSize="18sp" />
+						</LinearLayout>
 
-					<TextView
-						android:id="@+id/player_age"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:textSize="14sp"
-						android:layout_alignBottom="@+id/user_picture"
-						android:layout_alignStart="@+id/player_name"
-						android:text="12 years" />
+						<View
+							android:layout_width="match_parent"
+							android:layout_height="1dp"
+							android:background="@android:color/darker_gray" />
 
-				</RelativeLayout>
+						<RelativeLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingBottom="10dp"
+							android:paddingTop="10dp">
 
-				<View
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:background="@android:color/darker_gray" />
+							<de.hdodenhof.circleimageview.CircleImageView
+								android:id="@+id/user_picture"
+								android:layout_width="80dp"
+								android:layout_height="80dp"
+								android:layout_alignParentStart="true"
+								android:layout_alignParentTop="true"
+								android:layout_marginStart="18dp" />
 
-				<RelativeLayout
-					android:id="@+id/relative_email"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="15dp"
-					android:paddingEnd="25dp"
-					android:paddingStart="25dp"
-					android:paddingTop="15dp">
+							<TextView
+								android:id="@+id/player_name"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_alignTop="@+id/user_picture"
+								android:layout_marginStart="10dp"
+								android:layout_toEndOf="@+id/user_picture"
+								android:text="Robert Kosir"
+								android:textSize="20sp"
+								android:textStyle="bold" />
 
-					<ImageView
-						android:id="@+id/email_icon"
-						android:layout_width="28dp"
-						android:layout_height="28dp"
-						android:src="@drawable/ic_email_black_24dp" />
+							<TextView
+								android:id="@+id/player_team"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_above="@+id/player_age"
+								android:layout_alignStart="@+id/player_name"
+								android:layout_marginBottom="5dp"
+								android:text="FBC BOROVNICA"
+								android:textSize="14sp" />
 
-					<TextView
-						android:id="@+id/email"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerVertical="true"
-						android:layout_toEndOf="@+id/email_icon"
-						android:text="robikoser@gmail.com"
-						android:gravity="center"
-						android:layout_marginStart="16dp"
-						android:textSize="18sp" />
-				</RelativeLayout>
+							<TextView
+								android:id="@+id/player_age"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_alignBottom="@+id/user_picture"
+								android:layout_alignStart="@+id/player_name"
+								android:text="12 years"
+								android:textSize="14sp" />
 
-				<View
-					android:id="@+id/line_phone_number"
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:background="@android:color/darker_gray"
-					android:layout_marginStart="69dp"/>
+						</RelativeLayout>
 
-				<RelativeLayout
-					android:id="@+id/relative_phone_number"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="15dp"
-					android:paddingEnd="25dp"
-					android:paddingStart="25dp"
-					android:paddingTop="15dp">
+						<View
+							android:layout_width="match_parent"
+							android:layout_height="1dp"
+							android:background="@android:color/darker_gray" />
 
-					<ImageView
-						android:id="@+id/phone_number_icon"
-						android:layout_width="28dp"
-						android:layout_height="28dp"
-						android:src="@drawable/ic_phone_black_24dp" />
+						<RelativeLayout
+							android:id="@+id/relative_email"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingBottom="15dp"
+							android:paddingEnd="25dp"
+							android:paddingStart="25dp"
+							android:paddingTop="15dp">
 
-					<TextView
-						android:id="@+id/phone_number"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerVertical="true"
-						android:layout_toEndOf="@+id/phone_number_icon"
-						android:text="03216871212"
-						android:gravity="center"
-						android:layout_marginStart="16dp"
-						android:textSize="18sp" />
-				</RelativeLayout>
+							<ImageView
+								android:id="@+id/email_icon"
+								android:layout_width="28dp"
+								android:layout_height="28dp"
+								android:src="@drawable/ic_email_black_24dp" />
 
-				<View
-					android:id="@+id/line_address"
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:background="@android:color/darker_gray"
-					android:layout_marginStart="69dp"/>
+							<TextView
+								android:id="@+id/email"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_centerVertical="true"
+								android:layout_marginStart="16dp"
+								android:layout_toEndOf="@+id/email_icon"
+								android:gravity="center"
+								android:text="robikoser@gmail.com"
+								android:textSize="18sp" />
+						</RelativeLayout>
 
-				<RelativeLayout
-					android:id="@+id/relative_address"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="15dp"
-					android:paddingEnd="25dp"
-					android:paddingStart="25dp"
-					android:paddingTop="15dp">
+						<View
+							android:id="@+id/line_phone_number"
+							android:layout_width="match_parent"
+							android:layout_height="1dp"
+							android:layout_marginStart="69dp"
+							android:background="@android:color/darker_gray" />
 
-					<ImageView
-						android:id="@+id/address_icon"
-						android:layout_width="28dp"
-						android:layout_height="28dp"
-						android:src="@drawable/ic_location_on_black_24dp" />
+						<RelativeLayout
+							android:id="@+id/relative_phone_number"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingBottom="15dp"
+							android:paddingEnd="25dp"
+							android:paddingStart="25dp"
+							android:paddingTop="15dp">
 
-					<TextView
-						android:id="@+id/address"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerVertical="true"
-						android:layout_toEndOf="@+id/address_icon"
-						android:text="Brezovica pri Borovnici 66"
-						android:gravity="center"
-						android:layout_marginStart="16dp"
-						android:textSize="18sp" />
-				</RelativeLayout>
+							<ImageView
+								android:id="@+id/phone_number_icon"
+								android:layout_width="28dp"
+								android:layout_height="28dp"
+								android:src="@drawable/ic_phone_black_24dp" />
 
-				<View
-					android:layout_width="match_parent"
-					android:layout_height="1dp"
-					android:background="@android:color/darker_gray"
-					android:layout_marginStart="69dp"/>
+							<TextView
+								android:id="@+id/phone_number"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_centerVertical="true"
+								android:layout_marginStart="16dp"
+								android:layout_toEndOf="@+id/phone_number_icon"
+								android:gravity="center"
+								android:text="03216871212"
+								android:textSize="18sp" />
+						</RelativeLayout>
 
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:paddingBottom="15dp"
-					android:paddingEnd="25dp"
-					android:paddingStart="25dp"
-					android:paddingTop="15dp">
+						<View
+							android:id="@+id/line_address"
+							android:layout_width="match_parent"
+							android:layout_height="1dp"
+							android:layout_marginStart="69dp"
+							android:background="@android:color/darker_gray" />
 
-					<ImageView
-						android:id="@+id/birthday_icon"
-						android:layout_width="28dp"
-						android:layout_height="28dp"
-						android:src="@drawable/ic_cake_black_24dp" />
+						<RelativeLayout
+							android:id="@+id/relative_address"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingBottom="15dp"
+							android:paddingEnd="25dp"
+							android:paddingStart="25dp"
+							android:paddingTop="15dp">
 
-					<TextView
-						android:id="@+id/birthday"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerVertical="true"
-						android:layout_toEndOf="@+id/birthday_icon"
-						android:text="15.09.1997"
-						android:gravity="center"
-						android:layout_marginStart="16dp"
-						android:textSize="18sp" />
-				</RelativeLayout>
+							<ImageView
+								android:id="@+id/address_icon"
+								android:layout_width="28dp"
+								android:layout_height="28dp"
+								android:src="@drawable/ic_location_on_black_24dp" />
+
+							<TextView
+								android:id="@+id/address"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_centerVertical="true"
+								android:layout_marginStart="16dp"
+								android:layout_toEndOf="@+id/address_icon"
+								android:gravity="center"
+								android:text="Brezovica pri Borovnici 66"
+								android:textSize="18sp" />
+						</RelativeLayout>
+
+						<View
+							android:layout_width="match_parent"
+							android:layout_height="1dp"
+							android:layout_marginStart="69dp"
+							android:background="@android:color/darker_gray" />
+
+						<RelativeLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingBottom="15dp"
+							android:paddingEnd="25dp"
+							android:paddingStart="25dp"
+							android:paddingTop="15dp">
+
+							<ImageView
+								android:id="@+id/birthday_icon"
+								android:layout_width="28dp"
+								android:layout_height="28dp"
+								android:src="@drawable/ic_cake_black_24dp" />
+
+							<TextView
+								android:id="@+id/birthday"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_centerVertical="true"
+								android:layout_marginStart="16dp"
+								android:layout_toEndOf="@+id/birthday_icon"
+								android:gravity="center"
+								android:text="15.09.1997"
+								android:textSize="18sp" />
+						</RelativeLayout>
+					</LinearLayout>
+				</android.support.v7.widget.CardView>
 			</LinearLayout>
-		</android.support.v7.widget.CardView>
-	</LinearLayout>
-</LinearLayout>
+		</LinearLayout>
+	</RelativeLayout>
+	<com.github.clans.fab.FloatingActionButton
+		android:id="@+id/send_notification"
+		app:fab_colorNormal="@color/send_message_action_orange"
+		app:fab_colorPressed="@color/send_message_action_orange_pressed"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="10dp"
+		android:layout_gravity="bottom|right"
+		android:src="@drawable/ic_chat_black_24dp"
+		app:fab_label="@string/floating_action_button_event" />
+</FrameLayout>

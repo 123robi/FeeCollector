@@ -1,18 +1,15 @@
 package eu.rkosir.feecollector.activity.teamManagement;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +18,8 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.github.clans.fab.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,13 +32,11 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.DashboardActivity;
+import eu.rkosir.feecollector.activity.RegistrationActivity;
 import eu.rkosir.feecollector.entity.User;
-import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class UserDetail extends AppCompatActivity {
@@ -50,6 +47,8 @@ public class UserDetail extends AppCompatActivity {
 	private RelativeLayout mRelativeLayoutEmail, mRelativeLayoutAddress, mRelativeLayoutPhoneNumber;
 	private CircleImageView mCircleImageView;
 	private Bitmap bitmap;
+	private ProgressBar mProgressBar;
+	private FloatingActionButton mSendNotificaiton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +64,9 @@ public class UserDetail extends AppCompatActivity {
 				myUser = (User) user;
 			}
 		}
+		mProgressBar = findViewById(R.id.pb_loading_indicator);
+		mSendNotificaiton = findViewById(R.id.send_notification);
+
 		mToolbar.setTitle(myUser.getName());
 		mName = findViewById(R.id.player_name);
 		mTeam = findViewById(R.id.player_team);
@@ -74,7 +76,15 @@ public class UserDetail extends AppCompatActivity {
 		mAddress = findViewById(R.id.address);
 		mBirthday = findViewById(R.id.birthday);
 
+		mSendNotificaiton.setOnClickListener(view -> {
+			Intent sendNotification = new Intent(this, SendNotification.class);
+			sendNotification.putExtra("user", myUser);
+			this.startActivity(sendNotification);
+		});
+
 		mCircleImageView = findViewById(R.id.user_picture);
+		String imageUrl = "http://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
+		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).into(mCircleImageView);
 
 		mRelativeLayoutEmail = findViewById(R.id.relative_email);
 		mRelativeLayoutEmail.setOnClickListener(view -> {
@@ -118,14 +128,14 @@ public class UserDetail extends AppCompatActivity {
 		mTeam.setText(SharedPreferencesSaver.getLastTeamName(getApplicationContext()));
 		// #todo age
 		mEmail.setText(myUser.getEmail());
-		if (myUser.getPhoneNumber() != null && !(myUser.getPhoneNumber().equals(""))) {
+		if (myUser.getPhoneNumber() != null && !(myUser.getPhoneNumber().equals("")) && !(myUser.getPhoneNumber().equals("null"))) {
 			mNumber.setText(myUser.getPhoneNumber());
 		} else {
 			findViewById(R.id.line_phone_number).setVisibility(View.GONE);
 			mRelativeLayoutPhoneNumber.setVisibility(View.GONE);
 		}
 
-		if (myUser.getAddress() != null && !(myUser.getAddress().equals(""))) {
+		if (myUser.getAddress() != null && !(myUser.getAddress().equals("")) && !(myUser.getAddress().equals("null"))) {
 			mAddress.setText(myUser.getAddress());
 		} else {
 			findViewById(R.id.line_address).setVisibility(View.GONE);
@@ -137,9 +147,6 @@ public class UserDetail extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
-//			Bundle extras = data.getExtras();
-//			Bitmap imageBitmap = (Bitmap) extras.get("data");
-//			mCircleImageView.setImageBitmap(imageBitmap);
 			Uri path = data.getData();
 			try {
 				bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
@@ -152,17 +159,23 @@ public class UserDetail extends AppCompatActivity {
 	}
 
 	private void uploadImage(){
-		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/usersApi/insertImage", response -> {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.ULR_SAVE_IAMGE, response -> {
 			JSONObject object = null;
 
 			try {
 				object = new JSONObject(response);
-				mCircleImageView.setImageBitmap(bitmap);
+				if (!object.getBoolean("error")) {
+					mCircleImageView.setImageBitmap(bitmap);
+				} else {
+					Toast.makeText(getApplicationContext(),R.string.toast_uploading_error,Toast.LENGTH_LONG).show();
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}, error -> {
-			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),R.string.toast_size_error,Toast.LENGTH_LONG).show();
 		}){
 			@Override
 			protected Map<String, String> getParams() throws AuthFailureError {
@@ -175,11 +188,16 @@ public class UserDetail extends AppCompatActivity {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	private String imageToString(Bitmap bitmap) {
 		ByteArrayOutputStream byteArrayOutputStream =  new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+		bitmap.compress(Bitmap.CompressFormat.JPEG,10,byteArrayOutputStream);
 		byte[] imgBytes = byteArrayOutputStream.toByteArray();
 		return Base64.encodeToString(imgBytes,Base64.DEFAULT);
 	}

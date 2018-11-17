@@ -74,8 +74,11 @@ public class CreateTeam extends Fragment {
 	 * Sending a Volley Post Request to create a team using 3 parameter: team_name, email
 	 */
 	private void createTeam() {
-		mProgressBar.bringToFront();
-		mProgressBar.setVisibility(View.VISIBLE);
+		if (mProgressBar != null) {
+			mProgressBar.bringToFront();
+			mProgressBar.setVisibility(View.VISIBLE);
+		}
+
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SAVE_TEAM, response -> {
 			JSONObject object = null;
 
