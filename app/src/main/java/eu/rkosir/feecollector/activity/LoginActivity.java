@@ -23,6 +23,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -148,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
 			this.startActivity(intent);
 		});
 
-		mLoginButton_facebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+		LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
 				getUserInfo();
@@ -177,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
 					User user = null;
 					try {
 						Log.d("OBJECT",object + "");
-						user = new User(object.getString("name"),object.getString("email"), "null", "null",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+						user = new User(object.getString("name"),object.getString("email"), "", "",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
 						user.setFacebook_json(object.toString());
 					} catch (JSONException e) {
 						e.printStackTrace();
