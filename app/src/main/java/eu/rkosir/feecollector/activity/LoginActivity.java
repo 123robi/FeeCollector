@@ -3,9 +3,14 @@ package eu.rkosir.feecollector.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +43,7 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.teamManagement.TeamActivity;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
@@ -178,11 +184,28 @@ public class LoginActivity extends AppCompatActivity {
 					User user = null;
 					try {
 						String name = object.getString("name");
-						String email = object.getString("email");
+						String email = "";
 						if (name != null && email != null && !name.isEmpty() && !email.isEmpty()) {
-							user = new User(object.getString("name"),object.getString("email"), "", "",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+							user = new User(name,email, "", "",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
 							user.setFacebook_json(object.toString());
 							facebookLogin(user);
+						} else {
+							AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+							View mView = getLayoutInflater().inflate(R.layout.dialog_add_email,null);
+							TextInputEditText mEmail = mView.findViewById(R.id.email);
+							Button button = mView.findViewById(R.id.add_facebook);
+
+							mBuilder.setView(mView);
+							AlertDialog dialog = mBuilder.create();
+							dialog.show();
+							button.setOnClickListener(v -> {
+								if (checkForEmail(mEmail,mView)) {
+									User userFacebook =new User(name,mEmail.getText().toString(), "", "",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+									userFacebook.setFacebook_json(object.toString());
+									dialog.hide();
+									facebookLogin(userFacebook);
+								}
+							});
 						}
 
 					} catch (JSONException e) {
@@ -205,7 +228,6 @@ public class LoginActivity extends AppCompatActivity {
 
 			try {
 				object = new JSONObject(response);
-				Log.d("JSON", object + "JSON");
 				if (!object.getBoolean("error")) {
 					Toast.makeText(this, R.string.toast_successful_login,Toast.LENGTH_LONG).show();
 
@@ -312,6 +334,29 @@ public class LoginActivity extends AppCompatActivity {
 		});
 	}
 
+	private boolean checkForEmail(TextInputEditText mEmail, View mView) {
+		TextInputLayout layout = mView.findViewById(R.id.email_layout);
+		layout.setError(null);
+
+		boolean cancel = false;
+		View focusView = null;
+
+		String email = mEmail.getText().toString();
+		if (TextUtils.isEmpty(email)) {
+			layout.setError(getString(R.string.error_field_required));
+			focusView = layout;
+			cancel = true;
+		} else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+			layout.setError(getString(R.string.error_email_validation));
+			focusView = layout;
+			cancel = true;
+		}
+		if (cancel) {
+			focusView.requestFocus();
+			return false;
+		} else
+			return true;
+	}
 	/**
 	 * generetaing random passsowrd for facebook users -> then can change the password without the current password
 	 * @param len
