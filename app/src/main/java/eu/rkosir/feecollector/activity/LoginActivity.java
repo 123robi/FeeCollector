@@ -177,13 +177,17 @@ public class LoginActivity extends AppCompatActivity {
 				(object, response) -> {
 					User user = null;
 					try {
-						Log.d("OBJECT",object + "");
-						user = new User(object.getString("name"),object.getString("email"), "", "",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
-						user.setFacebook_json(object.toString());
+						String name = object.getString("name");
+						String email = object.getString("email");
+						if (name != null && email != null && !name.isEmpty() && !email.isEmpty()) {
+							user = new User(object.getString("name"),object.getString("email"), "", "",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
+							user.setFacebook_json(object.toString());
+							facebookLogin(user);
+						}
+
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
-					facebookLogin(user);
 				});
 		Bundle parameters = new Bundle();
 		parameters.putString("fields", "id, name, email, picture.width(120).height(120)");
