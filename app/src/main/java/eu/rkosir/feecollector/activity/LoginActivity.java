@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
 					User user = null;
 					try {
 						String name = object.getString("name");
-						String email = "";
+						String email = object.getString("email");
 						if (name != null && email != null && !name.isEmpty() && !email.isEmpty()) {
 							user = new User(name,email, "", "",generatePassword(20, AppConfig.ALPHA_CAPS + AppConfig.ALPHA + AppConfig.SPECIAL_CHARS));
 							user.setFacebook_json(object.toString());
