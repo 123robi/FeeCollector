@@ -92,6 +92,11 @@ public class SendNotification extends AppCompatActivity {
                 merror.setVisibility(View.INVISIBLE);
             }
         });
+        mCheckEmail.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                merror.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     /**
