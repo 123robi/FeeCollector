@@ -23,6 +23,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 
+import net.rimoto.intlphoneinput.IntlPhoneInput;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,8 +48,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class Registration_2nd_step extends Fragment {
 
-	private TextInputEditText mInputName, mInputAddress, mInputPhoneNumber;
-	private TextInputLayout mInputNameLayout, mInputAddressLayout, mInputPhoneNumberLayout;
+	private TextInputEditText mInputName, mInputAddress;
+	private TextInputLayout mInputNameLayout, mInputAddressLayout;
+	private IntlPhoneInput phoneInput;
 	private EditText mInputPassword;
 	private Button mCreateUserbtn;
 	private ProgressBar mProgressBar;
@@ -67,11 +70,19 @@ public class Registration_2nd_step extends Fragment {
 		mInputNameLayout = view.findViewById(R.id.name_layout);
 		mInputAddress = view.findViewById(R.id.address);
 		mInputAddressLayout = view.findViewById(R.id.address_layout);
-		mInputPhoneNumber = view.findViewById(R.id.phone_number);
-		mInputPhoneNumberLayout = view.findViewById(R.id.phone_number_layout);
+		phoneInput = view.findViewById(R.id.my_phone_input);
 		mInputPassword = view.findViewById(R.id.password);
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		mCreateUserbtn = view.findViewById(R.id.createUser);
+		phoneInput.setOnValidityChange((view1, isValid) -> {
+			if(!isValid) {
+				mCreateUserbtn.setClickable(false);
+				mCreateUserbtn.setAlpha(0.3f);
+			} else {
+				mCreateUserbtn.setClickable(true);
+				mCreateUserbtn.setAlpha(1f);
+			}
+		});
 		mEmail = getArguments().getString("email");
 		return view;
 	}
@@ -85,7 +96,7 @@ public class Registration_2nd_step extends Fragment {
 					User user = new User(
 							mInputName.getText().toString(),
 							mEmail,
-							mInputPhoneNumber.getText().toString(),
+							phoneInput.getNumber(),
 							mInputAddress.getText().toString(),
 							mInputPassword.getText().toString()
 					);
@@ -154,12 +165,10 @@ public class Registration_2nd_step extends Fragment {
 	private boolean attemptToRegister() {
 		mInputNameLayout.setError(null);
 		mInputAddressLayout.setError(null);
-		mInputPhoneNumberLayout.setError(null);
 		mInputPassword.setError(null);
 
 		String name = mInputName.getText().toString();
 		String address = mInputAddress.getText().toString();
-		String phoneNumber = mInputPhoneNumber.getText().toString();
 		String password = mInputPassword.getText().toString();
 
 		boolean cancel = false;
@@ -173,15 +182,15 @@ public class Registration_2nd_step extends Fragment {
 			mInputAddressLayout.setError(getString(R.string.error_field_required));
 			focusView = mInputAddressLayout;
 			cancel = true;
-		} else if (TextUtils.isEmpty(phoneNumber)) {
-			mInputPhoneNumberLayout.setError(getString(R.string.error_field_required));
-			focusView = mInputPhoneNumberLayout;
-			cancel = true;
 		} else if (TextUtils.isEmpty(password)) {
 			mInputPassword.setError(getString(R.string.error_field_required),null);
 			focusView = mInputPassword;
 			cancel = true;
+		} else if (!phoneInput.isValid()) {
+			focusView = phoneInput;
+			cancel = true;
 		}
+
 		if (cancel) {
 			focusView.requestFocus();
 			return false;

@@ -110,20 +110,16 @@
 						android:src="@drawable/ic_phone_black_24dp"
 						android:layout_gravity="center"/>
 
-					<android.support.design.widget.TextInputLayout
-						android:id="@+id/phone_number_layout"
+					<net.rimoto.intlphoneinput.IntlPhoneInput
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						app:errorEnabled="true"
-						android:layout_marginBottom="-10dp">
-
-						<android.support.design.widget.TextInputEditText
-							android:id="@+id/phone_number"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:hint="@string/registration_phone_number" />
-
-					</android.support.design.widget.TextInputLayout>
+						app:textSize="14sp"
+						app:textColor="#000000"
+						app:flagPaddingBottom="4dp"
+						app:flagPaddingEnd="4dp"
+						app:flagPaddingStart="4dp"
+						app:flagPaddingTop="4dp"
+						android:id="@+id/my_phone_input" />
 				</LinearLayout>
 			</LinearLayout>
 		</android.support.v7.widget.CardView>
