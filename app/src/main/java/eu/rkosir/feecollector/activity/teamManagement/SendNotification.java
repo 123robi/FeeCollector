@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +16,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -41,6 +46,8 @@ public class SendNotification extends AppCompatActivity {
     private User myUser;
     private TextInputEditText mInputTo, mInputMessage;
     private ProgressBar mProgressBar;
+    private CheckBox mCheckNotificaiton, mCheckSMS, mCheckEmail;
+    private TextView merror;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,25 @@ public class SendNotification extends AppCompatActivity {
         mInputMessage = findViewById(R.id.notification_message);
 
         mInputTo.setText(myUser.getName());
+
+        merror = findViewById(R.id.errorCheck);
+        mCheckNotificaiton = findViewById(R.id.notification);
+        mCheckNotificaiton.setChecked(true);
+        mCheckSMS = findViewById(R.id.sms);
+        mCheckSMS.setChecked(true);
+        mCheckEmail = findViewById(R.id.email);
+        mCheckEmail.setChecked(true);
+
+        mCheckNotificaiton.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                merror.setVisibility(View.INVISIBLE);
+            }
+        });
+        mCheckSMS.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                merror.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     /**
@@ -83,21 +109,58 @@ public class SendNotification extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.save) {
-            if (checkPremission(Manifest.permission.SEND_SMS)) {
-                sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
-                sendNotification(myUser.getEmail(), mInputMessage.getText().toString(), SharedPreferencesSaver.getLastTeamName(this));
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
+            if (attemptToSendNotification()) {
+                if (checkPremission(Manifest.permission.SEND_SMS)) {
+                    if (mCheckSMS.isChecked()) {
+                        try {
+                            sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
+                        } catch (Exception e) {
+                            Toast.makeText(this, R.string.toast_send_sms_error, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
+                }
+                if (mCheckNotificaiton.isChecked()) {
+                    sendNotification(myUser.getEmail(), mInputMessage.getText().toString(), SharedPreferencesSaver.getLastTeamName(this));
+                }
+                if (mCheckEmail.isChecked()) {
+                    sendEmail(myUser.getEmail(),getResources().getString(R.string.send_notification_email_subject) ,mInputMessage.getText().toString());
+                }
+
             }
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean attemptToSendNotification() {
+        if (!mCheckSMS.isChecked() && !mCheckNotificaiton.isChecked() && !mCheckEmail.isChecked()) {
+            merror.setVisibility(View.VISIBLE);
+            return false;
+        }
+        return true;
     }
 
     private void sendSMS(String phoneNumber, String message) {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
         Toast.makeText(this, R.string.send_notification_success, Toast.LENGTH_LONG).show();
+
+    }
+
+    private void sendEmail(String to, String subject, String body) {
+        Intent i = new Intent(Intent.ACTION_SENDTO);
+        i.setType("message/rfc822");
+        i.setData(Uri.parse("mailto:" + to));
+        i.putExtra(Intent.EXTRA_SUBJECT, subject);
+        i.putExtra(Intent.EXTRA_TEXT   , body);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void sendNotification(String email, String message,String title) {
@@ -108,7 +171,7 @@ public class SendNotification extends AppCompatActivity {
             try {
                 object = new JSONObject(response);
                 if (!object.getBoolean("error")) {
-                    Toast.makeText(this, R.string.toast_successful_fee_add,Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.send_notification_success,Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
                 }

@@ -235,7 +235,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private void saveEvent(Event event) {
 		mProgressBar.bringToFront();
 		mProgressBar.setVisibility(View.VISIBLE);
-		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/eventsApi/add", response -> {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_SAVE_EVENT, response -> {
 			JSONObject object = null;
 			try {
 				object = new JSONObject(response);
