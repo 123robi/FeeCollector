@@ -7,16 +7,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -28,16 +31,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Fee;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.activity.teamManagement.AddFee;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static eu.rkosir.feecollector.AppConfig.URL_CHANGE_DETAILS;
+import static eu.rkosir.feecollector.AppConfig.URL_SAVE_FEE_TO_USER;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +57,10 @@ public class AddFeeToMember extends Fragment {
 	private AutoCompleteTextView mAutoCompletePlayer;
 	private AutoCompleteTextView mAutoCompleteFee;
 	private Button mAddFeeToMember;
+	private ArrayAdapter<User> adapter;
+	private ArrayAdapter<Fee> adapter1;
+	private User mSavingUser;
+	private Fee mSavingFee;
 
 	public AddFeeToMember() {
 		// Required empty public constructor
@@ -77,18 +89,60 @@ public class AddFeeToMember extends Fragment {
 			mAutoCompleteFee.showDropDown();
 			return false;
 		});
-		mAddFeeToMember.setOnClickListener(v -> storeFeeToMember());
+		mAddFeeToMember.setOnClickListener(v -> {
+			if (attemptToSaveFee()) {
+				storeFeeToMember();
+			}
+		});
 		mAddFee = view.findViewById(R.id.add_fee);
 		mAddFee.setOnClickListener(v -> {
 			Intent intent = new Intent(getActivity(), AddFee.class);
 			startActivity(intent);
 		});
+
+		mAutoCompletePlayer.setOnItemClickListener((adapterView, view1, i, l) -> mSavingUser = adapter.getItem(i));
+		mAutoCompleteFee.setOnItemClickListener((adapterView, view12, i, l) -> mSavingFee = adapter1.getItem(i));
 		loadMembersAndFees();
+
 		return view;
 	}
 
 	private void storeFeeToMember() {
-		Toast.makeText(getApplicationContext(), mAutoCompleteFee.getText().toString()+ " " +mAutoCompletePlayer.getText().toString(),Toast.LENGTH_LONG).show();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SAVE_FEE_TO_USER, response -> {
+			JSONObject object = null;
+
+			try {
+				object = new JSONObject(response);
+				if (!object.getBoolean("error")) {
+					Toast.makeText(getApplicationContext(), R.string.toast_successful_saving_fee_to_user,Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(getApplicationContext(), R.string.toast_unsuccessful_saving_fee_to_user,Toast.LENGTH_LONG).show();
+				}
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() {
+				Map<String,String> params = new HashMap<>();
+				params.put("email", mSavingUser.getEmail());
+				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
+				params.put("id", String.valueOf(mSavingFee.getId()));
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	/**
@@ -121,12 +175,12 @@ public class AddFeeToMember extends Fragment {
 					feesList.add(new Fee(fee.getInt("id"),fee.getString("name")));
 				}
 				if (membersList.size() > 0) {
-					ArrayAdapter<User> adapter = new ArrayAdapter<User>(getApplicationContext(),
+					adapter = new ArrayAdapter<User>(getApplicationContext(),
 							R.layout.auto_complete_text_view_layout, membersList);
 					mAutoCompletePlayer.setAdapter(adapter);
 				}
 				if (feesList.size() > 0) {
-					ArrayAdapter<Fee> adapter1 = new ArrayAdapter<Fee>(getApplicationContext(),
+					adapter1 = new ArrayAdapter<Fee>(getApplicationContext(),
 							R.layout.auto_complete_text_view_layout, feesList);
 					mAutoCompleteFee.setAdapter(adapter1);
 				}
@@ -145,5 +199,31 @@ public class AddFeeToMember extends Fragment {
 				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
+	}
+
+	private boolean attemptToSaveFee() {
+		mAutoCompleteFee.setError(null);
+		mAutoCompletePlayer.setError(null);
+
+		String fee = mAutoCompleteFee.getText().toString();
+		String player = mAutoCompletePlayer.getText().toString();
+
+		boolean cancel = false;
+		View focusView = null;
+
+		if (TextUtils.isEmpty(fee) ) {
+			mAutoCompleteFee.setError(getString(R.string.error_field_required));
+			focusView = mAutoCompleteFee;
+			cancel = true;
+		} else if (TextUtils.isEmpty(player)) {
+			mAutoCompletePlayer.setError(getString(R.string.error_field_required));
+			focusView = mAutoCompletePlayer;
+			cancel = true;
+		}
+		if (cancel) {
+			focusView.requestFocus();
+			return false;
+		} else
+			return true;
 	}
 }
