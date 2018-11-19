@@ -64,6 +64,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/notification_send_radioButton_sms" />
 
+            <CheckBox
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notification_send_radioButton_email" />
+
             <TextView
                 android:id="@+id/errorCheck"
                 android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -45,7 +46,7 @@ public class SendNotification extends AppCompatActivity {
     private User myUser;
     private TextInputEditText mInputTo, mInputMessage;
     private ProgressBar mProgressBar;
-    private CheckBox mCheckNotificaiton, mCheckSMS;
+    private CheckBox mCheckNotificaiton, mCheckSMS, mCheckEmail;
     private TextView merror;
 
     @Override
@@ -78,6 +79,8 @@ public class SendNotification extends AppCompatActivity {
         mCheckNotificaiton.setChecked(true);
         mCheckSMS = findViewById(R.id.sms);
         mCheckSMS.setChecked(true);
+        mCheckEmail = findViewById(R.id.email);
+        mCheckEmail.setChecked(true);
 
         mCheckNotificaiton.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
@@ -122,6 +125,9 @@ public class SendNotification extends AppCompatActivity {
                 if (mCheckNotificaiton.isChecked()) {
                     sendNotification(myUser.getEmail(), mInputMessage.getText().toString(), SharedPreferencesSaver.getLastTeamName(this));
                 }
+                if (mCheckEmail.isChecked()) {
+                    sendEmail(myUser.getEmail(),getResources().getString(R.string.send_notification_email_subject) ,mInputMessage.getText().toString());
+                }
 
             }
 
@@ -130,7 +136,7 @@ public class SendNotification extends AppCompatActivity {
     }
 
     private boolean attemptToSendNotification() {
-        if (!mCheckSMS.isChecked() && !mCheckNotificaiton.isChecked()) {
+        if (!mCheckSMS.isChecked() && !mCheckNotificaiton.isChecked() && !mCheckEmail.isChecked()) {
             merror.setVisibility(View.VISIBLE);
             return false;
         }
@@ -141,6 +147,20 @@ public class SendNotification extends AppCompatActivity {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
         Toast.makeText(this, R.string.send_notification_success, Toast.LENGTH_LONG).show();
+
+    }
+
+    private void sendEmail(String to, String subject, String body) {
+        Intent i = new Intent(Intent.ACTION_SENDTO);
+        i.setType("message/rfc822");
+        i.setData(Uri.parse("mailto:" + to));
+        i.putExtra(Intent.EXTRA_SUBJECT, subject);
+        i.putExtra(Intent.EXTRA_TEXT   , body);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void sendNotification(String email, String message,String title) {
