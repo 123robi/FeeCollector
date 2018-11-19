@@ -15,7 +15,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -41,6 +45,8 @@ public class SendNotification extends AppCompatActivity {
     private User myUser;
     private TextInputEditText mInputTo, mInputMessage;
     private ProgressBar mProgressBar;
+    private CheckBox mCheckNotificaiton, mCheckSMS;
+    private TextView merror;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,23 @@ public class SendNotification extends AppCompatActivity {
         mInputMessage = findViewById(R.id.notification_message);
 
         mInputTo.setText(myUser.getName());
+
+        merror = findViewById(R.id.errorCheck);
+        mCheckNotificaiton = findViewById(R.id.notification);
+        mCheckNotificaiton.setChecked(true);
+        mCheckSMS = findViewById(R.id.sms);
+        mCheckSMS.setChecked(true);
+
+        mCheckNotificaiton.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                merror.setVisibility(View.INVISIBLE);
+            }
+        });
+        mCheckSMS.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                merror.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     /**
@@ -83,15 +106,31 @@ public class SendNotification extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.save) {
-            if (checkPremission(Manifest.permission.SEND_SMS)) {
-                sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
-                sendNotification(myUser.getEmail(), mInputMessage.getText().toString(), SharedPreferencesSaver.getLastTeamName(this));
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
+            if (attemptToSendNotification()) {
+                if (checkPremission(Manifest.permission.SEND_SMS)) {
+                    if (mCheckSMS.isChecked()) {
+                        sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
+                    }
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
+                }
+                if (mCheckNotificaiton.isChecked()) {
+                    sendNotification(myUser.getEmail(), mInputMessage.getText().toString(), SharedPreferencesSaver.getLastTeamName(this));
+                }
+
             }
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean attemptToSendNotification() {
+        if (!mCheckSMS.isChecked() && !mCheckNotificaiton.isChecked()) {
+            merror.setVisibility(View.VISIBLE);
+            return false;
+        }
+        return true;
     }
 
     private void sendSMS(String phoneNumber, String message) {

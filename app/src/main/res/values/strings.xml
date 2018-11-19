@@ -149,4 +149,8 @@
     <string name="send_notification_message">Message</string>
     <string name="send_notification_to">To</string>
     <string name="send_notification_success">You have successfully notified user.</string>
+	<string name="notification_send_radioButton_notification">Notification</string>
+    <string name="notification_send_radioButton_sms">SMS</string>
+    <string name="notification_send_radioButton_email">Email</string>
+    <string name="notification_send_error_one_check">At least one has to be selected.</string>
 </resources>
