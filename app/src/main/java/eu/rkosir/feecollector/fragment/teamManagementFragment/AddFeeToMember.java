@@ -164,6 +164,7 @@ public class AddFeeToMember extends Fragment {
 				for(int i = 0; i < membersArray.length(); i++) {
 					JSONObject user = membersArray.getJSONObject(i);
 					membersList.add(new User(
+							user.getInt("id"),
 							user.getString("name"),
 							user.getString("email"),
 							user.getString("phone_number"),

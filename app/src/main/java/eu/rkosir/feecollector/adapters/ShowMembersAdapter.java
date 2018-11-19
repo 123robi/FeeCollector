@@ -33,6 +33,7 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private TextView mMembers;
 		private TextView mRole;
+		private TextView mCostAmount;
 		private CircleImageView mImage;
 
 		public ViewHolder(View itemView, ShowTeamsAdapter.OnItemClickListener listener) {
@@ -40,6 +41,7 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 			mMembers = itemView.findViewById(R.id.members);
 			mRole = itemView.findViewById(R.id.role);
 			mImage = itemView.findViewById(R.id.image);
+			mCostAmount = itemView.findViewById(R.id.cost_amount);
 
 			itemView.setOnClickListener(view -> {
 				if (listener != null) {
@@ -71,6 +73,7 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 		if (users.get(position).getRole() != null) {
 			holder.mRole.setText(users.get(position).getRole());
 		}
+		holder.mCostAmount.setText(users.get(position).getToPay() + "CZK");
 		String imageUrl = "http://rkosir.eu/images/" + users.get(position).getEmail() + ".jpg";
 		Picasso.get().load(imageUrl).resize(200,200).error(R.mipmap.ic_team_member_no_photo).into(holder.mImage);
 	}

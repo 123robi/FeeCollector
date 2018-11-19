@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import java.util.Date;
 
 public class User implements Parcelable{
+	private int id;
 	private String name;
 	private String email;
 	private String phoneNumber;
@@ -15,6 +16,7 @@ public class User implements Parcelable{
 	private Date created_at, updated_at;
 	private String facebook_json;
 	private String role;
+	private int toPay;
 
 	public User(String name, String email, String phoneNumber, String address ,String password) {
 		this.name = name;
@@ -24,14 +26,17 @@ public class User implements Parcelable{
 		this.password = password;
 		this.created_at = new Date();
 		this.role = null;
+		toPay = 0;
 	}
-	public User(String name, String email, String phoneNumber, String address) {
+	public User(int id, String name, String email, String phoneNumber, String address) {
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.address = address;
 		this.created_at = new Date();
 		this.role = null;
+		toPay = 0;
 	}
 
 	public static final Creator<User> CREATOR = new Creator<User>() {
@@ -46,6 +51,7 @@ public class User implements Parcelable{
 		}
 	};
 	protected User(Parcel in) {
+		id = in.readInt();
 		name = in.readString();
 		email = in.readString();
 		phoneNumber = in.readString();
@@ -61,6 +67,7 @@ public class User implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel parcel, int i) {
+		parcel.writeInt(id);
 		parcel.writeString(name);
 		parcel.writeString(email);
 		parcel.writeString(phoneNumber);
@@ -69,6 +76,15 @@ public class User implements Parcelable{
 		parcel.writeString(facebook_json);
 		parcel.writeString(role);
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -144,5 +160,13 @@ public class User implements Parcelable{
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public void setToPay(int cost) {
+		this.toPay = cost;
+	}
+
+	public int getToPay() {
+		return toPay;
 	}
 }
