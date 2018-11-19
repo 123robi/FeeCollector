@@ -56,7 +56,7 @@ public class UserDetail extends AppCompatActivity {
 		setContentView(R.layout.activity_user_detail);
 		Intent intent = getIntent();
 		mToolbar = findViewById(R.id.back_action_bar);
-		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
+		mToolbar.setNavigationOnClickListener(view -> this.finish());
 
 		if (intent != null) {
 			Object user = intent.getParcelableExtra("user");
