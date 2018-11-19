@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.User;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.ViewHolder> {
 	private ArrayList<User> users;
@@ -73,7 +74,7 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 		if (users.get(position).getRole() != null) {
 			holder.mRole.setText(users.get(position).getRole());
 		}
-		holder.mCostAmount.setText(users.get(position).getToPay() + "CZK");
+		holder.mCostAmount.setText(users.get(position).getToPay() + "" + SharedPreferencesSaver.getCurrencySymbol(context));
 		String imageUrl = "http://rkosir.eu/images/" + users.get(position).getEmail() + ".jpg";
 		Picasso.get().load(imageUrl).resize(200,200).error(R.mipmap.ic_team_member_no_photo).into(holder.mImage);
 	}

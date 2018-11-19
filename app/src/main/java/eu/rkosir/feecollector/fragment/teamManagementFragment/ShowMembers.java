@@ -119,7 +119,7 @@ public class ShowMembers extends Fragment {
 						}
 					}
 
-					mAdapter = new ShowMembersAdapter(membersList, getApplicationContext());
+					mAdapter = new ShowMembersAdapter(membersList, getContext());
 					mRecyclerView.setLayoutManager(mLayoutManager);
 					mRecyclerView.setAdapter(mAdapter);
 

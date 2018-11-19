@@ -19,6 +19,9 @@ public class SharedPreferencesSaver {
 	private final static String TEAM = "team";
 	private final static String TOKEN_KEY_TEAM_NAME = "team_name";
 	private final static String TOKEN_KEY_TEAM_ID = "team_id";
+
+	private final static String CURRENCY_SYMBOL = "currency";
+	private final static String CURRENCY_CODE = "currency";
 	private final static String TOKEN_KEY_CURRENCY_CODE = "currency_code";
 	private final static String TOKEN_KEY_CURRENCY_SYMBOL = "currency_symbol";
 
@@ -102,26 +105,26 @@ public class SharedPreferencesSaver {
 		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
 		return prefs.getString(TOKEN_KEY_TEAM_ID, null);
 	}
-	public static void setCurrencyCode(Context c, String currency) {
-		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+	public static void setCurrencyCode(Context c, String currency_code) {
+		SharedPreferences prefs = c.getSharedPreferences(CURRENCY_CODE, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(TOKEN_KEY_CURRENCY_CODE, currency);
+		editor.putString(TOKEN_KEY_CURRENCY_CODE, currency_code);
 		editor.apply();
 	}
 
 	public static String getCurrencyCode(Context c) {
-		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+		SharedPreferences prefs = c.getSharedPreferences(CURRENCY_CODE, Context.MODE_PRIVATE);
 		return prefs.getString(TOKEN_KEY_CURRENCY_CODE, null);
 	}
-	public static void setCurrencySymbol(Context c, String currency) {
-		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+	public static void setCurrencySymbol(Context c, String currency_symbol) {
+		SharedPreferences prefs = c.getSharedPreferences(CURRENCY_SYMBOL, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(TOKEN_KEY_CURRENCY_SYMBOL, currency);
+		editor.putString(TOKEN_KEY_CURRENCY_SYMBOL, currency_symbol);
 		editor.apply();
 	}
 
 	public static String getCurrencySymbol(Context c) {
-		SharedPreferences prefs = c.getSharedPreferences(TEAM, Context.MODE_PRIVATE);
+		SharedPreferences prefs = c.getSharedPreferences(CURRENCY_SYMBOL, Context.MODE_PRIVATE);
 		return prefs.getString(TOKEN_KEY_CURRENCY_SYMBOL, null);
 	}
 }
