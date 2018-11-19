@@ -4,13 +4,17 @@ public class Team {
 	private int id;
 	private String name;
 	private int members;
+	private final String currency_code;
+	private final String currency_symbol;
 	private boolean admin;
 	private String connection_number;
 
-	public Team(int id, String name, boolean admin, String connection_number) {
+	public Team(int id, String name,String currency_code, String currency_symbol, boolean admin, String connection_number) {
 
 		this.id = id;
 		this.name = name;
+		this.currency_code = currency_code;
+		this.currency_symbol = currency_symbol;
 		this.admin = admin;
 		this.connection_number = connection_number;
 	}
@@ -53,5 +57,13 @@ public class Team {
 
 	public void setMembers(int members) {
 		this.members = members;
+	}
+
+	public String getCurrency_code() {
+		return currency_code;
+	}
+
+	public String getCurrency_symbol() {
+		return currency_symbol;
 	}
 }

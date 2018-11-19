@@ -85,14 +85,14 @@ public class ShowTeams extends Fragment {
 				JSONArray adminTeamsArray = object.getJSONArray("admin");
 				for(int i = 0; i < adminTeamsArray.length(); i++) {
 					JSONObject team = adminTeamsArray.getJSONObject(i);
-					Team teamObject = new Team(team.getInt("id"),team.getString("team_name"),true, team.getString("connection_number"));
+					Team teamObject = new Team(team.getInt("id"),team.getString("team_name"),team.getString("currency_code"),team.getString("currency_symbol"),true, team.getString("connection_number"));
 					teamObject.setMembers(team.getInt("count_members"));
 					teams.add(teamObject);
 				}
 				JSONArray teamArray = object.getJSONArray("teams");
 				for(int i = 0; i < teamArray.length(); i++) {
 					JSONObject team = teamArray.getJSONObject(i);
-					teams.add(new Team(team.getInt("id"),team.getString("team_name"),false, team.getString("connection_number")));
+					teams.add(new Team(team.getInt("id"),team.getString("team_name"),team.getString("currency_code"),team.getString("currency_symbol"),false, team.getString("connection_number")));
 				}
 				mAdapter = new ShowTeamsAdapter(teams, getApplicationContext());
 				mRecyclerView.setLayoutManager(mLayoutManager);
@@ -102,6 +102,8 @@ public class ShowTeams extends Fragment {
 					if (teams.get(position).isAdmin()) {
 						SharedPreferencesSaver.setLastTeamName(getApplicationContext(),teams.get(position).getName());
 						SharedPreferencesSaver.setLastTeamId(getApplicationContext(),teams.get(position).getConnection_number());
+						SharedPreferencesSaver.setCurrencyCode(getApplicationContext(),teams.get(position).getCurrency_code());
+						SharedPreferencesSaver.setCurrencyCode(getApplicationContext(),teams.get(position).getCurrency_symbol());
 						Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
 						startActivity(intent);
 					} else {

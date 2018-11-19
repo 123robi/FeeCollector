@@ -89,6 +89,8 @@ public class TeamActivity extends AppCompatActivity {
 	public void onBackPressed() {
 		SharedPreferencesSaver.setLastTeamId(this,null);
 		SharedPreferencesSaver.setLastTeamName(this,null);
+		SharedPreferencesSaver.setCurrencyCode(this,null);
+		SharedPreferencesSaver.setCurrencySymbol(this,null);
 		super.onBackPressed();
 	}
 
