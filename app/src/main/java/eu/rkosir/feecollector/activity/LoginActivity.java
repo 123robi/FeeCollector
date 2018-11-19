@@ -22,6 +22,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -78,7 +79,8 @@ public class LoginActivity extends AppCompatActivity {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
 		boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-		if( isLoggedIn || SharedPreferencesSaver.getToken(LoginActivity.this)) {
+		if((isLoggedIn || SharedPreferencesSaver.getToken(LoginActivity.this)) && SharedPreferencesSaver.getUser(this) != null) {
+			LoginManager.getInstance().logOut();
 			Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
 			LoginActivity.this.startActivity(intent);
 			LoginActivity.this.finish();
