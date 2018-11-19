@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -55,6 +56,7 @@ public class Registration_2nd_step extends Fragment {
 	private Button mCreateUserbtn;
 	private ProgressBar mProgressBar;
 	private String mEmail;
+	private TextView errorMessage;
 
 	public Registration_2nd_step() {
 		// Required empty public constructor
@@ -74,11 +76,16 @@ public class Registration_2nd_step extends Fragment {
 		mInputPassword = view.findViewById(R.id.password);
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		mCreateUserbtn = view.findViewById(R.id.createUser);
+		errorMessage = view.findViewById(R.id.error_message_number);
+
 		phoneInput.setOnValidityChange((view1, isValid) -> {
 			if(!isValid) {
+				errorMessage.setText(getResources().getString(R.string.error_wrong_format));
+				errorMessage.setVisibility(View.VISIBLE);
 				mCreateUserbtn.setClickable(false);
 				mCreateUserbtn.setAlpha(0.3f);
 			} else {
+				errorMessage.setVisibility(View.INVISIBLE);
 				mCreateUserbtn.setClickable(true);
 				mCreateUserbtn.setAlpha(1f);
 			}
@@ -187,6 +194,8 @@ public class Registration_2nd_step extends Fragment {
 			focusView = mInputPassword;
 			cancel = true;
 		} else if (!phoneInput.isValid()) {
+			errorMessage.setText(getResources().getString(R.string.error_wrong_format));
+			errorMessage.setVisibility(View.VISIBLE);
 			focusView = phoneInput;
 			cancel = true;
 		}
