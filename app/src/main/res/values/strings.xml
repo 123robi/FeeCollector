@@ -153,4 +153,5 @@
     <string name="notification_send_radioButton_sms">SMS</string>
     <string name="notification_send_radioButton_email">Email</string>
     <string name="notification_send_error_one_check">At least one has to be selected.</string>
+    <string name="toast_send_sms_error">Your member is not registered in your team!</string>
 </resources>

@@ -109,7 +109,11 @@ public class SendNotification extends AppCompatActivity {
             if (attemptToSendNotification()) {
                 if (checkPremission(Manifest.permission.SEND_SMS)) {
                     if (mCheckSMS.isChecked()) {
-                        sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
+                        try {
+                            sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
+                        } catch (Exception e) {
+                            Toast.makeText(this, R.string.toast_send_sms_error, Toast.LENGTH_LONG).show();
+                        }
                     }
                 } else {
                     ActivityCompat.requestPermissions(this,
@@ -147,7 +151,7 @@ public class SendNotification extends AppCompatActivity {
             try {
                 object = new JSONObject(response);
                 if (!object.getBoolean("error")) {
-                    Toast.makeText(this, R.string.toast_successful_fee_add,Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.send_notification_success,Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(this, object.getString("error_msg"),Toast.LENGTH_LONG).show();
                 }
