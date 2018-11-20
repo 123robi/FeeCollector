@@ -39,6 +39,7 @@ import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class UserDetail extends AppCompatActivity {
@@ -145,6 +146,37 @@ public class UserDetail extends AppCompatActivity {
 			mRelativeLayoutAddress.setVisibility(View.GONE);
 		}
 		// #todo birhtday date
+		loadFees();
+	}
+
+	/**
+	 * Volley request to load all fees of user(paid) unpaid
+	 */
+	private void loadFees() {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		String uri = String.format(AppConfig.URL_GET_FEES_OF_USER,
+				myUser.getEmail());
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+			JSONObject object = null;
+
+			try {
+				object = new JSONObject(response);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		});
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	@Override
