@@ -19,6 +19,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.github.clans.fab.FloatingActionButton;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -117,6 +119,7 @@ public class UserDetail extends AppCompatActivity {
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 			}*/
+			Picasso.get().invalidate("http://rkosir.eu/images/" + myUser.getEmail() + ".jpg");
 			Intent selectPicture = new Intent();
 			selectPicture.setType("image/*");
 			selectPicture.setAction(Intent.ACTION_GET_CONTENT);

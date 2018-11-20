@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.github.clans.fab.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +64,6 @@ public class ShowMembers extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_members, container, false);
 		mRecyclerView = view.findViewById(R.id.members_list);
-		mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		mProgressBar.setVisibility(View.INVISIBLE);
 		mAddMember = view.findViewById(R.id.add_member);
@@ -79,6 +79,7 @@ public class ShowMembers extends Fragment {
 	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
 	 */
 	public void getMembers() {
+		mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		String uri = String.format(AppConfig.URL_GET_All_MEMBERS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
@@ -127,6 +128,7 @@ public class ShowMembers extends Fragment {
 					mAdapter.setOnItemClickListener(position -> {
 						Intent intent = new Intent(getApplicationContext(), UserDetail.class);
 						intent.putExtra("user", membersList.get(position));
+						Picasso.get().invalidate("http://rkosir.eu/images/" +  membersList.get(position).getEmail() + ".jpg");
 						startActivity(intent);
 					});
 				} else {
@@ -150,9 +152,20 @@ public class ShowMembers extends Fragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		if (mAdapter != null) {
+			mAdapter.notifyDataSetChanged();
+		}
+	}
+
+	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
+			if (mAdapter != null) {
+			mAdapter.notifyDataSetChanged();
+			}
 			getMembers();
 		}
 	}
@@ -160,6 +173,7 @@ public class ShowMembers extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.refresh) {
+			mAdapter.notifyDataSetChanged();
 			getMembers();
 		}
 		return super.onOptionsItemSelected(item);
