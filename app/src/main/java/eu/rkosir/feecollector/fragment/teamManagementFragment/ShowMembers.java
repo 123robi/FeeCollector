@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -77,7 +78,7 @@ public class ShowMembers extends Fragment {
 	/**
 	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
 	 */
-	private void getMembers() {
+	public void getMembers() {
 		String uri = String.format(AppConfig.URL_GET_All_MEMBERS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
@@ -146,5 +147,21 @@ public class ShowMembers extends Fragment {
 				mProgressBar.setVisibility(View.INVISIBLE);
 			}
 		});
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			getMembers();
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.refresh) {
+			getMembers();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

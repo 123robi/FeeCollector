@@ -159,4 +159,5 @@
     <string name="toast_unsuccessful_saving_fee_to_user">There was a problem. Please try again later.</string>
     <string name="create_team_currency">Currency</string>
 	<string name="error_wrong_format">Phone number is not correct</string>
+	<string name="team_menu_refresh">Refresh</string>
 </resources>
