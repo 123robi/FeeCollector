@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
@@ -29,13 +31,17 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.RegistrationActivity;
+import eu.rkosir.feecollector.adapters.ShowMemberFeesAdapter;
 import eu.rkosir.feecollector.entity.MemberFee;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -54,6 +60,9 @@ public class UserDetail extends AppCompatActivity {
 	private Bitmap bitmap;
 	private ProgressBar mProgressBar;
 	private FloatingActionButton mSendNotificaiton;
+	private List<MemberFee> mMemberFees;
+	private RecyclerView mRecyclerView;
+	private ShowMemberFeesAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +89,10 @@ public class UserDetail extends AppCompatActivity {
 		mNumber = findViewById(R.id.phone_number);
 		mAddress = findViewById(R.id.address);
 		mBirthday = findViewById(R.id.birthday);
+
+		mMemberFees = new ArrayList<>();
+		mRecyclerView = findViewById(R.id.feesList);
+		loadFees();
 
 		mSendNotificaiton.setOnClickListener(view -> {
 			Intent sendNotification = new Intent(this, SendNotification.class);
@@ -148,7 +161,6 @@ public class UserDetail extends AppCompatActivity {
 			mRelativeLayoutAddress.setVisibility(View.GONE);
 		}
 		// #todo birhtday date
-		loadFees();
 	}
 
 	/**
@@ -166,9 +178,25 @@ public class UserDetail extends AppCompatActivity {
 				object = new JSONObject(response);
 				JSONArray memberFeesArray = object.getJSONArray("fees");
 				for(int i = 0; i < memberFeesArray .length(); i++) {
-					JSONObject memberFEe = memberFeesArray .getJSONObject(i);
+					JSONObject memberFee = memberFeesArray .getJSONObject(i);
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(AppConfig.parse.parse(memberFee.getString("date")));
+					JSONObject matchingData = memberFee.getJSONObject("_matchingData");
+					JSONObject fee = matchingData.getJSONObject("Fees");
+
+					if (memberFee.getInt("paid") == 0) {
+						MemberFee addMemberFee = new MemberFee(fee.getString("name"), fee.getString("cost"), calendar, false);
+						mMemberFees.add(addMemberFee);
+					} else {
+						MemberFee addMemberFee = new MemberFee(fee.getString("name"), fee.getString("cost"), calendar, false);
+						mMemberFees.add(addMemberFee);
+					}
 				}
-			} catch (JSONException e) {
+
+				mAdapter = new ShowMemberFeesAdapter(mMemberFees,getApplicationContext());
+				mRecyclerView.setAdapter(mAdapter);
+				mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+			} catch (JSONException | ParseException e) {
 				e.printStackTrace();
 			}
 		}, error -> {

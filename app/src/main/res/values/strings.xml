@@ -160,4 +160,6 @@
     <string name="create_team_currency">Currency</string>
 	<string name="error_wrong_format">Phone number is not correct</string>
 	<string name="team_menu_refresh">Refresh</string>
+    <string name="user_detail_paid">PAID</string>
+    <string name="user_detail_not_paid">NOT PAID</string>
 </resources>

@@ -21,7 +21,7 @@
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_alignParentStart="true"
 			android:layout_alignParentTop="true"
 			android:orientation="vertical">
@@ -31,7 +31,7 @@
 				layout="@layout/toolbar" />
 
 			<LinearLayout
-				android:layout_width="match_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:padding="4dp">
 
@@ -52,8 +52,8 @@
 							android:layout_width="match_parent"
 							android:layout_height="50dp"
 							android:gravity="center_vertical"
-							android:paddingEnd="25dp"
-							android:paddingStart="25dp">
+							android:paddingStart="25dp"
+							android:paddingEnd="25dp">
 
 							<TextView
 								android:layout_width="wrap_content"
@@ -71,8 +71,8 @@
 						<RelativeLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:paddingBottom="10dp"
-							android:paddingTop="10dp">
+							android:paddingTop="10dp"
+							android:paddingBottom="10dp">
 
 							<de.hdodenhof.circleimageview.CircleImageView
 								android:id="@+id/user_picture"
@@ -107,8 +107,8 @@
 								android:id="@+id/player_age"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
-								android:layout_alignBottom="@+id/user_picture"
 								android:layout_alignStart="@+id/player_name"
+								android:layout_alignBottom="@+id/user_picture"
 								android:text="12 years"
 								android:textSize="14sp" />
 
@@ -123,10 +123,10 @@
 							android:id="@+id/relative_email"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:paddingBottom="15dp"
-							android:paddingEnd="25dp"
 							android:paddingStart="25dp"
-							android:paddingTop="15dp">
+							android:paddingTop="15dp"
+							android:paddingEnd="25dp"
+							android:paddingBottom="15dp">
 
 							<ImageView
 								android:id="@+id/email_icon"
@@ -157,10 +157,10 @@
 							android:id="@+id/relative_phone_number"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:paddingBottom="15dp"
-							android:paddingEnd="25dp"
 							android:paddingStart="25dp"
-							android:paddingTop="15dp">
+							android:paddingTop="15dp"
+							android:paddingEnd="25dp"
+							android:paddingBottom="15dp">
 
 							<ImageView
 								android:id="@+id/phone_number_icon"
@@ -191,10 +191,10 @@
 							android:id="@+id/relative_address"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:paddingBottom="15dp"
-							android:paddingEnd="25dp"
 							android:paddingStart="25dp"
-							android:paddingTop="15dp">
+							android:paddingTop="15dp"
+							android:paddingEnd="25dp"
+							android:paddingBottom="15dp">
 
 							<ImageView
 								android:id="@+id/address_icon"
@@ -223,10 +223,10 @@
 						<RelativeLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:paddingBottom="15dp"
-							android:paddingEnd="25dp"
 							android:paddingStart="25dp"
-							android:paddingTop="15dp">
+							android:paddingTop="15dp"
+							android:paddingEnd="25dp"
+							android:paddingBottom="15dp">
 
 							<ImageView
 								android:id="@+id/birthday_icon"
@@ -252,12 +252,13 @@
 			<ScrollView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
+
 				<android.support.v7.widget.RecyclerView
 					android:id="@+id/feesList"
+					android:padding="4dp"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:scrollbars="vertical"
-					/>
+					android:scrollbars="vertical" />
 			</ScrollView>
 		</LinearLayout>
 	</RelativeLayout>
