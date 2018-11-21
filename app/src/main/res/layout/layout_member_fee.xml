@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:id="@+id/cardview"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:elevation="100dp"
+	app:cardBackgroundColor="@android:color/white"
+	app:cardCornerRadius="8dp"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/fee_name"
+			android:layout_width="137dp"
+			android:layout_height="wrap_content"
+			android:layout_alignParentStart="true"
+			android:layout_alignParentTop="true"
+			android:layout_marginStart="25dp"
+			android:layout_marginTop="23dp"
+			android:paddingTop="10dp"
+			android:text="FeeName"
+			android:textSize="20sp" />
+
+		<TextView
+			android:id="@+id/fee_amount"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignStart="@+id/fee_name"
+			android:layout_below="@+id/fee_name"
+			android:paddingBottom="3dp"
+			android:text="120$" />
+
+		<TextView
+			android:id="@+id/date"
+			android:paddingTop="5dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_alignStart="@+id/fee_name"
+			android:textSize="12sp"
+			android:drawableLeft="@drawable/iconfinder_calendar_115762"
+			android:text="Jun 08" />
+
+		<TextView
+			android:id="@+id/isPaid"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentTop="true"
+			android:layout_marginEnd="14dp"
+			android:layout_marginTop="12dp"
+			android:text="NOT PAID"
+			android:textColor="red" />
+	</RelativeLayout>
+</android.support.v7.widget.CardView>

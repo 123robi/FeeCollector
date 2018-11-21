@@ -23,6 +23,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.RegistrationActivity;
+import eu.rkosir.feecollector.entity.MemberFee;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
@@ -162,7 +164,10 @@ public class UserDetail extends AppCompatActivity {
 
 			try {
 				object = new JSONObject(response);
-
+				JSONArray memberFeesArray = object.getJSONArray("fees");
+				for(int i = 0; i < memberFeesArray .length(); i++) {
+					JSONObject memberFEe = memberFeesArray .getJSONObject(i);
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
