@@ -93,8 +93,6 @@ public class ShowMemberFeesAdapter extends RecyclerView.Adapter<ShowMemberFeesAd
 
     private String getTimeFormat(Calendar c) {
         Date date = c.getTime();
-        DateFormat timeFormatter =
-                DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
-        return timeFormatter.format(date);
+        return AppConfig.membersFeeFormat.format(date);
     }
 }
