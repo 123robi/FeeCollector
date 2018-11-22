@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:orientation="vertical"
 	tools:context=".activity.teamManagement.UserDetail">
+
+	<include
+		android:id="@+id/back_action_bar"
+		layout="@layout/toolbar" />
 	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="match_parent">
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
@@ -29,9 +37,6 @@
 				android:layout_alignParentTop="true"
 				android:orientation="vertical">
 
-				<include
-					android:id="@+id/back_action_bar"
-					layout="@layout/toolbar" />
 
 				<LinearLayout
 					android:layout_width="match_parent"
@@ -266,6 +271,8 @@
 				</ScrollView>
 			</LinearLayout>
 		</RelativeLayout>
+
+		</ScrollView>
 		<com.github.clans.fab.FloatingActionButton
 			android:id="@+id/send_notification"
 			app:fab_colorNormal="@color/send_message_action_orange"
@@ -279,4 +286,4 @@
 			android:src="@drawable/ic_chat_black_24dp"
 			app:fab_label="@string/floating_action_button_event" />
 	</FrameLayout>
-</ScrollView>
+</LinearLayout>
