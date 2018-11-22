@@ -40,7 +40,7 @@ public class AppConfig {
 	public static SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 	public static SimpleDateFormat dayFormat = new SimpleDateFormat("E", Locale.getDefault());
 	public static SimpleDateFormat notificationEventFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm");
-	public static SimpleDateFormat membersFeeFormat = new SimpleDateFormat("dd.MM", Locale.getDefault());
+	public static SimpleDateFormat membersFeeFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
 
 	//HTTP METHODS
 	public static final String POST = "POST";
