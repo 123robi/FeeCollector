@@ -27,6 +27,7 @@ public class AppConfig {
 	public static final String URL_SAVE_FEE_TO_USER = "http://rkosir.eu/FeeCollector/usersFeesApi/addFee";
 	public static final String URL_SAVE_EVENT = "http://rkosir.eu/FeeCollector/eventsApi/add";
 	public static final String URL_GET_FEES_OF_USER = "http://rkosir.eu/FeeCollector/FeesApi/getFeeOfUserByEmail?email=%1$s";
+	public static final String URL_UPDATE_USER = "http://rkosir.eu/FeeCollector/usersApi/update";
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
