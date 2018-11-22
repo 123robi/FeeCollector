@@ -10,7 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,7 +52,7 @@ import eu.rkosir.feecollector.helper.VolleySingleton;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class UserDetail extends AppCompatActivity {
+public class UserDetail extends AppCompatActivity implements View.OnLongClickListener{
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	private User myUser;
 	private Toolbar mToolbar;
@@ -63,6 +65,9 @@ public class UserDetail extends AppCompatActivity {
 	private List<MemberFee> mMemberFees;
 	private RecyclerView mRecyclerView;
 	private ShowMemberFeesAdapter mAdapter;
+	public boolean is_in_action_mode;
+	private ArrayList<MemberFee> selected;
+	private int counter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,8 @@ public class UserDetail extends AppCompatActivity {
 		setContentView(R.layout.activity_user_detail);
 		Intent intent = getIntent();
 		mToolbar = findViewById(R.id.back_action_bar);
-		mToolbar.setNavigationOnClickListener(view -> this.finish());
+		setSupportActionBar(mToolbar);
+		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
 		if (intent != null) {
 			Object user = intent.getParcelableExtra("user");
@@ -78,6 +84,11 @@ public class UserDetail extends AppCompatActivity {
 				myUser = (User) user;
 			}
 		}
+
+		is_in_action_mode = false;
+		selected = new ArrayList<>();
+		counter = 0;
+
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 		mSendNotificaiton = findViewById(R.id.send_notification);
 
@@ -188,12 +199,12 @@ public class UserDetail extends AppCompatActivity {
 						MemberFee addMemberFee = new MemberFee(memberFee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, false);
 						mMemberFees.add(addMemberFee);
 					} else {
-						MemberFee addMemberFee = new MemberFee(memberFee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, false);
+						MemberFee addMemberFee = new MemberFee(memberFee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, true);
 						mMemberFees.add(addMemberFee);
 					}
 				}
 
-				mAdapter = new ShowMemberFeesAdapter(mMemberFees,getApplicationContext());
+				mAdapter = new ShowMemberFeesAdapter(mMemberFees,this);
 				mRecyclerView.setAdapter(mAdapter);
 				mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 			} catch (JSONException | ParseException e) {
@@ -268,5 +279,67 @@ public class UserDetail extends AppCompatActivity {
 		bitmap.compress(Bitmap.CompressFormat.JPEG,10,byteArrayOutputStream);
 		byte[] imgBytes = byteArrayOutputStream.toByteArray();
 		return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		mToolbar.setTitle("0 items selected");
+		mToolbar.inflateMenu(R.menu.menu_action_mode);
+		is_in_action_mode = true;
+		mAdapter.notifyDataSetChanged();
+		return false;
+	}
+
+	public void prepareSelection(boolean v, int adapterPosition) {
+		try{
+			if (v) {
+				selected.add(mMemberFees.get(adapterPosition));
+				counter += 1;
+				updateCounter();
+			} else {
+				selected.remove(mMemberFees.remove(adapterPosition));
+				counter -= 1;
+				updateCounter();
+			}
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void updateCounter() {
+		mToolbar.setTitle(counter + " Items selected");
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (is_in_action_mode) {
+			mToolbar.getMenu().clear();
+			mToolbar.setTitle(myUser.getName());
+			is_in_action_mode = false;
+			mAdapter.notifyDataSetChanged();
+			counter = 0;
+			selected.clear();
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.fee_is_paid) {
+			for(MemberFee fee : selected) {
+				if (mMemberFees.contains(fee)) {
+					mMemberFees.get(mMemberFees.indexOf(fee)).setPaid(true);
+				}
+			}
+			mToolbar.getMenu().clear();
+			mToolbar.setTitle(myUser.getName());
+			is_in_action_mode = false;
+			mAdapter.notifyDataSetChanged();
+			counter = 0;
+			selected.clear();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

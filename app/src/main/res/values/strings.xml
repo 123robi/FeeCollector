@@ -162,4 +162,5 @@
 	<string name="team_menu_refresh">Refresh</string>
     <string name="user_detail_paid">PAID</string>
     <string name="user_detail_not_paid">NOT PAID</string>
+	<string name="user_detail_menu_paid">PAID</string>
 </resources>

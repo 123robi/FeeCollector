@@ -4,10 +4,10 @@ import java.util.Calendar;
 
 public class MemberFee {
 	private int id;
-	private final String name;
-	private final String amount;
-	private final Calendar date;
-	private final boolean paid;
+	private String name;
+	private String amount;
+	private Calendar date;
+	private boolean paid;
 
 	public MemberFee (int id, String name, String amount, Calendar date, boolean paid) {
 		this.id = id;
@@ -32,6 +32,10 @@ public class MemberFee {
 
 	public boolean isPaid() {
 		return paid;
+	}
+
+	public void setPaid(boolean paid) {
+		this.paid = paid;
 	}
 
 	public int getId() {
