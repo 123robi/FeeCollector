@@ -329,6 +329,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.fee_is_paid) {
 			for(MemberFee fee : selected) {
+				updateMembers(fee);
 				if (mMemberFees.contains(fee)) {
 					mMemberFees.get(mMemberFees.indexOf(fee)).setPaid(true);
 				}
@@ -341,5 +342,41 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 			selected.clear();
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void updateMembers(MemberFee fee) {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_UPDATE_FEES_OF_USER, response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				if (!object.getBoolean("error")) {
+
+				} else {
+					Toast.makeText(getApplicationContext(),R.string.toast_uploading_error,Toast.LENGTH_LONG).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_size_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("id", String.valueOf(fee.getId()));
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
+
 	}
 }
