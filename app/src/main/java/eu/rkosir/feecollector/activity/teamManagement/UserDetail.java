@@ -185,10 +185,10 @@ public class UserDetail extends AppCompatActivity {
 					JSONObject fee = matchingData.getJSONObject("Fees");
 
 					if (memberFee.getInt("paid") == 0) {
-						MemberFee addMemberFee = new MemberFee(fee.getString("name"), fee.getString("cost"), calendar, false);
+						MemberFee addMemberFee = new MemberFee(fee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, false);
 						mMemberFees.add(addMemberFee);
 					} else {
-						MemberFee addMemberFee = new MemberFee(fee.getString("name"), fee.getString("cost"), calendar, false);
+						MemberFee addMemberFee = new MemberFee(fee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, false);
 						mMemberFees.add(addMemberFee);
 					}
 				}
