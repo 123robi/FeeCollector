@@ -263,11 +263,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
 			protected Map<String, String> getParams() throws AuthFailureError {
 				Map<String,String> params = new HashMap<>();
 				params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
-				params.put("password", mInputPassword.getText().toString());
+				params.put("new_password", mInputPassword.getText().toString());
 				params.put("address", mInputAddress.getText().toString());
 				params.put("phone_number", mInputPhoneNumber.getText().toString());
 				if (!facebook_login) {
-					params.put("current_password", mInputCurrentPassword.getText().toString());
+					params.put("password", mInputCurrentPassword.getText().toString());
 				}
 				return params;
 			}
