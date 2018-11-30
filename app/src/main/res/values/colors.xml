@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1A81C3</color>
-    <color name="colorPrimaryLight">#bcdef4</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#355C7D</color>
+    <color name="colorPrimaryLight">#61a8e4</color>
+    <color name="colorAccent">#F67280</color>
     <color name="white">#ffffff</color>
     <color name="darkgrey">#6c6c6c</color>
     <color name="red">#ff0000</color>
@@ -22,8 +22,8 @@
     <color name="send_message_action_orange">#fc6d00</color>
     <color name="send_message_action_orange_pressed">#91fc6d00</color>
 
-    <color name="floating_action_button_main">#00B15C</color>
-    <color name="floating_action_button_main_pressed">#ba02d971</color>
+    <color name="floating_action_button_main">#C06C84</color>
+    <color name="floating_action_button_main_pressed">#92ed88a5</color>
 
     <color name="event">#8A66D9</color>
     <color name="match">#8ABF3E</color>
