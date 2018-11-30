@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -30,10 +29,10 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.teamManagement.AddMember;
 import eu.rkosir.feecollector.activity.teamManagement.UserDetail;
-import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.adapters.ShowMembersAdapter;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.UpdatableFragment;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -41,7 +40,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShowMembers extends Fragment {
+public class ShowMembers extends Fragment implements UpdatableFragment {
 
 	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
@@ -78,7 +77,8 @@ public class ShowMembers extends Fragment {
 	/**
 	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
 	 */
-	public void getMembers() {
+	private void getMembers() {
+		mProgressBar.setVisibility(View.VISIBLE);
 		mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		String uri = String.format(AppConfig.URL_GET_All_MEMBERS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
@@ -152,30 +152,8 @@ public class ShowMembers extends Fragment {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		if (mAdapter != null) {
-			mAdapter.notifyDataSetChanged();
-		}
-	}
-
-	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		if (isVisibleToUser) {
-			if (mAdapter != null) {
-			mAdapter.notifyDataSetChanged();
-			}
-			getMembers();
-		}
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.refresh) {
-			mAdapter.notifyDataSetChanged();
-			getMembers();
-		}
-		return super.onOptionsItemSelected(item);
+	public void update() {
+		getMembers();
+		mAdapter.notifyDataSetChanged();
 	}
 }
