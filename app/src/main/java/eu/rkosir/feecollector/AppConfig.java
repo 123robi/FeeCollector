@@ -20,6 +20,7 @@ public class AppConfig {
 	public static final String URL_GET_MEMBERS = "http://rkosir.eu/FeeCollector/teamMembersApi/getUsersInTeam?connection_number=%1$s&email=%2$s";
 	public static final String URL_GET_All_MEMBERS = "http://rkosir.eu/FeeCollector/teamMembersApi/getAllUsers?connection_number=%1$s";
 	public static final String URL_GET_EVENTS = "http://rkosir.eu/FeeCollector/eventsApi/get?connection_number=%1$s";
+	public static final String URL_GET_NEXT_EVENT = "http://rkosir.eu/FeeCollector/eventsApi/getNextEvent?connection_number=%1$s";
 	public static final String URL_GET_LOCATIONS = "http://rkosir.eu/FeeCollector/placesApi/getPlaces?connection_number=%1$s";
 	public static final String URL_GET_PLACE_ID = "http://rkosir.eu/FeeCollector/placesApi/getPlaceById?id=%1$s";
 	public static final String ULR_SAVE_IAMGE = "http://rkosir.eu/FeeCollector/usersApi/insertImage";
@@ -42,6 +43,8 @@ public class AppConfig {
 	public static SimpleDateFormat dayFormat = new SimpleDateFormat("E", Locale.getDefault());
 	public static SimpleDateFormat notificationEventFormat = new SimpleDateFormat("dd.MM.YYYY HH:mm");
 	public static SimpleDateFormat membersFeeFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
+	public static SimpleDateFormat nextEventFormat = new SimpleDateFormat("d", Locale.getDefault());
+	public static SimpleDateFormat nextEventTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 	//HTTP METHODS
 	public static final String POST = "POST";

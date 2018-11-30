@@ -28,4 +28,5 @@
     <color name="event">#8A66D9</color>
     <color name="match">#8ABF3E</color>
     <color name="training">#F38C70</color>
+    <color name="black">#000000</color>
 </resources>
