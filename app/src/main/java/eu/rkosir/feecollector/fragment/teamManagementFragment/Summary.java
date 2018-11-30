@@ -1,16 +1,20 @@
 package eu.rkosir.feecollector.fragment.teamManagementFragment;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +64,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	private GoogleMap mMap;
 	private String [] latlngArray;
 	private TextView mEventName, mEventDate, mEventTime, mEventDescription, mPlaceName;
+	private CardView mNextEvent;
 
 	public Summary() {
 		// Required empty public constructor
@@ -76,6 +81,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		mProgressBar.setVisibility(View.INVISIBLE);
 
+		mNextEvent = view.findViewById(R.id.next_event_card);
 		mEventName = view.findViewById(R.id.event_name);
 		mEventDate = view.findViewById(R.id.event_date);
 		mEventTime = view.findViewById(R.id.event_time);
@@ -139,6 +145,16 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 				mEventTime.setText(getTimeFormat(calendar));
 				mPlaceName.setText(place.getName());
+
+				mNextEvent.setOnClickListener(view -> {
+					if (place != null) {
+						LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
+						String uri1 = "geo:0,0?q=%f, %f(%s)";
+						Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
+								.format(Locale.US, uri1, destiny.latitude, destiny.longitude, place.getName())));
+						startActivity(navIntent);
+					}
+				});
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
