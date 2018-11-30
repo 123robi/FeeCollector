@@ -1,11 +1,14 @@
 package eu.rkosir.feecollector.activity.teamManagement;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,12 +34,12 @@ import java.util.Map;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.DashboardActivity;
-import eu.rkosir.feecollector.adapters.ViewPagerAdapter;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.AddFeeToMember;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Events;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.ShowMembers;
 import eu.rkosir.feecollector.fragment.teamManagementFragment.Summary;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.adapters.ViewPagerAdapter;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 public class TeamActivity extends AppCompatActivity {
@@ -42,6 +47,7 @@ public class TeamActivity extends AppCompatActivity {
 	private TabLayout mTabLayout;
 	private ViewPager mViewPager;
 	private Toolbar mToolbar;
+	private ProgressBar mLoadingBar;
 	private ViewPagerAdapter mAdapter;
 
 	@Override
@@ -72,6 +78,9 @@ public class TeamActivity extends AppCompatActivity {
 		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
 		mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
 		mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
+
+		mLoadingBar = findViewById(R.id.pb_loading_indicator);
+		mLoadingBar.setVisibility(View.INVISIBLE);
 	}
 
 	/**
