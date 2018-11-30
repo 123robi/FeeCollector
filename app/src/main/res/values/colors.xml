@@ -13,8 +13,8 @@
     <color name="floating_action_purple">#8A66D9</color>
     <color name="floating_action_purple_pressed">#b299e7</color>
 
-    <color name="floating_action_pure_red">#FE7C1D</color>
-    <color name="floating_action_pure_red_pressed">#f59d5c</color>
+    <color name="floating_action_pure_red">#F38C70</color>
+    <color name="floating_action_pure_red_pressed">#c3f38c70</color>
 
     <color name="floating_action_pure_green">#8ABF3E</color>
     <color name="floating_action_pure_green_pressed">#97bf5d</color>
@@ -27,5 +27,5 @@
 
     <color name="event">#8A66D9</color>
     <color name="match">#8ABF3E</color>
-    <color name="training">#FE7C1D</color>
+    <color name="training">#F38C70</color>
 </resources>
