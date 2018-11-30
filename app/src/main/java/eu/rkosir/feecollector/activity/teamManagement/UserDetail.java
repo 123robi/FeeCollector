@@ -297,7 +297,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 				counter += 1;
 				updateCounter();
 			} else {
-				selected.remove(mMemberFees.remove(adapterPosition));
+				selected.remove(mMemberFees.get(adapterPosition));
 				counter -= 1;
 				updateCounter();
 			}
