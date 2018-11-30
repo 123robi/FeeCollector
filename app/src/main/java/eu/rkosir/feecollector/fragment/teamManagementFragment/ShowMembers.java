@@ -156,4 +156,11 @@ public class ShowMembers extends Fragment implements UpdatableFragment {
 		getMembers();
 		mAdapter.notifyDataSetChanged();
 	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (mAdapter != null) {
+			mAdapter.notifyDataSetChanged();
+		}
+	}
 }

@@ -113,7 +113,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 
 		mCircleImageView = findViewById(R.id.user_picture);
 		String imageUrl = "http://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
-		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).into(mCircleImageView);
+		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).into(mCircleImageView);
 
 		mRelativeLayoutEmail = findViewById(R.id.relative_email);
 		mRelativeLayoutEmail.setOnClickListener(view -> {
