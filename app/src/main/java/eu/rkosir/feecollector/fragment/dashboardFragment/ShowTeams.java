@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,11 +41,12 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * A simple {@link Fragment} subclass.
  */
 public class ShowTeams extends Fragment {
-	private ProgressBar mProgressBar;
 
 	private RecyclerView mRecyclerView;
 	private ShowTeamsAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
+
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public ShowTeams() {
 		// Required empty public constructor
@@ -52,19 +54,20 @@ public class ShowTeams extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
+							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_show_teams, container, false);
 		mRecyclerView = view.findViewById(R.id.teamsList);
 		mRecyclerView.setHasFixedSize(true);
 		mLayoutManager = new LinearLayoutManager(getApplicationContext());
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
+		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		mSwipeRefreshLayout.setOnRefreshListener(this::loadTeams);
 		loadTeams();
 	}
 
@@ -77,8 +80,7 @@ public class ShowTeams extends Fragment {
 				new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
 
 		ArrayList<Team> teams = new ArrayList<>();
-		mProgressBar.setVisibility(View.VISIBLE);
-		mProgressBar.bringToFront();
+		mSwipeRefreshLayout.setRefreshing(true);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
@@ -123,8 +125,8 @@ public class ShowTeams extends Fragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mProgressBar != null) {
-				mProgressBar.setVisibility(View.INVISIBLE);
+			if (mSwipeRefreshLayout.isRefreshing()) {
+				mSwipeRefreshLayout.setRefreshing(false);
 			}
 		});
 	}
