@@ -107,7 +107,7 @@ public class ShowTeams extends Fragment {
 					SharedPreferencesSaver.setCurrencyCode(getApplicationContext(),teams.get(position).getCurrency_code());
 					SharedPreferencesSaver.setCurrencySymbol(getApplicationContext(),teams.get(position).getCurrency_symbol());
 					if (teams.get(position).isAdmin()) {
-						SharedPreferencesSaver.setAdmin(getApplicationContext(),false);
+						SharedPreferencesSaver.setAdmin(getApplicationContext(),true);
 					} else {
 						SharedPreferencesSaver.setAdmin(getApplicationContext(),false);
 					}
