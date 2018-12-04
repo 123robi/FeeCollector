@@ -253,6 +253,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 				mChart.setData(data);
 				mChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(names));
+				mChart.getXAxis().setTextSize(12f);
 				mChart.notifyDataSetChanged();
 				mChart.fitScreen();
 				mChart.invalidate();
