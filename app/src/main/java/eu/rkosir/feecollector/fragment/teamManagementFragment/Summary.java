@@ -7,45 +7,30 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
-import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,12 +46,8 @@ import java.util.Locale;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.teamManagement.UserDetail;
-import eu.rkosir.feecollector.adapters.ShowEventsAdapter;
-import eu.rkosir.feecollector.adapters.ShowMembersAdapter;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
-import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.MyYAxisValueFormatter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
@@ -110,20 +91,6 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mEventDescription = view.findViewById(R.id.event_description);
 		mPlaceName = view.findViewById(R.id.event_location);
 		mChart = view.findViewById(R.id.chart);
-
-		mChart.getDescription().setEnabled(false);
-		mChart.fitScreen();
-		mChart.getAxisLeft().setDrawGridLines(false);
-		mChart.getAxisRight().setDrawGridLines(false);
-		mChart.getXAxis().setDrawGridLines(false);
-		mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-		mChart.getAxisLeft().setEnabled(false);
-		mChart.getLegend().setEnabled(false);
-		mChart.setScaleEnabled(false);
-		mChart.setTouchEnabled(false);
-		mChart.setNoDataText(getResources().getString(R.string.summary_loading));
-		mChart.setViewPortOffsets(0, 10, 0,60);
-		mChart.getAxisRight().setEnabled(false);
 		return view;
 	}
 
@@ -164,44 +131,48 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 							matchingData.getInt("team_id")
 					);
 				}
-				mMap = googleMap;
-				mMap.getUiSettings().setAllGesturesEnabled(false);
-				mMap.getUiSettings().setMapToolbarEnabled(false);
-				String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
-				latlngArray = lanltd.split(",");
-				LatLng location = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
-				mMap.addMarker(new MarkerOptions().position(location).title(place.getName()));
-				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15), new GoogleMap.CancelableCallback() {
-					@Override
-					public void onFinish() {
-						getMembers();
-					}
+				if (place != null) {
+					mMap = googleMap;
+					mMap.getUiSettings().setAllGesturesEnabled(false);
+					mMap.getUiSettings().setMapToolbarEnabled(false);
+					String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
+					latlngArray = lanltd.split(",");
+					LatLng location = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
+					mMap.addMarker(new MarkerOptions().position(location).title(place.getName()));
+					mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15), new GoogleMap.CancelableCallback() {
+						@Override
+						public void onFinish() {
+							getMembers();
+						}
 
-					@Override
-					public void onCancel() {
+						@Override
+						public void onCancel() {
 
-					}
-				});
+						}
+					});
 
-				mEventName.setText("Next " + nextEvent.getName());
-				mEventDescription.setText(nextEvent.getDescription());
-				mEventDate.setText(getDateFormat(nextEvent.getCalendar()));
+					mEventName.setText("Next " + nextEvent.getName());
+					mEventDescription.setText(nextEvent.getDescription());
+					mEventDate.setText(getDateFormat(nextEvent.getCalendar()));
 
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(AppConfig.parse.parse(nextEvent.getStartDateTime()));
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(AppConfig.parse.parse(nextEvent.getStartDateTime()));
 
-				mEventTime.setText(getTimeFormat(calendar));
-				mPlaceName.setText(place.getName());
+					mEventTime.setText(getTimeFormat(calendar));
+					mPlaceName.setText(place.getName());
 
-				mNextEvent.setOnClickListener(view -> {
-					if (place != null) {
-						LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
-						String uri1 = "geo:0,0?q=%f, %f(%s)";
-						Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
-								.format(Locale.US, uri1, destiny.latitude, destiny.longitude, place.getName())));
-						startActivity(navIntent);
-					}
-				});
+					mNextEvent.setOnClickListener(view -> {
+						if (place != null) {
+							LatLng destiny = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1])); // Your destiny LatLng object
+							String uri1 = "geo:0,0?q=%f, %f(%s)";
+							Intent navIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
+									.format(Locale.US, uri1, destiny.latitude, destiny.longitude, place.getName())));
+							startActivity(navIntent);
+						}
+					});
+				} else {
+					getMembers();
+				}
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
@@ -235,28 +206,43 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					entries.add(new BarEntry(startingPosition,user.getInt("sum"),matchingData.getString("name")));
 					startingPosition ++;
 				}
-				BarDataSet set = new BarDataSet(entries,"");
-				set.setValueTextSize(15f);
-				set.setColors(MATERIAL_COLORS);
+				if (entries.size() != 0) {
+					mChart.getDescription().setEnabled(false);
+					mChart.fitScreen();
+					mChart.getAxisLeft().setDrawGridLines(false);
+					mChart.getAxisRight().setDrawGridLines(false);
+					mChart.getXAxis().setDrawGridLines(false);
+					mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+					mChart.getAxisLeft().setEnabled(false);
+					mChart.getLegend().setEnabled(false);
+					mChart.setScaleEnabled(false);
+					mChart.setTouchEnabled(false);
+					mChart.setNoDataText(getResources().getString(R.string.summary_loading));
+					mChart.setViewPortOffsets(0, 10, 0,60);
+					mChart.getAxisRight().setEnabled(false);
 
-				XAxis xAxis = mChart.getXAxis();
-				xAxis.setGranularity(1f);
-				xAxis.setGranularityEnabled(true);
+					BarDataSet set = new BarDataSet(entries,"");
+					set.setValueTextSize(15f);
+					set.setColors(MATERIAL_COLORS);
 
-				BarData data = new BarData(set);
-				data.setValueFormatter(new MyYAxisValueFormatter(SharedPreferencesSaver.getCurrencySymbol(getApplicationContext())));
-				data.setBarWidth(0.9f);
-				data.setValueTextSize(12f);
+					XAxis xAxis = mChart.getXAxis();
+					xAxis.setGranularity(1f);
+					xAxis.setGranularityEnabled(true);
 
-				mChart.setData(data);
-				mChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(names));
-				mChart.getXAxis().setTextSize(12f);
-				mChart.notifyDataSetChanged();
-				mChart.fitScreen();
-				mChart.invalidate();
-				mChart.animateY(1000);
-				mChart.setNoDataText("No char data available");
+					BarData data = new BarData(set);
+					data.setValueFormatter(new MyYAxisValueFormatter(SharedPreferencesSaver.getCurrencySymbol(getApplicationContext())));
+					data.setBarWidth(0.9f);
+					data.setValueTextSize(12f);
 
+					mChart.setData(data);
+					mChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(names));
+					mChart.getXAxis().setTextSize(12f);
+					mChart.notifyDataSetChanged();
+					mChart.fitScreen();
+					mChart.notifyDataSetChanged();
+					mChart.invalidate();
+					mChart.animateY(1000);
+				}
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();

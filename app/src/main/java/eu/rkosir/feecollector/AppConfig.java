@@ -30,7 +30,7 @@ public class AppConfig {
 	public static final String URL_GET_FEES_OF_USER = "http://rkosir.eu/FeeCollector/FeesApi/getFeeOfUserByEmail?email=%1$s";
 	public static final String URL_UPDATE_FEES_OF_USER = "http://rkosir.eu/FeeCollector/FeesApi/updateFeeOfUserByEmail";
 	public static final String URL_UPDATE_USER = "http://rkosir.eu/FeeCollector/usersApi/update";
-	public static final String URL_GET_TOP_3_FINED_USERS = "http://rkosir.eu/FeeCollector/FeesApi/getTop3FinedUsers?connection_number=5bc827b4992c2";
+	public static final String URL_GET_TOP_3_FINED_USERS = "http://rkosir.eu/FeeCollector/FeesApi/getTop3FinedUsers?connection_number=%1$s";
 
 	public static final String ALPHA_CAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String ALPHA = "abcdefghijklmnopqrstuvwxyz";
