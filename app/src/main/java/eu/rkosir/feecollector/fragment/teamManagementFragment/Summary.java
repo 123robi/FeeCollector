@@ -135,6 +135,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
+		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_NEXT_EVENT,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
