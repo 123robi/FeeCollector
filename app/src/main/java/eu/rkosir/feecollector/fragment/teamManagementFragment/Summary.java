@@ -125,6 +125,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mChart.getLegend().setEnabled(false);
 		mChart.setScaleEnabled(false);
 		mChart.setTouchEnabled(false);
+		mChart.setNoDataText("Loading ...");
 		mChart.setViewPortOffsets(0, 10, 0,60);
 		mChart.getAxisRight().setEnabled(false);
 		return view;
@@ -239,7 +240,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					}
 				BarDataSet set = new BarDataSet(entries,"");
 					set.setValueTextSize(15f);
-				set.setColors(VORDIPLOM_COLORS);
+				set.setColors(MATERIAL_COLORS);
 
 				XAxis xAxis = mChart.getXAxis();
 				xAxis.setGranularity(1f);
@@ -255,7 +256,8 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				mChart.notifyDataSetChanged();
 				mChart.fitScreen();
 				mChart.invalidate();
-				mChart.animateY(1500);
+				mChart.animateY(1000);
+				mChart.setNoDataText("No char data available");
 
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
@@ -290,11 +292,10 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
 			if (mChart != null) {
-				Log.d("ASDASD","ASDASD");
 				mChart.notifyDataSetChanged();
 				mChart.fitScreen();
 				mChart.invalidate();
-				mChart.animateY(1500);
+				mChart.animateY(1000);
 			}
 		}
 	}
