@@ -104,7 +104,9 @@ public class Events extends Fragment {
 			getEvents();
 			getLocations();
 		});
-
+		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mMenu.setVisibility(View.GONE);
+		}
 		mMenu.setOnMenuButtonClickListener(v -> {
 			if (mFrameLayout.getVisibility() == View.GONE) {
 				openMenu();

@@ -102,16 +102,17 @@ public class ShowTeams extends Fragment {
 				mRecyclerView.setAdapter(mAdapter);
 
 				mAdapter.setOnItemClickListener(position -> {
+					SharedPreferencesSaver.setLastTeamName(getApplicationContext(),teams.get(position).getName());
+					SharedPreferencesSaver.setLastTeamId(getApplicationContext(),teams.get(position).getConnection_number());
+					SharedPreferencesSaver.setCurrencyCode(getApplicationContext(),teams.get(position).getCurrency_code());
+					SharedPreferencesSaver.setCurrencySymbol(getApplicationContext(),teams.get(position).getCurrency_symbol());
 					if (teams.get(position).isAdmin()) {
-						SharedPreferencesSaver.setLastTeamName(getApplicationContext(),teams.get(position).getName());
-						SharedPreferencesSaver.setLastTeamId(getApplicationContext(),teams.get(position).getConnection_number());
-						SharedPreferencesSaver.setCurrencyCode(getApplicationContext(),teams.get(position).getCurrency_code());
-						SharedPreferencesSaver.setCurrencySymbol(getApplicationContext(),teams.get(position).getCurrency_symbol());
-						Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
-						startActivity(intent);
+						SharedPreferencesSaver.setAdmin(getApplicationContext(),false);
 					} else {
-						Toast.makeText(getApplicationContext(), "You are not allowed to enter this team as an admin",Toast.LENGTH_LONG).show();
+						SharedPreferencesSaver.setAdmin(getApplicationContext(),false);
 					}
+					Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
+					startActivity(intent);
 
 				});
 			} catch (JSONException e) {

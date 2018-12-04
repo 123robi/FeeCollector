@@ -15,6 +15,8 @@ public class SharedPreferencesSaver {
 	private final static String LOGIN = "login";
 	private final static String TOKEN_KEY_LOGIN = "login";
 
+	private final static String ADMIN = "admin";
+	private final static String TOKEN_IS_ADMIN = "is_admin";
 
 	private final static String TEAM = "team";
 	private final static String TOKEN_KEY_TEAM_NAME = "team_name";
@@ -126,5 +128,16 @@ public class SharedPreferencesSaver {
 	public static String getCurrencySymbol(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(CURRENCY_SYMBOL, Context.MODE_PRIVATE);
 		return prefs.getString(TOKEN_KEY_CURRENCY_SYMBOL, null);
+	}
+
+	public static void setAdmin(Context c, boolean b) {
+		SharedPreferences prefs = c.getSharedPreferences(ADMIN, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putBoolean(TOKEN_IS_ADMIN, b);
+		editor.apply();
+	}
+	public static boolean isAdmin(Context c) {
+		SharedPreferences prefs = c.getSharedPreferences(ADMIN, Context.MODE_PRIVATE);
+		return prefs.getBoolean(TOKEN_IS_ADMIN, false);
 	}
 }

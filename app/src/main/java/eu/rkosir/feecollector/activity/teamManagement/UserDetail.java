@@ -91,6 +91,9 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 		mSendNotificaiton = findViewById(R.id.send_notification);
+		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mSendNotificaiton.setVisibility(View.GONE);
+		}
 
 		mToolbar.setTitle(myUser.getName());
 		mName = findViewById(R.id.player_name);
@@ -283,10 +286,12 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 
 	@Override
 	public boolean onLongClick(View v) {
-		mToolbar.setTitle("0 items selected");
-		mToolbar.inflateMenu(R.menu.menu_action_mode);
-		is_in_action_mode = true;
-		mAdapter.notifyDataSetChanged();
+		if (SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mToolbar.setTitle("0 items selected");
+			mToolbar.inflateMenu(R.menu.menu_action_mode);
+			is_in_action_mode = true;
+			mAdapter.notifyDataSetChanged();
+		}
 		return false;
 	}
 

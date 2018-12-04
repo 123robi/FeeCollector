@@ -42,6 +42,8 @@ import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.adapters.ViewPagerAdapter;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class TeamActivity extends AppCompatActivity {
 
 	private TabLayout mTabLayout;
@@ -66,17 +68,26 @@ public class TeamActivity extends AppCompatActivity {
 		mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 		mAdapter.addFragment(new Summary(), "");
 		mAdapter.addFragment(new Events(), "");
-		mAdapter.addFragment(new AddFeeToMember(),"");
+		if (SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mAdapter.addFragment(new AddFeeToMember(),"");
+		}
 		mAdapter.addFragment(new ShowMembers(), "");
 
 		mViewPager.setAdapter(mAdapter);
 		mTabLayout.setupWithViewPager(mViewPager);
-		mViewPager.setOffscreenPageLimit(4);
 
-		mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
-		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
-		mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
-		mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
+		if (SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mViewPager.setOffscreenPageLimit(4);
+			mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
+			mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
+			mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
+			mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
+		} else {
+			mViewPager.setOffscreenPageLimit(3);
+			mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
+			mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
+			mTabLayout.getTabAt(2).setIcon(R.drawable.ic_person_white_24dp);
+		}
 	}
 
 	/**
@@ -88,6 +99,7 @@ public class TeamActivity extends AppCompatActivity {
 		SharedPreferencesSaver.setLastTeamName(this,null);
 		SharedPreferencesSaver.setCurrencyCode(this,null);
 		SharedPreferencesSaver.setCurrencySymbol(this,null);
+		SharedPreferencesSaver.setAdmin(this,false);
 		super.onBackPressed();
 	}
 

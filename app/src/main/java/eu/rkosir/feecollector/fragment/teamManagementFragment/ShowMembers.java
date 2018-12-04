@@ -67,6 +67,11 @@ public class ShowMembers extends Fragment implements UpdatableFragment {
 		mSwipeRefreshLayout.setOnRefreshListener(this::update);
 		mRecyclerView = view.findViewById(R.id.members_list);
 		mAddMember = view.findViewById(R.id.add_member);
+
+		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mAddMember.setVisibility(View.GONE);
+		}
+
 		mAddMember.setOnClickListener(v -> {
 			Intent intent = new Intent(getContext(), AddMember.class);
 			startActivity(intent);
