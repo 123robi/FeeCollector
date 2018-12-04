@@ -201,22 +201,15 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					List<BarEntry> entries = new ArrayList<>();
 					ArrayList<String> names = new ArrayList<>();
 					names.add("blank");
-					int[]colors = {
-							ContextCompat.getColor(getApplicationContext(),R.color.first_graph),
-							ContextCompat.getColor(getApplicationContext(),R.color.second_graph),
-							ContextCompat.getColor(getApplicationContext(),R.color.third_graph)
-					};
-					BarDataSet[] sets = new BarDataSet[3];
 					JSONArray membersArray = object.getJSONArray("members");
 					for(int i = 0; i < membersArray.length(); i++) {
 						JSONObject user = membersArray.getJSONObject(i);
 						JSONObject matchingData = user.getJSONObject("_matchingData").getJSONObject("Users");
 						names.add(matchingData.getString("name"));
 						entries.add(new BarEntry(startingPosition,user.getInt("sum"),matchingData.getString("name")));
-						Log.d("NAME",matchingData.getString("name"));
 						startingPosition ++;
 					}
-				BarDataSet set = new BarDataSet(entries, "Stats");
+				BarDataSet set = new BarDataSet(entries,"");
 				set.setColors(VORDIPLOM_COLORS);
 
 				XAxis xAxis = mChart.getXAxis();
@@ -231,6 +224,15 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				mChart.setFitBars(true);
 				mChart.invalidate();
 				mChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(names));
+				mChart.getAxisLeft().setDrawGridLines(false);
+				mChart.getAxisRight().setDrawGridLines(false);
+				mChart.getXAxis().setDrawGridLines(false);
+				mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+				mChart.getLegend().setEnabled(false);
+				mChart.setScaleEnabled(false);
+				mChart.setTouchEnabled(false);
+				mChart.setViewPortOffsets(60, 0, 50, 60);
+				mChart.getAxisRight().setEnabled(false);
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
