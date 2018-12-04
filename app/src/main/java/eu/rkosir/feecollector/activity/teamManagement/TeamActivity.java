@@ -47,7 +47,6 @@ public class TeamActivity extends AppCompatActivity {
 	private TabLayout mTabLayout;
 	private ViewPager mViewPager;
 	private Toolbar mToolbar;
-	private ProgressBar mLoadingBar;
 	private ViewPagerAdapter mAdapter;
 
 	@Override
@@ -78,9 +77,6 @@ public class TeamActivity extends AppCompatActivity {
 		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
 		mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
 		mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
-
-		mLoadingBar = findViewById(R.id.pb_loading_indicator);
-		mLoadingBar.setVisibility(View.INVISIBLE);
 	}
 
 	/**
@@ -141,7 +137,6 @@ public class TeamActivity extends AppCompatActivity {
 	 * Sending a Volley Post Request to delete a team using 1 parameter: connection_number
 	 */
 	private void deleteTeamApi() {
-		mLoadingBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_DELETE_TEAM, response -> {
 			JSONObject object = null;
 
@@ -179,10 +174,5 @@ public class TeamActivity extends AppCompatActivity {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
-		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mLoadingBar != null) {
-				mLoadingBar.setVisibility(View.INVISIBLE);
-			}
-		});
 	}
 }

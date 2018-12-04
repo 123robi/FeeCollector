@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.SwipeRefreshLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/swiperefresh"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	xmlns:fab="http://schemas.android.com/apk/res-auto"
-	tools:context=".fragment.teamManagementFragment.Events">
-
-	<ScrollView
+	android:layout_height="match_parent">
+	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="horizontal">
+		xmlns:fab="http://schemas.android.com/apk/res-auto"
+		tools:context=".fragment.teamManagementFragment.Events">
+
+
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -21,67 +23,73 @@
 				fab:headerColor="@color/colorPrimaryLight"
 				fab:headerLabelColor="@color/colorPrimary"
 				fab:anotherMonthsDaysLabelsColor="@color/colorPrimaryLight" />
-			<android.support.v7.widget.RecyclerView
-				android:id="@+id/eventList"
+			<ScrollView
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:padding="4dp"
-				android:scrollbars="vertical"
-				/>
+				android:layout_height="match_parent"
+				android:orientation="horizontal">
+				<android.support.v7.widget.RecyclerView
+					android:id="@+id/eventList"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:padding="4dp"
+					android:scrollbars="vertical"
+					/>
+			</ScrollView>
 		</LinearLayout>
-	</ScrollView>
 
-	<FrameLayout
-		android:id="@+id/frame_layout"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="@color/white"
-		android:visibility="gone"
-		android:alpha="0.7">
+		<FrameLayout
+			android:id="@+id/frame_layout"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/white"
+			android:visibility="gone"
+			android:alpha="0.7">
+		</FrameLayout>
+		<com.github.clans.fab.FloatingActionMenu
+			android:id="@+id/float_menu"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|right"
+			android:layout_marginBottom="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginLeft="10dp"
+			fab:menu_labels_showShadow="true"
+			fab:menu_openDirection="up"
+			fab:menu_backgroundColor="@android:color/transparent"
+			fab:menu_colorNormal="@color/floating_action_button_main"
+			fab:menu_colorPressed="@color/floating_action_button_main_pressed"
+			fab:menu_labels_textColor="@android:color/black"
+			fab:menu_labels_colorNormal="@color/colorPrimaryLight"
+			fab:menu_labels_colorPressed="@color/colorPrimary">
+
+			<com.github.clans.fab.FloatingActionButton
+				android:id="@+id/event"
+				fab:fab_colorNormal="@color/floating_action_purple"
+				fab:fab_colorPressed="@color/floating_action_purple_pressed"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/ic_add_white_24dp"
+				fab:fab_label="@string/floating_action_button_event"
+				fab:fab_size="mini" />
+			<com.github.clans.fab.FloatingActionButton
+				android:id="@+id/match"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				fab:fab_colorNormal="@color/floating_action_pure_green"
+				fab:fab_colorPressed="@color/floating_action_pure_green_pressed"
+				android:src="@drawable/ic_add_white_24dp"
+				fab:fab_label="@string/floating_action_button_match"
+				fab:fab_size="mini" />
+			<com.github.clans.fab.FloatingActionButton
+				android:id="@+id/training"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				fab:fab_colorNormal="@color/floating_action_pure_red"
+				fab:fab_colorPressed="@color/floating_action_pure_red_pressed"
+				android:src="@drawable/ic_add_white_24dp"
+				fab:fab_label="@string/floating_action_button_training"
+				fab:fab_size="mini" />
+		</com.github.clans.fab.FloatingActionMenu>
 	</FrameLayout>
-	<com.github.clans.fab.FloatingActionMenu
-		android:id="@+id/float_menu"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom|right"
-		android:layout_marginBottom="8dp"
-		android:layout_marginRight="8dp"
-		android:layout_marginLeft="10dp"
-		fab:menu_labels_showShadow="true"
-		fab:menu_openDirection="up"
-		fab:menu_backgroundColor="@android:color/transparent"
-		fab:menu_colorNormal="@color/floating_action_button_main"
-		fab:menu_colorPressed="@color/floating_action_button_main_pressed"
-		fab:menu_labels_textColor="@android:color/black"
-		fab:menu_labels_colorNormal="@color/colorPrimaryLight"
-		fab:menu_labels_colorPressed="@color/colorPrimary">
 
-		<com.github.clans.fab.FloatingActionButton
-			android:id="@+id/event"
-			fab:fab_colorNormal="@color/floating_action_purple"
-			fab:fab_colorPressed="@color/floating_action_purple_pressed"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_add_white_24dp"
-			fab:fab_label="@string/floating_action_button_event"
-			fab:fab_size="mini" />
-		<com.github.clans.fab.FloatingActionButton
-			android:id="@+id/match"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			fab:fab_colorNormal="@color/floating_action_pure_green"
-			fab:fab_colorPressed="@color/floating_action_pure_green_pressed"
-			android:src="@drawable/ic_add_white_24dp"
-			fab:fab_label="@string/floating_action_button_match"
-			fab:fab_size="mini" />
-		<com.github.clans.fab.FloatingActionButton
-			android:id="@+id/training"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			fab:fab_colorNormal="@color/floating_action_pure_red"
-			fab:fab_colorPressed="@color/floating_action_pure_red_pressed"
-			android:src="@drawable/ic_add_white_24dp"
-			fab:fab_label="@string/floating_action_button_training"
-			fab:fab_size="mini" />
-	</com.github.clans.fab.FloatingActionMenu>
-</FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

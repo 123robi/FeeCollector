@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,11 +43,11 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class ShowMembers extends Fragment implements UpdatableFragment {
 
-	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
 	private ShowMembersAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
 	private FloatingActionButton mAddMember;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public ShowMembers() {
 		// Required empty public constructor
@@ -62,9 +63,9 @@ public class ShowMembers extends Fragment implements UpdatableFragment {
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_members, container, false);
+		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+		mSwipeRefreshLayout.setOnRefreshListener(this::update);
 		mRecyclerView = view.findViewById(R.id.members_list);
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-		mProgressBar.setVisibility(View.INVISIBLE);
 		mAddMember = view.findViewById(R.id.add_member);
 		mAddMember.setOnClickListener(v -> {
 			Intent intent = new Intent(getContext(), AddMember.class);
@@ -78,7 +79,7 @@ public class ShowMembers extends Fragment implements UpdatableFragment {
 	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
 	 */
 	private void getMembers() {
-		mProgressBar.setVisibility(View.VISIBLE);
+		mSwipeRefreshLayout.setRefreshing(true);
 		mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		String uri = String.format(AppConfig.URL_GET_All_MEMBERS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
@@ -145,9 +146,7 @@ public class ShowMembers extends Fragment implements UpdatableFragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mProgressBar != null) {
-				mProgressBar.setVisibility(View.INVISIBLE);
-			}
+			mSwipeRefreshLayout.setRefreshing(false);
 		});
 	}
 

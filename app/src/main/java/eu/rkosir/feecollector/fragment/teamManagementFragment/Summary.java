@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,24 +72,20 @@ import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static com.github.mikephil.charting.utils.ColorTemplate.COLORFUL_COLORS;
-import static com.github.mikephil.charting.utils.ColorTemplate.JOYFUL_COLORS;
-import static com.github.mikephil.charting.utils.ColorTemplate.LIBERTY_COLORS;
 import static com.github.mikephil.charting.utils.ColorTemplate.MATERIAL_COLORS;
-import static com.github.mikephil.charting.utils.ColorTemplate.VORDIPLOM_COLORS;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Summary extends Fragment implements OnMapReadyCallback {
 
-	private ProgressBar mProgressBar;
 	private Place place;
 	private Event nextEvent;
 	private GoogleMap mMap;
 	private String [] latlngArray;
 	private TextView mEventName, mEventDate, mEventTime, mEventDescription, mPlaceName;
 	private CardView mNextEvent;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	private BarChart mChart;
 
@@ -104,9 +101,8 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
 				.findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-		mProgressBar.setVisibility(View.INVISIBLE);
 
+		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
 		mNextEvent = view.findViewById(R.id.next_event_card);
 		mEventName = view.findViewById(R.id.event_name);
 		mEventDate = view.findViewById(R.id.event_date);
@@ -134,7 +130,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
+		mSwipeRefreshLayout.setOnRefreshListener(this::getMembers);
 	}
 
 	@Override
@@ -220,7 +216,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 	}
 	private void getMembers() {
-		mProgressBar.setVisibility(View.VISIBLE);
+		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_TOP_3_FINED_USERS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
@@ -270,11 +266,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
-		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mProgressBar != null) {
-				mProgressBar.setVisibility(View.INVISIBLE);
-			}
-		});
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> mSwipeRefreshLayout.setRefreshing(false));
 	}
 	private String getDateFormat(Calendar c) {
 		Date date = c.getTime();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -74,6 +75,8 @@ public class Events extends Fragment {
 	private RecyclerView mRecyclerView;
 	private ShowEventsAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
+
 	public Events() {
 		// Required empty public constructor
 	}
@@ -84,6 +87,8 @@ public class Events extends Fragment {
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_events, container, false);
+
+		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
 		mAddEvent = view.findViewById(R.id.event);
 		mAddMatch = view.findViewById(R.id.match);
 		mAddTraining = view.findViewById(R.id.training);
@@ -94,6 +99,11 @@ public class Events extends Fragment {
 
 		mTabLayout = getActivity().findViewById(R.id.navigation_top);
 		mToolbar = getActivity().findViewById(R.id.back_action_bar);
+
+		mSwipeRefreshLayout.setOnRefreshListener(() -> {
+			getEvents();
+			getLocations();
+		});
 
 		mMenu.setOnMenuButtonClickListener(v -> {
 			if (mFrameLayout.getVisibility() == View.GONE) {
@@ -177,6 +187,7 @@ public class Events extends Fragment {
 	}
 
 	private void getEvents() {
+		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_EVENTS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
@@ -218,11 +229,15 @@ public class Events extends Fragment {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			mSwipeRefreshLayout.setRefreshing(false);
+		});
 	}
 	/**
 	 * Sending a Volley GET Request to get locations using 1 parameter: team_name
 	 */
 	private void getLocations() {
+		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_LOCATIONS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
@@ -254,6 +269,9 @@ public class Events extends Fragment {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			mSwipeRefreshLayout.setRefreshing(false);
+		});
 	}
 	private void openMenu() {
 		mMenu.open(true);
