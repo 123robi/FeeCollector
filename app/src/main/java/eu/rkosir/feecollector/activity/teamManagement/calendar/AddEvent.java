@@ -68,6 +68,8 @@ import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
+import static eu.rkosir.feecollector.AppConfig.URL_PLACES_ADD;
+
 
 public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 	private Toolbar mToolbar;
@@ -193,7 +195,7 @@ public class AddEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 	private void savePlace(Place place) {
 		mProgressBar.bringToFront();
 		mProgressBar.setVisibility(View.VISIBLE);
-		StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rkosir.eu/placesApi/add", response -> {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_PLACES_ADD, response -> {
 			JSONObject object = null;
 			try {
 				object = new JSONObject(response);
