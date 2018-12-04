@@ -24,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -65,10 +66,15 @@ import eu.rkosir.feecollector.adapters.ShowMembersAdapter;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
 import eu.rkosir.feecollector.entity.User;
+import eu.rkosir.feecollector.helper.MyYAxisValueFormatter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.github.mikephil.charting.utils.ColorTemplate.COLORFUL_COLORS;
+import static com.github.mikephil.charting.utils.ColorTemplate.JOYFUL_COLORS;
+import static com.github.mikephil.charting.utils.ColorTemplate.LIBERTY_COLORS;
+import static com.github.mikephil.charting.utils.ColorTemplate.MATERIAL_COLORS;
 import static com.github.mikephil.charting.utils.ColorTemplate.VORDIPLOM_COLORS;
 
 /**
@@ -108,7 +114,19 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mEventDescription = view.findViewById(R.id.event_description);
 		mPlaceName = view.findViewById(R.id.event_location);
 		mChart = view.findViewById(R.id.chart);
-		getMembers();
+
+		mChart.setDescription(null);
+		mChart.fitScreen();
+		mChart.getAxisLeft().setDrawGridLines(false);
+		mChart.getAxisRight().setDrawGridLines(false);
+		mChart.getXAxis().setDrawGridLines(false);
+		mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+		mChart.getAxisLeft().setEnabled(false);
+		mChart.getLegend().setEnabled(false);
+		mChart.setScaleEnabled(false);
+		mChart.setTouchEnabled(false);
+		mChart.setViewPortOffsets(0, 10, 0,60);
+		mChart.getAxisRight().setEnabled(false);
 		return view;
 	}
 
@@ -155,7 +173,17 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				latlngArray = lanltd.split(",");
 				LatLng location = new LatLng(Double.parseDouble(latlngArray[0]),Double.parseDouble(latlngArray[1]));
 				mMap.addMarker(new MarkerOptions().position(location).title(place.getName()));
-				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15));
+				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15), new GoogleMap.CancelableCallback() {
+					@Override
+					public void onFinish() {
+						getMembers();
+					}
+
+					@Override
+					public void onCancel() {
+
+					}
+				});
 
 				mEventName.setText("Next " + nextEvent.getName());
 				mEventDescription.setText(nextEvent.getDescription());
@@ -188,6 +216,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
+
 	}
 	private void getMembers() {
 		mProgressBar.setVisibility(View.VISIBLE);
@@ -196,11 +225,10 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
-				float startingPosition = 1f;
+				float startingPosition = 0f;
 				object = new JSONObject(response);
 					List<BarEntry> entries = new ArrayList<>();
 					ArrayList<String> names = new ArrayList<>();
-					names.add("blank");
 					JSONArray membersArray = object.getJSONArray("members");
 					for(int i = 0; i < membersArray.length(); i++) {
 						JSONObject user = membersArray.getJSONObject(i);
@@ -210,6 +238,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 						startingPosition ++;
 					}
 				BarDataSet set = new BarDataSet(entries,"");
+					set.setValueTextSize(15f);
 				set.setColors(VORDIPLOM_COLORS);
 
 				XAxis xAxis = mChart.getXAxis();
@@ -217,22 +246,17 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				xAxis.setGranularityEnabled(true);
 
 				BarData data = new BarData(set);
+				data.setValueFormatter(new MyYAxisValueFormatter(SharedPreferencesSaver.getCurrencySymbol(getApplicationContext())));
 				data.setBarWidth(0.9f);
 				data.setValueTextSize(12f);
-				mChart.setDescription(null);
+
 				mChart.setData(data);
-				mChart.setFitBars(true);
-				mChart.invalidate();
 				mChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(names));
-				mChart.getAxisLeft().setDrawGridLines(false);
-				mChart.getAxisRight().setDrawGridLines(false);
-				mChart.getXAxis().setDrawGridLines(false);
-				mChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-				mChart.getLegend().setEnabled(false);
-				mChart.setScaleEnabled(false);
-				mChart.setTouchEnabled(false);
-				mChart.setViewPortOffsets(60, 0, 50, 60);
-				mChart.getAxisRight().setEnabled(false);
+				mChart.notifyDataSetChanged();
+				mChart.fitScreen();
+				mChart.invalidate();
+				mChart.animateY(1500);
+
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
 				e.printStackTrace();
@@ -259,5 +283,19 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		DateFormat timeFormatter =
 				DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
 		return timeFormatter.format(date);
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			if (mChart != null) {
+				Log.d("ASDASD","ASDASD");
+				mChart.notifyDataSetChanged();
+				mChart.fitScreen();
+				mChart.invalidate();
+				mChart.animateY(1500);
+			}
+		}
 	}
 }
