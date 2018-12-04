@@ -163,5 +163,6 @@
     <string name="user_detail_paid">PAID</string>
     <string name="user_detail_not_paid">NOT PAID</string>
 	<string name="user_detail_menu_paid">PAID</string>
-	<string name="summary_loading">Loading ...</string>
+    <string name="summary_loading">Loading ...</string>
+    <string name="summary_graph_title">Members with most violation</string>
 </resources>

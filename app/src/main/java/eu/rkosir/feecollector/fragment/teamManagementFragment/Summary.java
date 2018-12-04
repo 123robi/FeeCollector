@@ -115,7 +115,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mPlaceName = view.findViewById(R.id.event_location);
 		mChart = view.findViewById(R.id.chart);
 
-		mChart.setDescription(null);
+		mChart.getDescription().setEnabled(false);
 		mChart.fitScreen();
 		mChart.getAxisLeft().setDrawGridLines(false);
 		mChart.getAxisRight().setDrawGridLines(false);
@@ -125,7 +125,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mChart.getLegend().setEnabled(false);
 		mChart.setScaleEnabled(false);
 		mChart.setTouchEnabled(false);
-		mChart.setNoDataText("Loading ...");
+		mChart.setNoDataText(getResources().getString(R.string.summary_loading));
 		mChart.setViewPortOffsets(0, 10, 0,60);
 		mChart.getAxisRight().setEnabled(false);
 		return view;
@@ -228,18 +228,18 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 			try {
 				float startingPosition = 0f;
 				object = new JSONObject(response);
-					List<BarEntry> entries = new ArrayList<>();
-					ArrayList<String> names = new ArrayList<>();
-					JSONArray membersArray = object.getJSONArray("members");
-					for(int i = 0; i < membersArray.length(); i++) {
-						JSONObject user = membersArray.getJSONObject(i);
-						JSONObject matchingData = user.getJSONObject("_matchingData").getJSONObject("Users");
-						names.add(matchingData.getString("name"));
-						entries.add(new BarEntry(startingPosition,user.getInt("sum"),matchingData.getString("name")));
-						startingPosition ++;
-					}
+				List<BarEntry> entries = new ArrayList<>();
+				ArrayList<String> names = new ArrayList<>();
+				JSONArray membersArray = object.getJSONArray("members");
+				for(int i = 0; i < membersArray.length(); i++) {
+					JSONObject user = membersArray.getJSONObject(i);
+					JSONObject matchingData = user.getJSONObject("_matchingData").getJSONObject("Users");
+					names.add(matchingData.getString("name"));
+					entries.add(new BarEntry(startingPosition,user.getInt("sum"),matchingData.getString("name")));
+					startingPosition ++;
+				}
 				BarDataSet set = new BarDataSet(entries,"");
-					set.setValueTextSize(15f);
+				set.setValueTextSize(15f);
 				set.setColors(MATERIAL_COLORS);
 
 				XAxis xAxis = mChart.getXAxis();
