@@ -20,8 +20,8 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/iconfinder-icon (3).png" />
-                                      <entry key="outputName" value="ic_admin_teams" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/Launcher.png" />
+                                      <entry key="outputName" value="ic_logo_launcher" />
                                     </map>
                                   </option>
                                 </PersistentState>

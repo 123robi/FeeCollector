@@ -2,51 +2,78 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical">
-
-	<TextView
-		android:layout_width="fill_parent"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:facebook="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:padding="20dp"
+	android:background="#191919">
+	<ImageView
+		android:layout_width="200dp"
+		android:layout_gravity="center"
+		android:layout_height="200dp"
+		android:src="@drawable/logo"/>
+	<android.support.design.widget.TextInputLayout
+		android:id="@+id/EmailLayout"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:labelFor="@+id/email_login"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:text="@string/login_email_label"
-		android:textSize="17sp" />
+		app:hintTextAppearance="@style/hintText"
+		android:textColorHint="@color/white"
+		app:errorEnabled="true">
 
-	<EditText
-		android:id="@+id/email_login"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="5dip"
-		android:layout_marginBottom="15dip"
-		android:inputType="textEmailAddress"
-		android:singleLine="true" />
+		<android.support.design.widget.TextInputEditText
+			android:id="@+id/email"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:background="@drawable/rect1"
+			android:drawableEnd="@drawable/ic_user_24dp"
+			android:drawablePadding="16dp"
+			android:textColor="@color/white"
+			android:hint="@string/login_email_label"
+			android:padding="10dp" />
+	</android.support.design.widget.TextInputLayout>
+		<android.support.design.widget.TextInputLayout
+			android:layout_marginTop="-10dp"
+			android:id="@+id/PasswordLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:hintTextAppearance="@style/hintText"
+			app:passwordToggleEnabled="true"
+			app:passwordToggleTint="@android:color/white"
+			android:textColorHint="@color/white"
+			app:errorEnabled="true">
 
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:labelFor="@+id/password_login"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
-		android:paddingTop="10dip"
-		android:text="@string/login_password_label"
-		android:textSize="17sp" />
-
-	<EditText
-		android:id="@+id/password_login"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="5dip"
-		android:layout_marginBottom="15dip"
-		android:inputType="textPassword"
-		android:singleLine="true" />
+			<android.support.design.widget.TextInputEditText
+				android:id="@+id/password"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:textColor="@color/white"
+				android:background="@drawable/rect1"
+				android:drawablePadding="16dp"
+				android:hint="@string/login_password_label"
+				android:inputType="textPassword"
+				android:padding="10dp" />
+		</android.support.design.widget.TextInputLayout>
 
 	<Button
 		android:id="@+id/login_button"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/login_sign_in" />
+		android:layout_marginTop="30dp"
+		android:background="@drawable/rect"
+		android:text="@string/login_sign_in"
+		android:textColor="#ffffff" />
+
+	<Button
+		android:id="@+id/facebook_login"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="30dp"
+		android:background="@drawable/facebook"
+		android:text="@string/facebook_login"
+		android:textColor="#ffffff" />
+
 
 	<ProgressBar
 		android:id="@+id/pb_loading_indicator"
@@ -55,13 +82,6 @@
 		android:layout_gravity="center"
 		android:visibility="invisible" />
 
-	<com.facebook.login.widget.LoginButton
-		android:id="@+id/login_button_facebook"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center_horizontal"
-		android:layout_marginBottom="30dp"
-		android:layout_marginTop="30dp" />
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -74,7 +94,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/login_sign_up"
-			android:textColor="@android:color/black" />
+			android:textColor="@android:color/white" />
 
 		<TextView
 			android:id="@+id/signUp"
@@ -83,7 +103,7 @@
 			android:layout_marginLeft="4dp"
 			android:layout_marginStart="4dp"
 			android:text="@string/registration_sign_up_link"
-			android:textColor="@android:color/black"
+			android:textColor="@android:color/white"
 			android:textStyle="bold" />
 	</LinearLayout>
 

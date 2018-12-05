@@ -30,6 +30,9 @@
     <color name="training">#F38C70</color>
     <color name="black">#000000</color>
 
+
+    <color name="login_button">#FF8C47</color>
+
     <color name="first_graph">#4FFF96</color>
     <color name="second_graph">#FFBD4F</color>
     <color name="third_graph">#FFEDCF</color>
