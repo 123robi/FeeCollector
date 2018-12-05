@@ -97,6 +97,13 @@ public class Events extends Fragment {
 		mFrameLayout = view.findViewById(R.id.frame_layout);
 		mRecyclerView = view.findViewById(R.id.eventList);
 
+		Calendar calendar = Calendar.getInstance();
+		try {
+			mCalendarView.setDate(calendar);
+		} catch (OutOfDateRangeException e) {
+			e.printStackTrace();
+		}
+
 		mTabLayout = getActivity().findViewById(R.id.navigation_top);
 		mToolbar = getActivity().findViewById(R.id.back_action_bar);
 
@@ -171,11 +178,6 @@ public class Events extends Fragment {
 		if (requestCode == ADD_NOTE && resultCode == RESULT_OK) {
 			Event myEventDay = data.getParcelableExtra(RESULT);
 			Place myPlace = data.getParcelableExtra(RESULTPLACE);
-			try {
-				mCalendarView.setDate(myEventDay.getCalendar());
-			} catch (OutOfDateRangeException e) {
-				e.printStackTrace();
-			}
 			mEventDays.add(myEventDay);
 			mEvents.add(myEventDay);
 			mCalendarView.setEvents(mEventDays);
@@ -209,11 +211,6 @@ public class Events extends Fragment {
 							R.drawable.ic_event_available_black_24dp,
 							event.getString("place_id")
 					);
-					try {
-						mCalendarView.setDate(addingEvent.getCalendar());
-					} catch (OutOfDateRangeException e) {
-						e.printStackTrace();
-					}
 					mEventDays.add(addingEvent);
 					mEvents.add(addingEvent);
 					mCalendarView.setEvents(mEventDays);

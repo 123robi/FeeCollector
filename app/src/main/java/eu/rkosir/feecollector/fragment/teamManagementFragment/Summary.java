@@ -97,11 +97,19 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mSwipeRefreshLayout.setOnRefreshListener(this::getMembers);
+		mSwipeRefreshLayout.setOnRefreshListener(() -> {
+			getMembers();
+			getNextEvent();
+		});
 	}
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
+		mMap = googleMap;
+		getNextEvent();
+	}
+
+	private void getNextEvent() {
 		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_NEXT_EVENT,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
@@ -132,7 +140,6 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					);
 				}
 				if (place != null) {
-					mMap = googleMap;
 					mMap.getUiSettings().setAllGesturesEnabled(false);
 					mMap.getUiSettings().setMapToolbarEnabled(false);
 					String lanltd = place.getLatlng().substring(place.getLatlng().indexOf("(")+1, place.getLatlng().indexOf(")"));
@@ -185,8 +192,8 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
-
 	}
+
 	private void getMembers() {
 		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_TOP_3_FINED_USERS,
