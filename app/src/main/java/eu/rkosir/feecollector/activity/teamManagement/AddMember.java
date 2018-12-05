@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class AddMember extends AppCompatActivity {
 	private Button mButton;
 	private ProgressBar mProgressBar;
 	private Toolbar mToolbar;
+	private CheckBox mCheckBox;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class AddMember extends AppCompatActivity {
 		mName = findViewById(R.id.name);
 		mEMail = findViewById(R.id.email);
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
+		mCheckBox = findViewById(R.id.isAdmin);
 		mButton = findViewById(R.id.add_user);
 		mButton.setOnClickListener(v -> {
 			if(attemptToRegister() && InternetConnection.getInstance(getApplicationContext()).isOnline()) {
@@ -87,6 +90,11 @@ public class AddMember extends AppCompatActivity {
 				params.put("email", mEMail.getText().toString());
 				params.put("real_user", Integer.toString(0));
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(AddMember.this));
+				if (mCheckBox.isChecked()) {
+					params.put("is_admin", Integer.toString(1));
+				} else {
+					params.put("is_admin", Integer.toString(0));
+				}
 				return params;
 			}
 		};

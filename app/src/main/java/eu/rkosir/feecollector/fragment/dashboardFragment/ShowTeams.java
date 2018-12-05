@@ -89,7 +89,6 @@ public class ShowTeams extends Fragment {
 				for(int i = 0; i < adminTeamsArray.length(); i++) {
 					JSONObject team = adminTeamsArray.getJSONObject(i);
 					Team teamObject = new Team(team.getInt("id"),team.getString("team_name"),team.getString("currency_code"),team.getString("currency_symbol"),true, team.getString("connection_number"));
-					teamObject.setMembers(team.getInt("count_members"));
 					teams.add(teamObject);
 				}
 				JSONArray teamArray = object.getJSONArray("teams");

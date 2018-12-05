@@ -94,16 +94,19 @@ public class ShowMembers extends Fragment implements UpdatableFragment {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
 					ArrayList<User> membersList = new ArrayList<>();
-					JSONObject admin = object.getJSONArray("admin").getJSONObject(0);
-					User addUser = new User(
-							admin.getInt("id"),
-							admin.getString("name"),
-							admin.getString("email"),
-							admin.getString("phone_number"),
-							admin.getString("address")
-					);
-					addUser.setRole("Manager");
-					membersList.add(addUser);
+					JSONArray admins = object.getJSONArray("admin");
+					for(int i = 0; i < admins.length(); i++) {
+						JSONObject user = admins.getJSONObject(i);
+						User member = new User(
+								user.getInt("id"),
+								user.getString("name"),
+								user.getString("email"),
+								user.getString("phone_number"),
+								user.getString("address")
+						);
+						member.setRole("Manager");
+						membersList.add(member);
+					}
 					JSONArray membersArray = object.getJSONArray("members");
 					for(int i = 0; i < membersArray.length(); i++) {
 						JSONObject user = membersArray.getJSONObject(i);

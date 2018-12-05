@@ -50,11 +50,19 @@
 			android:layout_marginBottom="15dip"
 			android:inputType="textEmailAddress"
 			android:singleLine="true" />
+
+		<CheckBox
+			android:id="@+id/isAdmin"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="Admin" />
+
 		<Button
 			android:id="@+id/add_user"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/add_member_add_member" />
+
 	</LinearLayout>
 	<ProgressBar
 		android:id="@+id/pb_loading_indicator"
