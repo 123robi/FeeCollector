@@ -17,6 +17,7 @@
     <string name="registration_address">Address</string>
     <string name="registration_card_header_user_info">User Information</string>
     <string name="registration_card_header_credentials">Login credentials</string>
+    <string name="error_wrong_format">Phone number is not correct</string>
 
     <!--Login Page/ChangePassword-->
     <string name="login_sign_in">Sign in</string>
@@ -45,6 +46,7 @@
     <!--Create Team Fragment-->
     <string name="create_team_team_name">Team Name</string>
     <string name="create_team_title">Create Team</string>
+    <string name="create_team_currency">Currency</string>
 
     <!--Add fee Fragment-->
     <string name="add_fee_fee_name">Fee name</string>
@@ -82,6 +84,9 @@
     <string name="toast_user_found">User with this email has already register, please login.</string>
     <string name="toast_successful_user_update">You have updated your data</string>
     <string name="toast_unsuccessful_user_update">There was a problem saving data to the database</string>
+    <string name="toast_send_sms_error">We do not have phone number from this user!</string>
+    <string name="toast_successful_saving_fee_to_user">You have successfully saved fee to the user</string>
+    <string name="toast_unsuccessful_saving_fee_to_user">There was a problem. Please try again later.</string>
 
     <!--Alert Dialogs-->
     <string name="dialog_closing_application_title">Closing Application...</string>
@@ -93,10 +98,11 @@
     <!--Base texts-->
     <string name="confirm">Confirm</string>
 
-    <!--Infomration header-->
+    <!--Information header-->
     <string name="information_addPassword">Please set yout password and additional information. Thanks! <u><b>User Settings</b></u></string>
     <!--Show Teams activity-->
     <string name="show_teams_members">Members:</string>
+
     <!--Team Activity-->
     <string name="team_summary_bar">Summary</string>
     <string name="team_add_member_bar">Members</string>
@@ -107,8 +113,10 @@
     <string name="floating_action_button_event">Event</string>
     <string name="floating_action_button_match">Match</string>
     <string name="floating_action_button_training">Training</string>
+
     <!--Team Activity toolbar-->
     <string name="team_menu_delete_team">Delete team</string>
+    <string name="team_menu_refresh">Refresh</string>
 
     <!--Add fee to a member Fragment-->
     <string name="add_fee_to_member_choose_player">Choose player</string>
@@ -141,28 +149,28 @@
     <string name="show_event_name">Name</string>
     <string name="show_event_ends">Ends</string>
     <string name="show_event_starts">Starts</string>
+
+    <!--User Detail-->
     <string name="user_detail_contant_information">Contact Information</string>
     <string name="toast_uploading_error">There was a problem saving the image</string>
     <string name="toast_size_error">Please select  lower quality image</string>
     <string name="notification_new_event">New</string>
+    <string name="user_detail_paid">PAID</string>
+    <string name="user_detail_not_paid">NOT PAID</string>
+    <string name="user_detail_menu_paid">PAID</string>
+
+    <!--Send Notification activity-->
     <string name="send_notification_title">Send Notification</string>
     <string name="send_notification_message">Message</string>
     <string name="send_notification_to">To</string>
     <string name="send_notification_success">You have successfully notified user.</string>
+    <string name="send_notification_email_subject">Notification</string>
 	<string name="notification_send_radioButton_notification">Notification</string>
     <string name="notification_send_radioButton_sms">SMS</string>
     <string name="notification_send_radioButton_email">Email</string>
     <string name="notification_send_error_one_check">At least one has to be selected.</string>
-    <string name="toast_send_sms_error">We do not have phone number from this user!</string>
-    <string name="send_notification_email_subject">Notification</string>
-	<string name="toast_successful_saving_fee_to_user">You have successfully saved fee to the user</string>
-    <string name="toast_unsuccessful_saving_fee_to_user">There was a problem. Please try again later.</string>
-    <string name="create_team_currency">Currency</string>
-	<string name="error_wrong_format">Phone number is not correct</string>
-	<string name="team_menu_refresh">Refresh</string>
-    <string name="user_detail_paid">PAID</string>
-    <string name="user_detail_not_paid">NOT PAID</string>
-	<string name="user_detail_menu_paid">PAID</string>
+
+    <!--Summary fragment-->
     <string name="summary_loading">Loading ...</string>
-    <string name="summary_graph_title">Members with most violation</string>
+    <string name="summary_graph_title">Members with most violations</string>
 </resources>
