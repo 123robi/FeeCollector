@@ -25,6 +25,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="10dp"
+			android:inputType="textEmailAddress"
 			android:background="@drawable/rect1"
 			android:drawableEnd="@drawable/ic_user_24dp"
 			android:drawablePadding="16dp"
