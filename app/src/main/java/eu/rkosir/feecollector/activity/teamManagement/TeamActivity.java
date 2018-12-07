@@ -112,6 +112,11 @@ public class TeamActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.team_menu,menu);
+		if (!SharedPreferencesSaver.isAdmin(this)) {
+			MenuItem item = menu.findItem(R.id.delete_team);
+			item.setVisible(false);
+		}
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
