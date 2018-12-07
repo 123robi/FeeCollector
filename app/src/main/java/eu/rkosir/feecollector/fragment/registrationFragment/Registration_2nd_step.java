@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +24,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
-
-import net.rimoto.intlphoneinput.IntlPhoneInput;
+import com.hbb20.CountryCodePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,9 +34,7 @@ import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.ChangePasswordActivity;
 import eu.rkosir.feecollector.activity.LoginActivity;
-import eu.rkosir.feecollector.activity.RegistrationActivity;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.InternetConnection;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
@@ -49,13 +47,13 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 public class Registration_2nd_step extends Fragment {
 
-	private TextInputEditText mInputName, mInputAddress;
-	private TextInputLayout mInputNameLayout, mInputAddressLayout;
-	private IntlPhoneInput phoneInput;
-	private EditText mInputPassword;
+	private TextInputEditText mInputName, mInputAddress, mInputPassword;
+	private TextInputLayout mInputNameLayout, mInputAddressLayout, mInputPhoneLayout, mInputPasswordLayout;
+	private EditText mInputPhone;
 	private Button mCreateUserbtn;
 	private ProgressBar mProgressBar;
 	private String mEmail;
+	private CountryCodePicker ccp;
 	private TextView errorMessage;
 
 	public Registration_2nd_step() {
@@ -72,24 +70,15 @@ public class Registration_2nd_step extends Fragment {
 		mInputNameLayout = view.findViewById(R.id.name_layout);
 		mInputAddress = view.findViewById(R.id.address);
 		mInputAddressLayout = view.findViewById(R.id.address_layout);
-		phoneInput = view.findViewById(R.id.my_phone_input);
+		errorMessage = view.findViewById(R.id.error_message_number);
+		ccp = view.findViewById(R.id.cpp);
+		mInputPhone = view.findViewById(R.id.phone);
+		mInputPhoneLayout = view.findViewById(R.id.phone_layout);
+		ccp.registerCarrierNumberEditText(mInputPhone);
 		mInputPassword = view.findViewById(R.id.password);
+		mInputPasswordLayout = view.findViewById(R.id.passwordLayout);
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
 		mCreateUserbtn = view.findViewById(R.id.createUser);
-		errorMessage = view.findViewById(R.id.error_message_number);
-
-		phoneInput.setOnValidityChange((view1, isValid) -> {
-			if(!isValid) {
-				errorMessage.setText(getResources().getString(R.string.error_wrong_format));
-				errorMessage.setVisibility(View.VISIBLE);
-				mCreateUserbtn.setClickable(false);
-				mCreateUserbtn.setAlpha(0.3f);
-			} else {
-				errorMessage.setVisibility(View.INVISIBLE);
-				mCreateUserbtn.setClickable(true);
-				mCreateUserbtn.setAlpha(1f);
-			}
-		});
 		mEmail = getArguments().getString("email");
 		return view;
 	}
@@ -103,7 +92,7 @@ public class Registration_2nd_step extends Fragment {
 					User user = new User(
 							mInputName.getText().toString(),
 							mEmail,
-							phoneInput.getNumber(),
+							ccp.getFullNumberWithPlus(),
 							mInputAddress.getText().toString(),
 							mInputPassword.getText().toString()
 					);
@@ -172,12 +161,14 @@ public class Registration_2nd_step extends Fragment {
 	private boolean attemptToRegister() {
 		mInputNameLayout.setError(null);
 		mInputAddressLayout.setError(null);
-		mInputPassword.setError(null);
+		mInputPasswordLayout.setError(null);
+		mInputPhoneLayout.setError(null);
+		errorMessage.setVisibility(View.INVISIBLE);
 
 		String name = mInputName.getText().toString();
 		String address = mInputAddress.getText().toString();
 		String password = mInputPassword.getText().toString();
-
+		String phone = mInputPhone.getText().toString();
 		boolean cancel = false;
 		View focusView = null;
 
@@ -189,21 +180,27 @@ public class Registration_2nd_step extends Fragment {
 			mInputAddressLayout.setError(getString(R.string.error_field_required));
 			focusView = mInputAddressLayout;
 			cancel = true;
-		} else if (TextUtils.isEmpty(password)) {
-			mInputPassword.setError(getString(R.string.error_field_required),null);
-			focusView = mInputPassword;
-			cancel = true;
-		} else if (!phoneInput.isValid()) {
-			errorMessage.setText(getResources().getString(R.string.error_wrong_format));
+		} else if (TextUtils.isEmpty(phone)) {
+			errorMessage.setText(getString(R.string.error_field_required));
 			errorMessage.setVisibility(View.VISIBLE);
-			focusView = phoneInput;
+			focusView = mInputPhoneLayout;
+			cancel = true;
+		} else if (TextUtils.isEmpty(password)) {
+			mInputPasswordLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputPasswordLayout;
+			cancel = true;
+		} else if(!ccp.isValidFullNumber()) {
+			errorMessage.setText(getString(R.string.error_wrong_format));
+			errorMessage.setVisibility(View.VISIBLE);
+			focusView = mInputPhoneLayout;
 			cancel = true;
 		}
+
 
 		if (cancel) {
 			focusView.requestFocus();
 			return false;
-		}else
+		} else
 			return true;
 	}
 }
