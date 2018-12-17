@@ -66,9 +66,9 @@ public class Events extends Fragment {
 	private FloatingActionButton mAddTraining;
 	private FloatingActionMenu mMenu;
 	private CalendarView mCalendarView;
-	private List<EventDay> mEventDays = new ArrayList<>();
-	private List<Event> mEvents = new ArrayList<>();
-	private List<Place> mPlaces = new ArrayList<>();
+	private List<EventDay> mEventDays;
+	private List<Event> mEvents;
+	private List<Place> mPlaces;
 	private FrameLayout mFrameLayout;
 	private TabLayout mTabLayout;
 	private Toolbar mToolbar;
@@ -76,6 +76,7 @@ public class Events extends Fragment {
 	private ShowEventsAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private List<Event> events;
 
 	public Events() {
 		// Required empty public constructor
@@ -155,7 +156,7 @@ public class Events extends Fragment {
 		getLocations();
 
 		mCalendarView.setOnDayClickListener(eventDay -> {
-			List<Event> events = new ArrayList<>();
+			events = new ArrayList<>();
 			for (Event event : mEvents) {
 				if(event.getCalendar().getTimeInMillis() == eventDay.getCalendar().getTimeInMillis()) {
 					events.add(event);
@@ -191,6 +192,10 @@ public class Events extends Fragment {
 	}
 
 	private void getEvents() {
+		mEventDays = new ArrayList<>();
+		mEvents = new ArrayList<>();
+		mPlaces = new ArrayList<>();
+
 		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_EVENTS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
