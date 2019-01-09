@@ -65,7 +65,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	private GoogleMap mMap;
 	private String [] latlngArray;
 	private TextView mEventName, mEventDate, mEventTime, mEventDescription, mPlaceName;
-	private CardView mNextEvent;
+	private CardView mNextEvent, mMostViolated;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	private BarChart mChart;
@@ -85,6 +85,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
 		mNextEvent = view.findViewById(R.id.next_event_card);
+		mMostViolated = view.findViewById(R.id.most_violated_players);
 		mEventName = view.findViewById(R.id.event_name);
 		mEventDate = view.findViewById(R.id.event_date);
 		mEventTime = view.findViewById(R.id.event_time);
@@ -178,6 +179,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 						}
 					});
 				} else {
+					mEventDate.setText("No next events!");
 					getMembers();
 				}
 			} catch (JSONException e) {
@@ -249,6 +251,8 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					mChart.notifyDataSetChanged();
 					mChart.invalidate();
 					mChart.animateY(1000);
+				} else {
+					mMostViolated.setVisibility(View.GONE);
 				}
 			} catch (JSONException e) {
 				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
