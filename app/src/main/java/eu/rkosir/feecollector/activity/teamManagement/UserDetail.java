@@ -184,6 +184,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 		mProgressBar.bringToFront();
 		mProgressBar.setVisibility(View.VISIBLE);
 		String uri = String.format(AppConfig.URL_GET_FEES_OF_USER,
+				SharedPreferencesSaver.getLastTeamID(getApplicationContext()),
 				myUser.getEmail());
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
