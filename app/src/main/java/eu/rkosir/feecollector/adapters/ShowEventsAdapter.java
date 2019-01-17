@@ -3,9 +3,12 @@ package eu.rkosir.feecollector.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -19,6 +22,7 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
+import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.ViewHolder> {
 	private List<Event> events;
@@ -46,6 +50,7 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		public TextView mEventLocation;
 		public TextView mEventDate;
 		public TextView mEventDay;
+		public LinearLayout mDateContainer;
 
 		public ViewHolder(View itemView, ShowEventsAdapter.OnItemClickListener listener) {
 			super(itemView);
@@ -54,6 +59,7 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 			mEventLocation = itemView.findViewById(R.id.event_location);
 			mEventDate = itemView.findViewById(R.id.date);
 			mEventDay = itemView.findViewById(R.id.date_name);
+			mDateContainer = itemView.findViewById(R.id.dateContainer);
 
 			itemView.setOnClickListener(view -> {
 				if (listener != null) {
@@ -88,21 +94,37 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		Calendar calendarEnd = Calendar.getInstance();
 
 		try {
-			calendarStart.setTime(AppConfig.parse.parse(events.get(position).getStartDateTime()));
-			calendarEnd.setTime(AppConfig.parse.parse(events.get(position).getEndDateTime()));
+			if (SharedPreferencesSaver.getIcal(context) == null) {
+				calendarStart.setTime(AppConfig.parse.parse(events.get(position).getStartDateTime()));
+				calendarEnd.setTime(AppConfig.parse.parse(events.get(position).getEndDateTime()));
+			} else {
+				calendarStart.setTime(AppConfig.parseIcal.parse(events.get(position).getStartDateTime()));
+				calendarEnd.setTime(AppConfig.parseIcal.parse(events.get(position).getEndDateTime()));
+				calendarStart.add(Calendar.HOUR,1);
+				calendarEnd.add(Calendar.HOUR,1);
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		holder.mEventTime.setText(String.valueOf(getTimeFormat(calendarStart)));
 		holder.mEventTime.append(" - ");
 		holder.mEventTime.append(String.valueOf(getTimeFormat(calendarEnd)));
-		holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getCalendar().getTimeInMillis())));
-		holder.mEventDate.setText(String.valueOf(events.get(position).getCalendar().get(Calendar.DATE)));
-		for (Place placeCheck : places) {
-			if (placeCheck.getId() == Integer.parseInt(events.get(position).getPlaceId())) {
-				holder.mEventLocation.setText(placeCheck.getName());
+		if (SharedPreferencesSaver.getIcal(context) == null) {
+			holder.mEventDay.setText( String.format("%Ta", new Date(events.get(position).getCalendar().getTimeInMillis())));
+			holder.mEventDate.setText(String.valueOf(events.get(position).getCalendar().get(Calendar.DATE)));
+			for (Place placeCheck : places) {
+				if (placeCheck.getId() == Integer.parseInt(events.get(position).getPlaceId())) {
+					holder.mEventLocation.setText(placeCheck.getName());
+				}
 			}
+		} else {
+			holder.mEventDay.setVisibility(View.GONE);
+			holder.mEventDate.setVisibility(View.GONE);
+			holder.mDateContainer.setVisibility(View.GONE);
+			holder.mEventLocation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1000)});
+			holder.mEventLocation.setText(events.get(position).getDescription());
 		}
+
 	}
 
 	@Override

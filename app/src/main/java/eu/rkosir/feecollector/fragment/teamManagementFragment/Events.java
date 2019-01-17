@@ -120,10 +120,6 @@ public class Events extends Fragment {
 		mTabLayout = getActivity().findViewById(R.id.navigation_top);
 		mToolbar = getActivity().findViewById(R.id.back_action_bar);
 
-//		mSwipeRefreshLayout.setOnRefreshListener(() -> {
-//			getEvents();
-//			getLocations();
-//		});
 		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
 			mMenu.setVisibility(View.GONE);
 		}
@@ -164,10 +160,19 @@ public class Events extends Fragment {
 		mAddMatch.setOnClickListener(view1 -> addEvent(Event.MATCH));
 		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRANING));
 
-		getEvents();
-		getLocations();
-//		loadIcal();
-		mCalendarView.setOnDayClickListener(eventDay -> {
+		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+			getEvents();
+			getLocations();
+			mSwipeRefreshLayout.setOnRefreshListener(() -> {
+						getEvents();
+						getLocations();
+			});
+		} else {
+			loadIcal();
+			mSwipeRefreshLayout.setOnRefreshListener(() -> {
+				loadIcal();
+			});
+		}
 		mCalendarView.setOnDayClickListener(eventDay -> {
 			events = new ArrayList<>();
 			for (Event event : mEvents) {
@@ -178,11 +183,13 @@ public class Events extends Fragment {
 			mAdapter = new ShowEventsAdapter(events,mPlaces,getApplicationContext());
 			mRecyclerView.setAdapter(mAdapter);
 			mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-			mAdapter.setOnItemClickListener(position -> {
-				Intent intent = new Intent(getApplicationContext(), ShowEvent.class);
-				intent.putExtra("event", events.get(position));
-				startActivity(intent);
-			});
+			if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+				mAdapter.setOnItemClickListener(position -> {
+					Intent intent = new Intent(getApplicationContext(), ShowEvent.class);
+					intent.putExtra("event", events.get(position));
+					startActivity(intent);
+				});
+			}
 		});
 		return view;
 	}
@@ -319,21 +326,40 @@ public class Events extends Fragment {
 					Calendar endCAl = Calendar.getInstance();
 					String start = "", end = "";
 					String description = "";
+					boolean match = false;
+					boolean save = true;
 					for (Iterator j = component.getProperties().iterator(); j.hasNext();) {
 						Property property = (Property) j.next();
 						if (property.getName().equals("DTSTART")) {
 							startCal.setTime(AppConfig.parseIcal.parse(property.getValue()));
 							start = property.getValue();
+							startCal.add(Calendar.HOUR,1);
 						} else if (property.getName().equals("DTEND")) {
 							endCAl.setTime(AppConfig.parseIcal.parse(property.getValue()));
+							endCAl.add(Calendar.HOUR,1);
 							end = property.getValue();
 						} else if (property.getName().equals("LOCATION")) {
 							description = property.getValue();
+						} else if (property.getName().equals("DESCRIPTION")) {
+							if (property.getValue().contains("Tipsport")) {
+								save = false;
+							}
+						} else if (property.getName().equals("SUMMARY")) {
+							if (property.getValue().contains("SUPERLIGA")) {
+								match = true;
+							}
 						}
 					}
-					Event event = new Event(startCal,start,end,"Training",description,R.drawable.ic_event_available_black_24dp,"0");
-					eventDays.add(event);
-					mEvents.add(event);
+					Event event;
+					if (save) {
+						if (match) {
+							event = new Event(startCal,start,end,"Match",description,R.drawable.ic_lens_match_24dp,"0");
+						} else {
+							event = new Event(startCal,start,end,"Training",description,R.drawable.ic_lens_training_24dp,"0");
+						}
+						eventDays.add(event);
+						mEvents.add(event);
+					}
 				}
 				mCalendarView.setEvents(eventDays);
 			} catch (IOException | ParserException | ParseException e) {

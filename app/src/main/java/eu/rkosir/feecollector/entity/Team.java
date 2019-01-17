@@ -8,8 +8,9 @@ public class Team {
 	private final String currency_symbol;
 	private boolean admin;
 	private String connection_number;
+	private String icalURL;
 
-	public Team(int id, String name,String currency_code, String currency_symbol, boolean admin, String connection_number) {
+	public Team(int id, String name,String currency_code, String currency_symbol, boolean admin, String connection_number, String icalURL) {
 
 		this.id = id;
 		this.name = name;
@@ -17,6 +18,7 @@ public class Team {
 		this.currency_symbol = currency_symbol;
 		this.admin = admin;
 		this.connection_number = connection_number;
+		this.icalURL = icalURL;
 	}
 
 	public int getId() {
@@ -65,5 +67,13 @@ public class Team {
 
 	public String getCurrency_symbol() {
 		return currency_symbol;
+	}
+
+	public String getIcalURL() {
+		return icalURL;
+	}
+
+	public void setIcalURL(String icalURL) {
+		this.icalURL = icalURL;
 	}
 }
