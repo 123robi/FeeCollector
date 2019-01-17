@@ -86,16 +86,11 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		}
 		Calendar calendarStart = Calendar.getInstance();
 		Calendar calendarEnd = Calendar.getInstance();
+
 		try {
 			calendarStart.setTime(AppConfig.parse.parse(events.get(position).getStartDateTime()));
 			calendarEnd.setTime(AppConfig.parse.parse(events.get(position).getEndDateTime()));
 		} catch (ParseException e) {
-			try {
-				calendarStart.setTime(AppConfig.parseDate.parse(events.get(position).getStartDateTime()));
-				calendarEnd.setTime(AppConfig.parseDate.parse(events.get(position).getEndDateTime()));
-			} catch (ParseException e1) {
-				e.printStackTrace();
-			}
 			e.printStackTrace();
 		}
 		holder.mEventTime.setText(String.valueOf(getTimeFormat(calendarStart)));

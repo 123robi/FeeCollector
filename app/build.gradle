@@ -65,6 +65,10 @@ dependencies {
     implementation 'com.github.midorikocak:currency-picker-android:1.1.9'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'com.hbb20:ccp:2.2.3'
+    implementation 'org.mnode.ical4j:ical4j:1.0.5'
+    implementation 'backport-util-concurrent:backport-util-concurrent:3.1'
+    implementation 'commons-codec:commons-codec:1.9'
+    implementation 'commons-lang:commons-lang:2.6'
 }
 
 apply plugin: 'com.google.gms.google-services'
