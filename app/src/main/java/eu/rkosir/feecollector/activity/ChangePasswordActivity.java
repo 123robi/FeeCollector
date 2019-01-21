@@ -22,6 +22,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
+import com.hbb20.CountryCodePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,9 +42,10 @@ import static eu.rkosir.feecollector.AppConfig.URL_CHANGE_DETAILS;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 	private Toolbar mToolbar;
-	private TextInputLayout mInputNameLayout, mInputAddressLayout, mInputPhoneNumberLayout, mInputCurrentPasswordLayout,mInputPasswordLayout, mInputPasswordCheckLayout;
-	private TextInputEditText mInputName, mInputAddress, mInputPhoneNumber, mInputCurrentPassword, mInputPassword, mInputPasswordCheck;
-
+	private TextInputLayout mInputNameLayout, mInputAddressLayout, mInputCurrentPasswordLayout,mInputPasswordLayout, mInputPasswordCheckLayout;
+	private TextInputEditText mInputName, mInputAddress, mInputCurrentPassword, mInputPassword, mInputPasswordCheck;
+	private EditText mInputPhoneNumber;
+    private CountryCodePicker ccp;
 	private ProgressBar mProgressBar;
 
 	private String name, address, phoneNumber;
@@ -93,7 +95,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 					changePassword(facebook_login);
 				}
 			}
-			else if (!address.equals(mInputAddress.getText().toString()) || !address.equals(mInputAddress.getText().toString()) || !address.equals(mInputAddress.getText().toString())){
+
+			if (!address.equals(mInputAddress.getText().toString()) || !name.equals(mInputName.getText().toString()) || !phoneNumber.equals(ccp.getFullNumberWithPlus())){
 				if (attemptToChangeDetails()) {
 					changeDetails();
 				}
@@ -120,12 +123,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		}
 		mInputAddressLayout = findViewById(R.id.address_layout);
 
-		mInputPhoneNumber = findViewById(R.id.phone_number);
+        ccp = findViewById(R.id.cpp);
+        mInputPhoneNumber = findViewById(R.id.phone);
+        ccp.registerCarrierNumberEditText(mInputPhoneNumber);
 		phoneNumber = new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("phone_number");
 		if (!phoneNumber.equals("null")) {
-			mInputPhoneNumber.setText(phoneNumber);
+			ccp.setFullNumber(phoneNumber);
 		}
-		mInputPhoneNumberLayout = findViewById(R.id.phone_number_layout);
 
 		mInputPassword = findViewById(R.id.password);
 		mInputPasswordLayout = findViewById(R.id.password_layout);
@@ -196,11 +200,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
 	private boolean attemptToChangeDetails() {
 		mInputNameLayout.setError(null);
 		mInputAddressLayout.setError(null);
-		mInputPhoneNumberLayout.setError(null);
 
 		String name = mInputName.getText().toString();
 		String address = mInputAddress.getText().toString();
-		String phoneNumber = mInputPhoneNumber.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
@@ -212,10 +214,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 		} else if (TextUtils.isEmpty(address)) {
 			mInputAddressLayout.setError(getString(R.string.error_field_required));
 			focusView = mInputAddressLayout;
-			cancel = true;
-		}  else if (TextUtils.isEmpty(phoneNumber)) {
-			mInputPhoneNumberLayout.setError(getString(R.string.error_field_required));
-			focusView = mInputPhoneNumberLayout;
 			cancel = true;
 		}
 
@@ -313,7 +311,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 				params.put("email", new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email"));
 				params.put("name", mInputName.getText().toString());
 				params.put("address", mInputAddress.getText().toString());
-				params.put("phone_number", mInputPhoneNumber.getText().toString());
+				params.put("phone_number", ccp.getFullNumberWithPlus());
 				return params;
 			}
 		};

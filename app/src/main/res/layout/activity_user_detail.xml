@@ -92,10 +92,11 @@
 									android:id="@+id/player_name"
 									android:layout_width="wrap_content"
 									android:layout_height="wrap_content"
-									android:layout_alignTop="@+id/user_picture"
-									android:layout_marginStart="10dp"
+									android:layout_alignParentTop="true"
+									android:layout_marginStart="20dp"
+									android:layout_marginTop="19dp"
 									android:layout_toEndOf="@+id/user_picture"
-									android:text="Robert Kosir"
+									android:text="Robert"
 									android:textSize="20sp"
 									android:textStyle="bold" />
 
@@ -103,19 +104,10 @@
 									android:id="@+id/player_team"
 									android:layout_width="wrap_content"
 									android:layout_height="wrap_content"
-									android:layout_above="@+id/player_age"
+									android:layout_below="@+id/player_name"
 									android:layout_alignStart="@+id/player_name"
 									android:layout_marginBottom="5dp"
-									android:text="FBC BOROVNICA"
-									android:textSize="14sp" />
-
-								<TextView
-									android:id="@+id/player_age"
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:layout_alignStart="@+id/player_name"
-									android:layout_alignBottom="@+id/user_picture"
-									android:text="12 years"
+									android:text="Acema"
 									android:textSize="14sp" />
 
 							</RelativeLayout>
@@ -148,7 +140,6 @@
 									android:layout_marginStart="16dp"
 									android:layout_toEndOf="@+id/email_icon"
 									android:gravity="center"
-									android:text="robikoser@gmail.com"
 									android:textSize="18sp" />
 							</RelativeLayout>
 
@@ -182,7 +173,6 @@
 									android:layout_marginStart="16dp"
 									android:layout_toEndOf="@+id/phone_number_icon"
 									android:gravity="center"
-									android:text="03216871212"
 									android:textSize="18sp" />
 							</RelativeLayout>
 
@@ -216,39 +206,6 @@
 									android:layout_marginStart="16dp"
 									android:layout_toEndOf="@+id/address_icon"
 									android:gravity="center"
-									android:text="Brezovica pri Borovnici 66"
-									android:textSize="18sp" />
-							</RelativeLayout>
-
-							<View
-								android:layout_width="match_parent"
-								android:layout_height="1dp"
-								android:layout_marginStart="69dp"
-								android:background="@android:color/darker_gray" />
-
-							<RelativeLayout
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								android:paddingStart="25dp"
-								android:paddingTop="15dp"
-								android:paddingEnd="25dp"
-								android:paddingBottom="15dp">
-
-								<ImageView
-									android:id="@+id/birthday_icon"
-									android:layout_width="28dp"
-									android:layout_height="28dp"
-									android:src="@drawable/ic_cake_black_24dp" />
-
-								<TextView
-									android:id="@+id/birthday"
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:layout_centerVertical="true"
-									android:layout_marginStart="16dp"
-									android:layout_toEndOf="@+id/birthday_icon"
-									android:gravity="center"
-									android:text="15.09.1997"
 									android:textSize="18sp" />
 							</RelativeLayout>
 						</LinearLayout>

@@ -175,4 +175,7 @@
     <string name="summary_graph_title">Top members</string>
 	<string name="facebook_login">Login with facebook</string>
 	<string name="settings_ical">Use ical calendar</string>
+    <string name="change_password_repeat_pass">Repeat password</string>
+    <string name="change_password_pass">Password</string>
+    <string name="change_password_pass_current">Current password</string>
 </resources>

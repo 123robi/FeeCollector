@@ -56,7 +56,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	private User myUser;
 	private Toolbar mToolbar;
-	private TextView mName, mTeam, mAge, mEmail, mNumber, mAddress, mBirthday;
+	private TextView mName, mTeam, mEmail, mNumber, mAddress;
 	private RelativeLayout mRelativeLayoutEmail, mRelativeLayoutAddress, mRelativeLayoutPhoneNumber;
 	private CircleImageView mCircleImageView;
 	private Bitmap bitmap;
@@ -98,11 +98,9 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 		mToolbar.setTitle(myUser.getName());
 		mName = findViewById(R.id.player_name);
 		mTeam = findViewById(R.id.player_team);
-		mAge = findViewById(R.id.player_age);
 		mEmail = findViewById(R.id.email);
 		mNumber = findViewById(R.id.phone_number);
 		mAddress = findViewById(R.id.address);
-		mBirthday = findViewById(R.id.birthday);
 
 		mMemberFees = new ArrayList<>();
 		mRecyclerView = findViewById(R.id.feesList);
