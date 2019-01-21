@@ -115,7 +115,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 		});
 
 		mCircleImageView = findViewById(R.id.user_picture);
-		String imageUrl = "http://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
+		String imageUrl = "https://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
 		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).into(mCircleImageView);
 
 		mRelativeLayoutEmail = findViewById(R.id.relative_email);
@@ -149,7 +149,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 			}*/
-			Picasso.get().invalidate("http://rkosir.eu/images/" + myUser.getEmail() + ".jpg");
+			Picasso.get().invalidate("https://rkosir.eu/images/" + myUser.getEmail() + ".jpg");
 			Intent selectPicture = new Intent();
 			selectPicture.setType("image/*");
 			selectPicture.setAction(Intent.ACTION_GET_CONTENT);
