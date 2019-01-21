@@ -83,7 +83,7 @@ public class UserDetail extends AppCompatActivity {
 		});
 
 		mCircleImageView = findViewById(R.id.user_picture);
-		String imageUrl = "http://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
+		String imageUrl = "https://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
 		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).into(mCircleImageView);
 
 		mRelativeLayoutEmail = findViewById(R.id.relative_email);
