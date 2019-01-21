@@ -31,13 +31,11 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		public ImageView imageView;
 		public TextView textView;
-		public TextView countMembers;
 
 		public ViewHolder(View itemView, OnItemClickListener listener) {
 			super(itemView);
 			imageView = itemView.findViewById(R.id.privileges);
 			textView = itemView.findViewById(R.id.team_name);
-			countMembers = itemView.findViewById(R.id.count);
 
 			itemView.setOnClickListener(view -> {
 				if (listener != null) {
@@ -69,7 +67,6 @@ public class ShowTeamsAdapter extends RecyclerView.Adapter<ShowTeamsAdapter.View
 
 		if (currentTeam.isAdmin()) {
 			holder.imageView.setImageResource(R.mipmap.ic_admin_teams);
-			holder.countMembers.append(context.getString(R.string.show_teams_members) + " " + currentTeam.getMembers());
 		} else {
 			holder.imageView.setImageResource(R.mipmap.ic_team);
 		}

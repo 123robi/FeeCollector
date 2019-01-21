@@ -53,11 +53,12 @@ import eu.rkosir.feecollector.helper.VolleySingleton;
 
 public class LoginActivity extends AppCompatActivity {
 
-	private EditText mEmail_login;
-	private EditText mPassword_login;
+	private TextInputEditText mEmail_login;
+	private TextInputEditText mPassword_login;
 
-	private Button mLoginButton;
-	private LoginButton mLoginButton_facebook;
+	private TextInputLayout mEmail_layout,mPassword_layout;
+
+	private Button mLoginButton,mFacebookLoginButton;
 	private TextView mSignUp;
 	private ProgressBar mProgressBar;
 
@@ -98,36 +99,39 @@ public class LoginActivity extends AppCompatActivity {
 	 * if not logged initialize all fields
 	 */
 	private void initialize() {
-		mEmail_login = findViewById(R.id.email_login);
-		mPassword_login = findViewById(R.id.password_login);
+		mEmail_login = findViewById(R.id.email);
+		mPassword_login = findViewById(R.id.password);
+		mEmail_layout = findViewById(R.id.EmailLayout);
+		mPassword_layout = findViewById(R.id.PasswordLayout);
 		if(getIntent().getStringExtra("email") != null) {
 			mEmail_login.setText(getIntent().getStringExtra("email"));
 			mPassword_login.requestFocus();
 		}
 		mLoginButton = findViewById(R.id.login_button);
-		mLoginButton_facebook = findViewById(R.id.login_button_facebook);
-
-		float fbIconScale = 1.45F;
-		Drawable drawable = this.getResources().getDrawable(
-				com.facebook.R.drawable.com_facebook_button_icon);
-		drawable.setBounds(0, 0, (int)(drawable.getIntrinsicWidth()*fbIconScale),
-				(int)(drawable.getIntrinsicHeight()*fbIconScale));
-		mLoginButton_facebook.setCompoundDrawables(drawable, null, null, null);
-		mLoginButton_facebook.setCompoundDrawablePadding(this.getResources().
-				getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
-		mLoginButton_facebook.setPadding(
-				this.getResources().getDimensionPixelSize(
-						R.dimen.fb_margin_override_lr),
-				this.getResources().getDimensionPixelSize(
-						R.dimen.fb_margin_override_top),
-				this.getResources().getDimensionPixelSize(
-						R.dimen.fb_margin_override_lr),
-				this.getResources().getDimensionPixelSize(
-						R.dimen.fb_margin_override_bottom));
-
-		mLoginButton_facebook.setReadPermissions(Arrays.asList(
-				"public_profile", "email"));
+		mFacebookLoginButton = findViewById(R.id.facebook_login);
 		mCallbackManager = CallbackManager.Factory.create();
+		mFacebookLoginButton.setOnClickListener(view -> {
+			LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
+			LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+				@Override
+				public void onSuccess(LoginResult loginResult) {
+					getUserInfo();
+				}
+
+				@Override
+				public void onCancel() {
+
+				}
+
+				@Override
+				public void onError(FacebookException error) {
+					Toast.makeText(LoginActivity.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
+				}
+			});
+		});
+//		mLoginButton_facebook.setReadPermissions(Arrays.asList(
+//				"public_profile", "email"));
+//
 
 		mSignUp = findViewById(R.id.signUp);
 
@@ -145,7 +149,9 @@ public class LoginActivity extends AppCompatActivity {
 	private void buttonListeners() {
 		mLoginButton.setOnClickListener(v -> {
 			if(InternetConnection.getInstance(LoginActivity.this).isOnline()){
-				login();
+				if (attemptToLogin()) {
+					login();
+				}
 			} else {
 				Toast.makeText(LoginActivity.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
 			}
@@ -154,23 +160,6 @@ public class LoginActivity extends AppCompatActivity {
 		mSignUp.setOnClickListener(v -> {
 			Intent intent = new Intent(this, RegistrationActivity.class);
 			this.startActivity(intent);
-		});
-
-		LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-			@Override
-			public void onSuccess(LoginResult loginResult) {
-				getUserInfo();
-			}
-
-			@Override
-			public void onCancel() {
-
-			}
-
-			@Override
-			public void onError(FacebookException error) {
-				Toast.makeText(LoginActivity.this, R.string.toast_connection_warning, Toast.LENGTH_LONG).show();
-			}
 		});
 	}
 
@@ -350,6 +339,36 @@ public class LoginActivity extends AppCompatActivity {
 		} else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 			layout.setError(getString(R.string.error_email_validation));
 			focusView = layout;
+			cancel = true;
+		}
+		if (cancel) {
+			focusView.requestFocus();
+			return false;
+		} else
+			return true;
+	}
+
+	private boolean attemptToLogin() {
+		mEmail_layout.setError(null);
+		mPassword_layout.setError(null);
+
+		boolean cancel = false;
+		View focusView = null;
+
+		String email = mEmail_login.getText().toString();
+		String password = mPassword_login.getText().toString();
+
+		if (TextUtils.isEmpty(email)) {
+			mEmail_layout.setError(getString(R.string.error_field_required));
+			focusView = mEmail_layout;
+			cancel = true;
+		}else if (TextUtils.isEmpty(password)) {
+			mPassword_layout.setError(getString(R.string.error_field_required));
+			focusView = mPassword_layout;
+			cancel = true;
+		} else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+			mEmail_layout.setError(getString(R.string.error_email_validation));
+			focusView = mEmail_layout;
 			cancel = true;
 		}
 		if (cancel) {

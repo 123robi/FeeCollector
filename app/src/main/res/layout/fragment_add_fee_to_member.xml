@@ -5,32 +5,38 @@
 	android:layout_height="match_parent"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	tools:context=".fragment.teamManagementFragment.AddFeeToMember">
-<LinearLayout
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical">
+	<android.support.v4.widget.SwipeRefreshLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/swiperefresh"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
 
-	<AutoCompleteTextView
-		android:id="@+id/choose_player"
-		android:layout_width="match_parent"
-		android:completionThreshold="1"
-		android:layout_height="wrap_content"
-		android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
-		android:hint="@string/add_fee_to_member_choose_player"/>
-	<AutoCompleteTextView
-		android:id="@+id/choose_fee"
-		android:completionThreshold="1"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
-		android:hint="@string/add_fee_to_member_choose_fee"/>
+			<AutoCompleteTextView
+				android:id="@+id/choose_player"
+				android:layout_width="match_parent"
+				android:completionThreshold="1"
+				android:layout_height="wrap_content"
+				android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+				android:hint="@string/add_fee_to_member_choose_player"/>
+			<AutoCompleteTextView
+				android:id="@+id/choose_fee"
+				android:completionThreshold="1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+				android:hint="@string/add_fee_to_member_choose_fee"/>
 
-	<Button
-		android:id="@+id/add_fee_to_member"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/add_fee_to_member_add_fee" />
-</LinearLayout>
+			<Button
+				android:id="@+id/add_fee_to_member"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/add_fee_to_member_add_fee" />
+		</LinearLayout>
+	</android.support.v4.widget.SwipeRefreshLayout>
 	<com.github.clans.fab.FloatingActionButton
 		android:id="@+id/add_fee"
 		android:layout_width="wrap_content"

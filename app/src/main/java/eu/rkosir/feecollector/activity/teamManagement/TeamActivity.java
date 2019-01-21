@@ -42,12 +42,14 @@ import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.adapters.ViewPagerAdapter;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class TeamActivity extends AppCompatActivity {
 
 	private TabLayout mTabLayout;
 	private ViewPager mViewPager;
 	private Toolbar mToolbar;
-	private ProgressBar mLoadingBar;
+	private ViewPagerAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,23 +65,29 @@ public class TeamActivity extends AppCompatActivity {
 		mTabLayout = findViewById(R.id.navigation_top);
 		mViewPager = findViewById(R.id.content);
 
-		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-		adapter.addFragment(new Summary(), "");
-		adapter.addFragment(new Events(), "");
-		adapter.addFragment(new AddFeeToMember(),"");
-		adapter.addFragment(new ShowMembers(), "");
+		mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+		mAdapter.addFragment(new Summary(), "");
+		mAdapter.addFragment(new Events(), "");
+		if (SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mAdapter.addFragment(new AddFeeToMember(),"");
+		}
+		mAdapter.addFragment(new ShowMembers(), "");
 
-		mViewPager.setAdapter(adapter);
+		mViewPager.setAdapter(mAdapter);
 		mTabLayout.setupWithViewPager(mViewPager);
-		mViewPager.setOffscreenPageLimit(4);
 
-		mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
-		mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
-		mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
-		mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
-
-		mLoadingBar = findViewById(R.id.pb_loading_indicator);
-		mLoadingBar.setVisibility(View.INVISIBLE);
+		if (SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mViewPager.setOffscreenPageLimit(4);
+			mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
+			mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
+			mTabLayout.getTabAt(2).setIcon(R.drawable.ic_attach_money_white_24dp);
+			mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person_white_24dp);
+		} else {
+			mViewPager.setOffscreenPageLimit(3);
+			mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
+			mTabLayout.getTabAt(1).setIcon(R.drawable.ic_event_white_24dp);
+			mTabLayout.getTabAt(2).setIcon(R.drawable.ic_person_white_24dp);
+		}
 	}
 
 	/**
@@ -91,6 +99,7 @@ public class TeamActivity extends AppCompatActivity {
 		SharedPreferencesSaver.setLastTeamName(this,null);
 		SharedPreferencesSaver.setCurrencyCode(this,null);
 		SharedPreferencesSaver.setCurrencySymbol(this,null);
+		SharedPreferencesSaver.setAdmin(this,false);
 		super.onBackPressed();
 	}
 
@@ -103,6 +112,11 @@ public class TeamActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.team_menu,menu);
+		if (!SharedPreferencesSaver.isAdmin(this)) {
+			MenuItem item = menu.findItem(R.id.delete_team);
+			item.setVisible(false);
+		}
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -130,6 +144,8 @@ public class TeamActivity extends AppCompatActivity {
 			mBuilder.setView(mView);
 			AlertDialog dialog = mBuilder.create();
 			dialog.show();
+		} else if (item.getItemId() == R.id.refresh) {
+			mAdapter.getItemPosition(mAdapter.getItem(mViewPager.getCurrentItem()));
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -138,7 +154,6 @@ public class TeamActivity extends AppCompatActivity {
 	 * Sending a Volley Post Request to delete a team using 1 parameter: connection_number
 	 */
 	private void deleteTeamApi() {
-		mLoadingBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_DELETE_TEAM, response -> {
 			JSONObject object = null;
 
@@ -176,10 +191,5 @@ public class TeamActivity extends AppCompatActivity {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
-		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mLoadingBar != null) {
-				mLoadingBar.setVisibility(View.INVISIBLE);
-			}
-		});
 	}
 }

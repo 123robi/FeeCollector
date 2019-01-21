@@ -3,6 +3,8 @@ package eu.rkosir.feecollector.fragment.registrationFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -37,7 +39,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * A simple {@link Fragment} subclass.
  */
 public class Registration_1st_step extends Fragment {
-	private EditText mInputEmail;
+	private TextInputEditText mInputEmail;
+	private TextInputLayout mInputEmailLayout;
 	private Button mNext;
 	private ProgressBar mProgressBar;
 	private TextView mSignIn;
@@ -53,6 +56,7 @@ public class Registration_1st_step extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_registration_1st_step, container, false);
 		mInputEmail = view.findViewById(R.id.email);
+		mInputEmailLayout = view.findViewById(R.id.emailLayout);
 		mSignIn = view.findViewById(R.id.signIn);
 		mNext = view.findViewById(R.id.next);
 		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
@@ -84,18 +88,18 @@ public class Registration_1st_step extends Fragment {
 	 * @return true|false
 	 */
 	private boolean attemptToRegister() {
-		mInputEmail.setError(null);
+		mInputEmailLayout.setError(null);
 		String email = mInputEmail.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 		if (TextUtils.isEmpty(email)) {
-			mInputEmail.setError(getString(R.string.error_field_required), null);
-			focusView = mInputEmail;
+			mInputEmailLayout.setError(getString(R.string.error_field_required));
+			focusView = mInputEmailLayout;
 			cancel = true;
 		} else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-			mInputEmail.setError(getString(R.string.error_email_validation), null);
-			focusView = mInputEmail;
+			mInputEmailLayout.setError(getString(R.string.error_email_validation));
+			focusView = mInputEmailLayout;
 			cancel = true;
 		}
 		if (cancel) {
@@ -112,6 +116,7 @@ public class Registration_1st_step extends Fragment {
 	 */
 	private void checkUserExistence() {
 		mProgressBar.setVisibility(View.VISIBLE);
+		mProgressBar.bringToFront();
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_EXISTS, response -> {
 			JSONObject object = null;
 

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1A81C3</color>
-    <color name="colorPrimaryLight">#bcdef4</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#51514F</color>
+    <color name="colorPrimaryLight">#797976</color>
+    <color name="colorAccent">#F67280</color>
     <color name="white">#ffffff</color>
     <color name="darkgrey">#6c6c6c</color>
     <color name="red">#ff0000</color>
+    <color name="green">#00ff00</color>
     <color name="indicator_color">#2d2d2d</color>
     <color name="card">#dfdfdf</color>
 
     <color name="floating_action_purple">#8A66D9</color>
     <color name="floating_action_purple_pressed">#b299e7</color>
 
-    <color name="floating_action_pure_red">#FE7C1D</color>
-    <color name="floating_action_pure_red_pressed">#f59d5c</color>
+    <color name="floating_action_pure_red">#F38C70</color>
+    <color name="floating_action_pure_red_pressed">#c3f38c70</color>
 
     <color name="floating_action_pure_green">#8ABF3E</color>
     <color name="floating_action_pure_green_pressed">#97bf5d</color>
@@ -21,10 +22,18 @@
     <color name="send_message_action_orange">#fc6d00</color>
     <color name="send_message_action_orange_pressed">#91fc6d00</color>
 
-    <color name="floating_action_button_main">#00B15C</color>
-    <color name="floating_action_button_main_pressed">#ba02d971</color>
+    <color name="floating_action_button_main">#C06C84</color>
+    <color name="floating_action_button_main_pressed">#92ed88a5</color>
 
     <color name="event">#8A66D9</color>
     <color name="match">#8ABF3E</color>
-    <color name="training">#FE7C1D</color>
+    <color name="training">#F38C70</color>
+    <color name="black">#000000</color>
+
+
+    <color name="login_button">#FF8C47</color>
+
+    <color name="first_graph">#4FFF96</color>
+    <color name="second_graph">#FFBD4F</color>
+    <color name="third_graph">#FFEDCF</color>
 </resources>

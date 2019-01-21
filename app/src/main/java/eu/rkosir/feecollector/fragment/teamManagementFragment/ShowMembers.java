@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.github.clans.fab.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,10 +30,10 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.activity.teamManagement.AddMember;
 import eu.rkosir.feecollector.activity.teamManagement.UserDetail;
-import eu.rkosir.feecollector.activity.teamManagement.calendar.ShowEvent;
 import eu.rkosir.feecollector.adapters.ShowMembersAdapter;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
+import eu.rkosir.feecollector.helper.UpdatableFragment;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -40,13 +41,13 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShowMembers extends Fragment {
+public class ShowMembers extends Fragment implements UpdatableFragment {
 
-	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
 	private ShowMembersAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
 	private FloatingActionButton mAddMember;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public ShowMembers() {
 		// Required empty public constructor
@@ -62,11 +63,15 @@ public class ShowMembers extends Fragment {
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_members, container, false);
+		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+		mSwipeRefreshLayout.setOnRefreshListener(this::update);
 		mRecyclerView = view.findViewById(R.id.members_list);
-		mLayoutManager = new LinearLayoutManager(getApplicationContext());
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-		mProgressBar.setVisibility(View.INVISIBLE);
 		mAddMember = view.findViewById(R.id.add_member);
+
+		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mAddMember.setVisibility(View.GONE);
+		}
+
 		mAddMember.setOnClickListener(v -> {
 			Intent intent = new Intent(getContext(), AddMember.class);
 			startActivity(intent);
@@ -78,7 +83,9 @@ public class ShowMembers extends Fragment {
 	/**
 	 * Sending a Volley GET Request to find users to a specific teams that you can join, using 2 url parameter: email, team_id
 	 */
-	public void getMembers() {
+	private void getMembers() {
+		mSwipeRefreshLayout.setRefreshing(true);
+		mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		String uri = String.format(AppConfig.URL_GET_All_MEMBERS,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
@@ -87,16 +94,19 @@ public class ShowMembers extends Fragment {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
 					ArrayList<User> membersList = new ArrayList<>();
-					JSONObject admin = object.getJSONArray("admin").getJSONObject(0);
-					User addUser = new User(
-							admin.getInt("id"),
-							admin.getString("name"),
-							admin.getString("email"),
-							admin.getString("phone_number"),
-							admin.getString("address")
-					);
-					addUser.setRole("Manager");
-					membersList.add(addUser);
+					JSONArray admins = object.getJSONArray("admin");
+					for(int i = 0; i < admins.length(); i++) {
+						JSONObject user = admins.getJSONObject(i);
+						User member = new User(
+								user.getInt("id"),
+								user.getString("name"),
+								user.getString("email"),
+								user.getString("phone_number"),
+								user.getString("address")
+						);
+						member.setRole("Manager");
+						membersList.add(member);
+					}
 					JSONArray membersArray = object.getJSONArray("members");
 					for(int i = 0; i < membersArray.length(); i++) {
 						JSONObject user = membersArray.getJSONObject(i);
@@ -127,6 +137,7 @@ public class ShowMembers extends Fragment {
 					mAdapter.setOnItemClickListener(position -> {
 						Intent intent = new Intent(getApplicationContext(), UserDetail.class);
 						intent.putExtra("user", membersList.get(position));
+						Picasso.get().invalidate("http://rkosir.eu/images/" +  membersList.get(position).getEmail() + ".jpg");
 						startActivity(intent);
 					});
 				} else {
@@ -143,25 +154,20 @@ public class ShowMembers extends Fragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mProgressBar != null) {
-				mProgressBar.setVisibility(View.INVISIBLE);
-			}
+			mSwipeRefreshLayout.setRefreshing(false);
 		});
 	}
 
 	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		if (isVisibleToUser) {
-			getMembers();
-		}
+	public void update() {
+		getMembers();
+		mAdapter.notifyDataSetChanged();
 	}
-
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.refresh) {
-			getMembers();
+	public void onResume() {
+		super.onResume();
+		if (mAdapter != null) {
+			mAdapter.notifyDataSetChanged();
 		}
-		return super.onOptionsItemSelected(item);
 	}
 }

@@ -76,7 +76,7 @@ public class Registration_update_step extends Fragment {
 	 */
 	private void updateUser() {
 		mProgressBar.setVisibility(View.VISIBLE);
-		StringRequest stringRequest = new StringRequest(Request.Method.POST,"http://rkosir.eu/usersApi/update", response -> {
+		StringRequest stringRequest = new StringRequest(Request.Method.POST,AppConfig.URL_UPDATE_USER, response -> {
 			JSONObject object = null;
 			try {
 				object = new JSONObject(response);

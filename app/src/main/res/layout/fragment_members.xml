@@ -5,10 +5,11 @@
 	android:layout_height="match_parent"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	tools:context=".fragment.teamManagementFragment.AddFeeToMember">
-	<LinearLayout
+	<android.support.v4.widget.SwipeRefreshLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/swiperefresh"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
+		android:layout_height="match_parent">
 
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/members_list"
@@ -16,7 +17,7 @@
 			android:layout_height="match_parent"
 			android:scrollbars="vertical"
 			/>
-	</LinearLayout>
+	</android.support.v4.widget.SwipeRefreshLayout>
 
 
 	<com.github.clans.fab.FloatingActionButton

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +54,6 @@ import static eu.rkosir.feecollector.AppConfig.URL_SAVE_FEE_TO_USER;
 public class AddFeeToMember extends Fragment {
 
 	private FloatingActionButton mAddFee;
-	private ProgressBar mProgressBar;
 	private AutoCompleteTextView mAutoCompletePlayer;
 	private AutoCompleteTextView mAutoCompleteFee;
 	private Button mAddFeeToMember;
@@ -61,6 +61,7 @@ public class AddFeeToMember extends Fragment {
 	private ArrayAdapter<Fee> adapter1;
 	private User mSavingUser;
 	private Fee mSavingFee;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public AddFeeToMember() {
 		// Required empty public constructor
@@ -74,9 +75,9 @@ public class AddFeeToMember extends Fragment {
 		// Inflate the layout for this fragment
 
 		View view = inflater.inflate(R.layout.fragment_add_fee_to_member, container, false);
-		mProgressBar = getActivity().findViewById(R.id.pb_loading_indicator);
-		mProgressBar.setVisibility(View.INVISIBLE);
 		mAutoCompletePlayer = view.findViewById(R.id.choose_player);
+		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
+		mSwipeRefreshLayout.setEnabled(false);
 		mAutoCompleteFee = view.findViewById(R.id.choose_fee);
 		mAddFeeToMember = view.findViewById(R.id.add_fee_to_member);
 		mAutoCompletePlayer.setOnTouchListener((arg0, arg1) -> {
@@ -108,7 +109,7 @@ public class AddFeeToMember extends Fragment {
 	}
 
 	private void storeFeeToMember() {
-		mProgressBar.setVisibility(View.VISIBLE);
+		mSwipeRefreshLayout.setRefreshing(true);
 		StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SAVE_FEE_TO_USER, response -> {
 			JSONObject object = null;
 
@@ -139,9 +140,7 @@ public class AddFeeToMember extends Fragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mProgressBar != null) {
-				mProgressBar.setVisibility(View.INVISIBLE);
-			}
+			mSwipeRefreshLayout.setRefreshing(false);
 		});
 	}
 
@@ -150,9 +149,9 @@ public class AddFeeToMember extends Fragment {
 	 */
 	private void loadMembersAndFees() {
 
+		mSwipeRefreshLayout.setRefreshing(true);
 		String uri = String.format(AppConfig.URL_GET_TEAM_MEMEBERS_AND_FEES,
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
-		mProgressBar.setVisibility(View.VISIBLE);
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
 			try {
@@ -196,9 +195,7 @@ public class AddFeeToMember extends Fragment {
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
-			if (mProgressBar != null) {
-				mProgressBar.setVisibility(View.INVISIBLE);
-			}
+			mSwipeRefreshLayout.setRefreshing(false);
 		});
 	}
 

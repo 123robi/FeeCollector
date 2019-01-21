@@ -6,9 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,27 +23,36 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.github.clans.fab.FloatingActionButton;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
-import eu.rkosir.feecollector.activity.RegistrationActivity;
+import eu.rkosir.feecollector.adapters.ShowMemberFeesAdapter;
+import eu.rkosir.feecollector.entity.MemberFee;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class UserDetail extends AppCompatActivity {
+public class UserDetail extends AppCompatActivity implements View.OnLongClickListener{
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	private User myUser;
 	private Toolbar mToolbar;
@@ -49,6 +62,12 @@ public class UserDetail extends AppCompatActivity {
 	private Bitmap bitmap;
 	private ProgressBar mProgressBar;
 	private FloatingActionButton mSendNotificaiton;
+	private List<MemberFee> mMemberFees;
+	private RecyclerView mRecyclerView;
+	private ShowMemberFeesAdapter mAdapter;
+	public boolean is_in_action_mode;
+	private ArrayList<MemberFee> selected;
+	private int counter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +75,8 @@ public class UserDetail extends AppCompatActivity {
 		setContentView(R.layout.activity_user_detail);
 		Intent intent = getIntent();
 		mToolbar = findViewById(R.id.back_action_bar);
-		mToolbar.setNavigationOnClickListener(view -> this.finish());
+		setSupportActionBar(mToolbar);
+		mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
 		if (intent != null) {
 			Object user = intent.getParcelableExtra("user");
@@ -64,8 +84,16 @@ public class UserDetail extends AppCompatActivity {
 				myUser = (User) user;
 			}
 		}
+
+		is_in_action_mode = false;
+		selected = new ArrayList<>();
+		counter = 0;
+
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 		mSendNotificaiton = findViewById(R.id.send_notification);
+		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mSendNotificaiton.setVisibility(View.GONE);
+		}
 
 		mToolbar.setTitle(myUser.getName());
 		mName = findViewById(R.id.player_name);
@@ -75,6 +103,10 @@ public class UserDetail extends AppCompatActivity {
 		mNumber = findViewById(R.id.phone_number);
 		mAddress = findViewById(R.id.address);
 		mBirthday = findViewById(R.id.birthday);
+
+		mMemberFees = new ArrayList<>();
+		mRecyclerView = findViewById(R.id.feesList);
+		loadFees();
 
 		mSendNotificaiton.setOnClickListener(view -> {
 			Intent sendNotification = new Intent(this, SendNotification.class);
@@ -117,6 +149,7 @@ public class UserDetail extends AppCompatActivity {
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 			}*/
+			Picasso.get().invalidate("https://rkosir.eu/images/" + myUser.getEmail() + ".jpg");
 			Intent selectPicture = new Intent();
 			selectPicture.setType("image/*");
 			selectPicture.setAction(Intent.ACTION_GET_CONTENT);
@@ -142,6 +175,56 @@ public class UserDetail extends AppCompatActivity {
 			mRelativeLayoutAddress.setVisibility(View.GONE);
 		}
 		// #todo birhtday date
+	}
+
+	/**
+	 * Volley request to load all fees of user(paid) unpaid
+	 */
+	private void loadFees() {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		String uri = String.format(AppConfig.URL_GET_FEES_OF_USER,
+				SharedPreferencesSaver.getLastTeamID(getApplicationContext()),
+				myUser.getEmail());
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+			JSONObject object = null;
+
+			try {
+				object = new JSONObject(response);
+				JSONArray memberFeesArray = object.getJSONArray("fees");
+				for(int i = 0; i < memberFeesArray .length(); i++) {
+					JSONObject memberFee = memberFeesArray .getJSONObject(i);
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(AppConfig.parse.parse(memberFee.getString("date")));
+					JSONObject matchingData = memberFee.getJSONObject("_matchingData");
+					JSONObject fee = matchingData.getJSONObject("Fees");
+
+					if (memberFee.getInt("paid") == 0) {
+						MemberFee addMemberFee = new MemberFee(memberFee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, false);
+						mMemberFees.add(addMemberFee);
+					} else {
+						MemberFee addMemberFee = new MemberFee(memberFee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, true);
+						mMemberFees.add(addMemberFee);
+					}
+				}
+
+				mAdapter = new ShowMemberFeesAdapter(mMemberFees,this);
+				mRecyclerView.setAdapter(mAdapter);
+				mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+			} catch (JSONException | ParseException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		});
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	@Override
@@ -200,5 +283,106 @@ public class UserDetail extends AppCompatActivity {
 		bitmap.compress(Bitmap.CompressFormat.JPEG,10,byteArrayOutputStream);
 		byte[] imgBytes = byteArrayOutputStream.toByteArray();
 		return Base64.encodeToString(imgBytes,Base64.DEFAULT);
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		if (SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mToolbar.setTitle("0 items selected");
+			mToolbar.inflateMenu(R.menu.menu_action_mode);
+			is_in_action_mode = true;
+			mAdapter.notifyDataSetChanged();
+		}
+		return false;
+	}
+
+	public void prepareSelection(boolean v, int adapterPosition) {
+		try{
+			if (v) {
+				selected.add(mMemberFees.get(adapterPosition));
+				counter += 1;
+				updateCounter();
+			} else {
+				selected.remove(mMemberFees.get(adapterPosition));
+				counter -= 1;
+				updateCounter();
+			}
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void updateCounter() {
+		mToolbar.setTitle(counter + " Items selected");
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (is_in_action_mode) {
+			mToolbar.getMenu().clear();
+			mToolbar.setTitle(myUser.getName());
+			is_in_action_mode = false;
+			mAdapter.notifyDataSetChanged();
+			counter = 0;
+			selected.clear();
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.fee_is_paid) {
+			for(MemberFee fee : selected) {
+				updateMembers(fee);
+				if (mMemberFees.contains(fee)) {
+					mMemberFees.get(mMemberFees.indexOf(fee)).setPaid(true);
+				}
+			}
+			mToolbar.getMenu().clear();
+			mToolbar.setTitle(myUser.getName());
+			is_in_action_mode = false;
+			mAdapter.notifyDataSetChanged();
+			counter = 0;
+			selected.clear();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void updateMembers(MemberFee fee) {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_UPDATE_FEES_OF_USER, response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				if (!object.getBoolean("error")) {
+
+				} else {
+					Toast.makeText(getApplicationContext(),R.string.toast_uploading_error,Toast.LENGTH_LONG).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_size_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("id", String.valueOf(fee.getId()));
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
+
 	}
 }

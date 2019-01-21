@@ -20,8 +20,8 @@
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/iconfinder-icon (3).png" />
-                                      <entry key="outputName" value="ic_admin_teams" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/Launcher.png" />
+                                      <entry key="outputName" value="ic_logo_launcher" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -50,27 +50,13 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="clipartAsset">
-                              <value>
-                                <PersistentState>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="url" value="jar:file:/home/FUNLIFE.CZ/rkosir/Downloads/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_refresh_black_24dp.xml" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_refresh_white_24dp" />
+                            <entry key="outputName" value="ic_round_home_24px" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$USER_HOME$/C:\Users\robik\C:\Users\robik\C:\Users\robik\C:\Users\robik" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/round-home-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>
