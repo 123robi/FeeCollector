@@ -172,7 +172,7 @@
 
     <!--Summary fragment-->
     <string name="summary_loading">Loading ...</string>
-    <string name="summary_graph_title">Members with most violations</string>
+    <string name="summary_graph_title">Top members</string>
 	<string name="facebook_login">Login with facebook</string>
 	<string name="settings_ical">Use ical calendar</string>
 </resources>
