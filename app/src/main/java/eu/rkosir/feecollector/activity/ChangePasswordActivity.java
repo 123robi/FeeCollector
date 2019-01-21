@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -295,6 +296,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 				if (!object.getBoolean("error")) {
 					SharedPreferencesSaver.setUser(this,object.getString("user"));
 					Toast.makeText(this, R.string.toast_successful_user_update,Toast.LENGTH_LONG).show();
+					phoneNumber = ccp.getFullNumberWithPlus();
 				} else {
 					Toast.makeText(this, R.string.toast_unsuccessful_user_update,Toast.LENGTH_LONG).show();
 				}
