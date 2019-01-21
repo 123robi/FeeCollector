@@ -78,7 +78,7 @@ public class ShowMembersAdapter extends RecyclerView.Adapter<ShowMembersAdapter.
 		}
 		holder.mCostAmount.setText(users.get(position).getToPay() + "" + SharedPreferencesSaver.getCurrencySymbol(context));
 		String imageUrl = "https://rkosir.eu/images/" + users.get(position).getEmail() + ".jpg";
-		Picasso.get().load(imageUrl).resize(200,200).error(R.mipmap.ic_team_member_no_photo).into(holder.mImage);
+		Picasso.get().load(imageUrl).resize(200,200).networkPolicy(NetworkPolicy.NO_CACHE).error(R.mipmap.ic_team_member_no_photo).into(holder.mImage);
 	}
 
 	@Override

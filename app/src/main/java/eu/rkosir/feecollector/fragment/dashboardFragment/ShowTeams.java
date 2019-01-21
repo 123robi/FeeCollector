@@ -88,13 +88,13 @@ public class ShowTeams extends Fragment {
 				JSONArray adminTeamsArray = object.getJSONArray("admin");
 				for(int i = 0; i < adminTeamsArray.length(); i++) {
 					JSONObject team = adminTeamsArray.getJSONObject(i);
-					Team teamObject = new Team(team.getInt("id"),team.getString("team_name"),team.getString("currency_code"),team.getString("currency_symbol"),true, team.getString("connection_number"));
+					Team teamObject = new Team(team.getInt("id"),team.getString("team_name"),team.getString("currency_code"),team.getString("currency_symbol"),true, team.getString("connection_number"),team.getString("ical"));
 					teams.add(teamObject);
 				}
 				JSONArray teamArray = object.getJSONArray("teams");
 				for(int i = 0; i < teamArray.length(); i++) {
 					JSONObject team = teamArray.getJSONObject(i);
-					teams.add(new Team(team.getInt("id"),team.getString("team_name"),team.getString("currency_code"),team.getString("currency_symbol"),false, team.getString("connection_number")));
+					teams.add(new Team(team.getInt("id"),team.getString("team_name"),team.getString("currency_code"),team.getString("currency_symbol"),false, team.getString("connection_number"),team.getString("ical")));
 				}
 				mAdapter = new ShowTeamsAdapter(teams, getApplicationContext());
 				mRecyclerView.setLayoutManager(mLayoutManager);
@@ -105,6 +105,9 @@ public class ShowTeams extends Fragment {
 					SharedPreferencesSaver.setLastTeamId(getApplicationContext(),teams.get(position).getConnection_number());
 					SharedPreferencesSaver.setCurrencyCode(getApplicationContext(),teams.get(position).getCurrency_code());
 					SharedPreferencesSaver.setCurrencySymbol(getApplicationContext(),teams.get(position).getCurrency_symbol());
+					if (!teams.get(position).getIcalURL().equals("null") || teams.get(position).getIcalURL() != null) {
+						SharedPreferencesSaver.setIcal(getApplicationContext(),teams.get(position).getIcalURL());
+					}
 					if (teams.get(position).isAdmin()) {
 						SharedPreferencesSaver.setAdmin(getApplicationContext(),true);
 					} else {

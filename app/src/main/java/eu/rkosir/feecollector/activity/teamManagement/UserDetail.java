@@ -116,7 +116,11 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 
 		mCircleImageView = findViewById(R.id.user_picture);
 		String imageUrl = "https://rkosir.eu/images/" + myUser.getEmail() + ".jpg";
+<<<<<<< HEAD
 		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).into(mCircleImageView);
+=======
+		Picasso.get().load(imageUrl).error(R.mipmap.ic_team_member_no_photo).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).into(mCircleImageView);
+>>>>>>> Sparta
 
 		mRelativeLayoutEmail = findViewById(R.id.relative_email);
 		mRelativeLayoutEmail.setOnClickListener(view -> {

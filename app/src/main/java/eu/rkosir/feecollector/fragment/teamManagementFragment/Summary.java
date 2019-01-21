@@ -92,22 +92,33 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mEventDescription = view.findViewById(R.id.event_description);
 		mPlaceName = view.findViewById(R.id.event_location);
 		mChart = view.findViewById(R.id.chart);
+		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null || SharedPreferencesSaver.getIcal(getApplicationContext()).equals("null")) {
+			mNextEvent.setVisibility(View.VISIBLE);
+		} else {
+			mNextEvent.setVisibility(View.GONE);
+		}
 		return view;
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mSwipeRefreshLayout.setOnRefreshListener(() -> {
+		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+			mSwipeRefreshLayout.setOnRefreshListener(() -> {
+				getMembers();
+				getNextEvent();
+			});
+		} else {
 			getMembers();
-			getNextEvent();
-		});
+		}
+
 	}
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
 		getNextEvent();
+
 	}
 
 	private void getNextEvent() {

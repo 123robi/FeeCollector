@@ -18,6 +18,9 @@ public class SharedPreferencesSaver {
 	private final static String ADMIN = "admin";
 	private final static String TOKEN_IS_ADMIN = "is_admin";
 
+	private final static String ICAL = "ical";
+	private final static String TOKEN_IICAL = "ical";
+
 	private final static String TEAM = "team";
 	private final static String TOKEN_KEY_TEAM_NAME = "team_name";
 	private final static String TOKEN_KEY_TEAM_ID = "team_id";
@@ -139,5 +142,16 @@ public class SharedPreferencesSaver {
 	public static boolean isAdmin(Context c) {
 		SharedPreferences prefs = c.getSharedPreferences(ADMIN, Context.MODE_PRIVATE);
 		return prefs.getBoolean(TOKEN_IS_ADMIN, false);
+	}
+	public static void setIcal(Context c, String icalUrl) {
+		SharedPreferences prefs = c.getSharedPreferences(ICAL, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(TOKEN_IICAL, icalUrl);
+		editor.apply();
+	}
+
+	public static String getIcal(Context c) {
+		SharedPreferences prefs = c.getSharedPreferences(ICAL, Context.MODE_PRIVATE);
+		return prefs.getString(TOKEN_IICAL, null);
 	}
 }

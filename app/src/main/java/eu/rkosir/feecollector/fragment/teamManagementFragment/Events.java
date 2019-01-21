@@ -18,8 +18,11 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
@@ -29,13 +32,22 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.Property;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.rkosir.feecollector.AppConfig;
@@ -108,10 +120,6 @@ public class Events extends Fragment {
 		mTabLayout = getActivity().findViewById(R.id.navigation_top);
 		mToolbar = getActivity().findViewById(R.id.back_action_bar);
 
-		mSwipeRefreshLayout.setOnRefreshListener(() -> {
-			getEvents();
-			getLocations();
-		});
 		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
 			mMenu.setVisibility(View.GONE);
 		}
@@ -152,9 +160,19 @@ public class Events extends Fragment {
 		mAddMatch.setOnClickListener(view1 -> addEvent(Event.MATCH));
 		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRANING));
 
-		getEvents();
-		getLocations();
-
+		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+			getEvents();
+			getLocations();
+			mSwipeRefreshLayout.setOnRefreshListener(() -> {
+						getEvents();
+						getLocations();
+			});
+		} else {
+			loadIcal();
+			mSwipeRefreshLayout.setOnRefreshListener(() -> {
+				loadIcal();
+			});
+		}
 		mCalendarView.setOnDayClickListener(eventDay -> {
 			events = new ArrayList<>();
 			for (Event event : mEvents) {
@@ -165,11 +183,13 @@ public class Events extends Fragment {
 			mAdapter = new ShowEventsAdapter(events,mPlaces,getApplicationContext());
 			mRecyclerView.setAdapter(mAdapter);
 			mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-			mAdapter.setOnItemClickListener(position -> {
-				Intent intent = new Intent(getApplicationContext(), ShowEvent.class);
-				intent.putExtra("event", events.get(position));
-				startActivity(intent);
-			});
+			if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+				mAdapter.setOnItemClickListener(position -> {
+					Intent intent = new Intent(getApplicationContext(), ShowEvent.class);
+					intent.putExtra("event", events.get(position));
+					startActivity(intent);
+				});
+			}
 		});
 		return view;
 	}
@@ -288,5 +308,82 @@ public class Events extends Fragment {
 		mFrameLayout.setVisibility(View.GONE);
 		mTabLayout.setAlpha(1f);
 		mToolbar.setAlpha(1f);
+	}
+
+	private void loadIcal() {
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://clen.sparta-florbal.cz/ical/161-muzi-a.ical", response -> {
+			StringReader sin = new StringReader(response);
+
+			CalendarBuilder builder = new CalendarBuilder();
+			List<EventDay> eventDays = new ArrayList<>();
+			mEvents = new ArrayList<>();
+			try {
+				System.setProperty("ical4j.unfolding.relaxed","true");
+				net.fortuna.ical4j.model.Calendar calendar = builder.build(sin);
+				for (Iterator i = calendar.getComponents().iterator(); i.hasNext();) {
+					Component component = (Component) i.next();
+					Calendar startCal = Calendar.getInstance();
+					Calendar endCAl = Calendar.getInstance();
+					String start = "", end = "";
+					String description = "";
+					boolean match = false;
+					boolean save = true;
+					for (Iterator j = component.getProperties().iterator(); j.hasNext();) {
+						Property property = (Property) j.next();
+						if (property.getName().equals("DTSTART")) {
+							startCal.setTime(AppConfig.parseIcal.parse(property.getValue()));
+							start = property.getValue();
+							startCal.add(Calendar.HOUR,1);
+						} else if (property.getName().equals("DTEND")) {
+							endCAl.setTime(AppConfig.parseIcal.parse(property.getValue()));
+							endCAl.add(Calendar.HOUR,1);
+							end = property.getValue();
+						} else if (property.getName().equals("LOCATION")) {
+							description = property.getValue();
+						} else if (property.getName().equals("DESCRIPTION")) {
+							if (property.getValue().contains("Tipsport")) {
+								save = false;
+							}
+						} else if (property.getName().equals("SUMMARY")) {
+							if (property.getValue().contains("SUPERLIGA")) {
+								match = true;
+							}
+						}
+					}
+					Event event;
+					if (save) {
+						if (match) {
+							event = new Event(startCal,start,end,"Match",description,R.drawable.ic_lens_match_24dp,"0");
+						} else {
+							event = new Event(startCal,start,end,"Training",description,R.drawable.ic_lens_training_24dp,"0");
+						}
+						eventDays.add(event);
+						mEvents.add(event);
+					}
+				}
+				mCalendarView.setEvents(eventDays);
+			} catch (IOException | ParserException | ParseException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Response<String> parseNetworkResponse(NetworkResponse response) {
+				String strUTF8 = null;
+				try {
+					strUTF8 = new String(response.data, "UTF-8");
+
+				} catch (UnsupportedEncodingException e) {
+
+					e.printStackTrace();
+				}
+				return Response.success(strUTF8,
+						HttpHeaderParser.parseCacheHeaders(response));
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
 	}
 }

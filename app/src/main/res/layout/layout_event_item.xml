@@ -33,12 +33,11 @@
 		android:id="@+id/event_location"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignBottom="@+id/event_name"
 		android:layout_alignParentStart="true"
+		android:layout_below="@+id/event_time"
 		android:layout_marginStart="120dp"
 		android:drawableStart="@drawable/ic_location_on_black_24dp"
-		android:maxLength="20"
-		android:ellipsize="end"
+		android:text="asdasd21321321321321321 asdfsafsafasfasfasfaff"
 		android:textSize="15sp"
 		android:textStyle="italic" />
 
@@ -48,6 +47,7 @@
 		android:layout_alignParentEnd="true"
 		android:layout_alignParentTop="true"
 		android:layout_marginEnd="11dp"
+		android:id="@+id/dateContainer"
 		android:background="@drawable/shape_date_bg"
 		android:gravity="center"
 		android:orientation="vertical">
