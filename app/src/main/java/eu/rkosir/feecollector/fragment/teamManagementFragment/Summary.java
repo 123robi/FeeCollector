@@ -103,7 +103,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null || SharedPreferencesSaver.getIcal(getApplicationContext()).equals("null")) {
 			mSwipeRefreshLayout.setOnRefreshListener(() -> {
 				getMembers();
 				getNextEvent();

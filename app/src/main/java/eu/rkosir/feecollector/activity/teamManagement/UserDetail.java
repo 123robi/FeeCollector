@@ -46,6 +46,7 @@ import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.adapters.ShowMemberFeesAdapter;
 import eu.rkosir.feecollector.entity.MemberFee;
 import eu.rkosir.feecollector.entity.User;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
@@ -142,22 +143,20 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 				startActivity(phoneIntent);
 			}
 		});
-		mCircleImageView.setOnClickListener(view -> {
-			/*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-				startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-			}*/
-			Picasso.get().invalidate("https://rkosir.eu/images/" + myUser.getEmail() + ".jpg");
-			Intent selectPicture = new Intent();
-			selectPicture.setType("image/*");
-			selectPicture.setAction(Intent.ACTION_GET_CONTENT);
-			startActivityForResult(selectPicture, REQUEST_IMAGE_CAPTURE);
-		});
+		if (new JsonObjectConverter(SharedPreferencesSaver.getUser(getApplicationContext())).getString("email").equals(myUser.getEmail()) || SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+			mCircleImageView.setOnClickListener(view -> {
+				Picasso.get().invalidate("https://rkosir.eu/images/" + myUser.getEmail() + ".jpg");
+				Intent selectPicture = new Intent();
+				selectPicture.setType("image/*");
+				selectPicture.setAction(Intent.ACTION_GET_CONTENT);
+				startActivityForResult(selectPicture, REQUEST_IMAGE_CAPTURE);
+			});
+		}
+
 		if (myUser.getName() != null || !myUser.getName().equals("")) {
 			mName.setText(myUser.getName());
 		}
 		mTeam.setText(SharedPreferencesSaver.getLastTeamName(getApplicationContext()));
-		// #todo age
 		mEmail.setText(myUser.getEmail());
 		if (myUser.getPhoneNumber() != null && !(myUser.getPhoneNumber().equals("")) && !(myUser.getPhoneNumber().equals("null"))) {
 			mNumber.setText(myUser.getPhoneNumber());
@@ -172,7 +171,6 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 			findViewById(R.id.line_address).setVisibility(View.GONE);
 			mRelativeLayoutAddress.setVisibility(View.GONE);
 		}
-		// #todo birhtday date
 	}
 
 	/**

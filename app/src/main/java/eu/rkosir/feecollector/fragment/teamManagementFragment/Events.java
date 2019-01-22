@@ -41,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -159,8 +160,8 @@ public class Events extends Fragment {
 		mAddEvent.setOnClickListener(view1 -> addEvent(Event.EVENT));
 		mAddMatch.setOnClickListener(view1 -> addEvent(Event.MATCH));
 		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRANING));
-
-		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+		Log.d("ASDASDA", SharedPreferencesSaver.getIcal(getApplicationContext()));
+		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null || SharedPreferencesSaver.getIcal(getApplicationContext()).equals("null")) {
 			getEvents();
 			getLocations();
 			mSwipeRefreshLayout.setOnRefreshListener(() -> {
@@ -183,7 +184,7 @@ public class Events extends Fragment {
 			mAdapter = new ShowEventsAdapter(events,mPlaces,getApplicationContext());
 			mRecyclerView.setAdapter(mAdapter);
 			mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-			if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null) {
+			if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null || SharedPreferencesSaver.getIcal(getApplicationContext()).equals("null")) {
 				mAdapter.setOnItemClickListener(position -> {
 					Intent intent = new Intent(getApplicationContext(), ShowEvent.class);
 					intent.putExtra("event", events.get(position));
