@@ -94,7 +94,7 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		Calendar calendarEnd = Calendar.getInstance();
 
 		try {
-			if (SharedPreferencesSaver.getIcal(context) == null) {
+			if (SharedPreferencesSaver.getIcal(context) == null || SharedPreferencesSaver.getIcal(context).equals("null")) {
 				calendarStart.setTime(AppConfig.parse.parse(events.get(position).getStartDateTime()));
 				calendarEnd.setTime(AppConfig.parse.parse(events.get(position).getEndDateTime()));
 			} else {
