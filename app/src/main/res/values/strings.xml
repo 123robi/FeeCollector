@@ -21,7 +21,7 @@
 
     <!--Login Page/ChangePassword-->
     <string name="login_sign_in">Sign in</string>
-    <string name="login_sign_up">Don not have an account?</string>
+    <string name="login_sign_up">Don\'t have an account?</string>
     <string name="login_email_label">Email</string>
     <string name="login_password_label">Password</string>
     <string name="change_password_password_label_check">Repeat password</string>
