@@ -222,7 +222,9 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				for(int i = 0; i < membersArray.length(); i++) {
 					JSONObject user = membersArray.getJSONObject(i);
 					JSONObject matchingData = user.getJSONObject("_matchingData").getJSONObject("Users");
-					names.add(matchingData.getString("name"));
+					String name = matchingData.getString("name");
+					name = name.substring(name.indexOf(" ") + 1, name.length());
+					names.add(name);
 					entries.add(new BarEntry(startingPosition,user.getInt("sum"),matchingData.getString("name")));
 					startingPosition ++;
 				}

@@ -151,7 +151,6 @@ public class AddFeeToMember extends Fragment implements DatePickerDialog.OnDateS
 				params.put("date", String.valueOf(AppConfig.dateOfFeeConverter.format(cFeeDate.getTime())));
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 				params.put("id", String.valueOf(mSavingFee.getId()));
-				Log.d("ASDASD", String.valueOf(AppConfig.dateOfFeeConverter.format(cFeeDate.getTime())));
 				return params;
 			}
 		};
