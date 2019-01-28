@@ -109,7 +109,9 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				getNextEvent();
 			});
 		} else {
-			getMembers();
+			mSwipeRefreshLayout.setOnRefreshListener(() -> {
+				getMembers();
+			});
 		}
 
 	}
