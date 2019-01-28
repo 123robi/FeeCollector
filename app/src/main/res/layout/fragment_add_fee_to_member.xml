@@ -23,12 +23,20 @@
 				android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
 				android:hint="@string/add_fee_to_member_choose_player"/>
 			<AutoCompleteTextView
-				android:id="@+id/choose_fee"
+			android:id="@+id/choose_fee"
+			android:completionThreshold="1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+			android:hint="@string/add_fee_to_member_choose_fee"/>
+
+			<AutoCompleteTextView
+				android:id="@+id/choose_date"
 				android:completionThreshold="1"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
-				android:hint="@string/add_fee_to_member_choose_fee"/>
+				android:focusable="false"
+				android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"/>
 
 			<Button
 				android:id="@+id/add_fee_to_member"

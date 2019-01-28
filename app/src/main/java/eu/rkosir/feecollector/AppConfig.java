@@ -49,6 +49,7 @@ public class AppConfig {
 	public static SimpleDateFormat nextEventFormat = new SimpleDateFormat("d", Locale.getDefault());
 	public static SimpleDateFormat nextEventTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 	public static SimpleDateFormat parseIcal = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+	public static SimpleDateFormat dateOfFeeConverter = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static final String POST = "POST";
 	public static final String GET = "GET";

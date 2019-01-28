@@ -2,6 +2,8 @@ package eu.rkosir.feecollector.fragment.teamManagementFragment;
 
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -31,12 +34,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Console;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.activity.teamManagement.calendar.AddEvent;
 import eu.rkosir.feecollector.entity.Fee;
 import eu.rkosir.feecollector.entity.User;
 import eu.rkosir.feecollector.activity.teamManagement.AddFee;
@@ -51,17 +58,20 @@ import static eu.rkosir.feecollector.AppConfig.URL_SAVE_FEE_TO_USER;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddFeeToMember extends Fragment {
+public class AddFeeToMember extends Fragment implements DatePickerDialog.OnDateSetListener {
 
 	private FloatingActionButton mAddFee;
 	private AutoCompleteTextView mAutoCompletePlayer;
 	private AutoCompleteTextView mAutoCompleteFee;
+	private AutoCompleteTextView mAutoCompleteDate;
 	private Button mAddFeeToMember;
 	private ArrayAdapter<User> adapter;
 	private ArrayAdapter<Fee> adapter1;
 	private User mSavingUser;
 	private Fee mSavingFee;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private Calendar cFeeDate;
+	private int mYear, mMonth, mDay;
 
 	public AddFeeToMember() {
 		// Required empty public constructor
@@ -80,6 +90,7 @@ public class AddFeeToMember extends Fragment {
 		mSwipeRefreshLayout.setEnabled(false);
 		mAutoCompleteFee = view.findViewById(R.id.choose_fee);
 		mAddFeeToMember = view.findViewById(R.id.add_fee_to_member);
+		mAutoCompleteDate = view.findViewById(R.id.choose_date);
 		mAutoCompletePlayer.setOnTouchListener((arg0, arg1) -> {
 			loadMembersAndFees();
 			mAutoCompletePlayer.showDropDown();
@@ -95,6 +106,12 @@ public class AddFeeToMember extends Fragment {
 				storeFeeToMember();
 			}
 		});
+		cFeeDate = Calendar.getInstance();
+		mYear = cFeeDate.get(Calendar.YEAR);
+		mMonth = cFeeDate.get(Calendar.MONTH);
+		mDay = cFeeDate.get(Calendar.DAY_OF_MONTH);
+		mAutoCompleteDate.setText(getDateFormat(cFeeDate));
+		mAutoCompleteDate.setOnClickListener(view13 -> new DatePickerDialog(getActivity(), AddFeeToMember.this, mYear, mMonth, mDay).show());
 		mAddFee = view.findViewById(R.id.add_fee);
 		mAddFee.setOnClickListener(v -> {
 			Intent intent = new Intent(getActivity(), AddFee.class);
@@ -131,8 +148,10 @@ public class AddFeeToMember extends Fragment {
 			protected Map<String, String> getParams() {
 				Map<String,String> params = new HashMap<>();
 				params.put("email", mSavingUser.getEmail());
+				params.put("date", String.valueOf(AppConfig.dateOfFeeConverter.format(cFeeDate.getTime())));
 				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 				params.put("id", String.valueOf(mSavingFee.getId()));
+				Log.d("ASDASD", String.valueOf(AppConfig.dateOfFeeConverter.format(cFeeDate.getTime())));
 				return params;
 			}
 		};
@@ -223,5 +242,25 @@ public class AddFeeToMember extends Fragment {
 			return false;
 		} else
 			return true;
+	}
+
+	@Override
+	public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+		cFeeDate.set(year, month, day);
+		mAutoCompleteDate.setText(getDateFormat(cFeeDate));
+	}
+
+	private String getDateFormat(Calendar c) {
+		String comma = ", ";
+		Date date = c.getTime();
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%ta", date))
+				.append(comma)
+				.append(String.format("%tb", date))
+				.append(" ")
+				.append(c.get(Calendar.DAY_OF_MONTH))
+				.append(comma)
+				.append(c.get(Calendar.YEAR));
+		return sb.toString();
 	}
 }
