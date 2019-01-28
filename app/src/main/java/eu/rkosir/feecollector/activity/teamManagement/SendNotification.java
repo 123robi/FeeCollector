@@ -46,7 +46,7 @@ public class SendNotification extends AppCompatActivity {
     private User myUser;
     private TextInputEditText mInputTo, mInputMessage;
     private ProgressBar mProgressBar;
-    private CheckBox mCheckNotificaiton, mCheckSMS, mCheckEmail;
+    private CheckBox mCheckNotificaiton, mCheckEmail;
     private TextView merror;
 
     @Override
@@ -77,17 +77,10 @@ public class SendNotification extends AppCompatActivity {
         merror = findViewById(R.id.errorCheck);
         mCheckNotificaiton = findViewById(R.id.notification);
         mCheckNotificaiton.setChecked(true);
-        mCheckSMS = findViewById(R.id.sms);
-        mCheckSMS.setChecked(true);
         mCheckEmail = findViewById(R.id.email);
         mCheckEmail.setChecked(true);
 
         mCheckNotificaiton.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                merror.setVisibility(View.INVISIBLE);
-            }
-        });
-        mCheckSMS.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 merror.setVisibility(View.INVISIBLE);
             }
@@ -115,18 +108,6 @@ public class SendNotification extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.save) {
             if (attemptToSendNotification()) {
-                if (checkPremission(Manifest.permission.SEND_SMS)) {
-                    if (mCheckSMS.isChecked()) {
-                        try {
-                            sendSMS(myUser.getPhoneNumber(), mInputMessage.getText().toString());
-                        } catch (Exception e) {
-                            Toast.makeText(this, R.string.toast_send_sms_error, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                } else {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.SEND_SMS}, SMS_PERMISSION_CODE);
-                }
                 if (mCheckNotificaiton.isChecked()) {
                     sendNotification(myUser.getEmail(), mInputMessage.getText().toString(), SharedPreferencesSaver.getLastTeamName(this));
                 }
@@ -141,18 +122,11 @@ public class SendNotification extends AppCompatActivity {
     }
 
     private boolean attemptToSendNotification() {
-        if (!mCheckSMS.isChecked() && !mCheckNotificaiton.isChecked() && !mCheckEmail.isChecked()) {
+        if (!mCheckNotificaiton.isChecked() && !mCheckEmail.isChecked()) {
             merror.setVisibility(View.VISIBLE);
             return false;
         }
         return true;
-    }
-
-    private void sendSMS(String phoneNumber, String message) {
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
-        Toast.makeText(this, R.string.send_notification_success, Toast.LENGTH_LONG).show();
-
     }
 
     private void sendEmail(String to, String subject, String body) {
@@ -204,10 +178,5 @@ public class SendNotification extends AppCompatActivity {
                 mProgressBar.setVisibility(View.INVISIBLE);
             }
         });
-    }
-
-    private boolean checkPremission(String permission) {
-        int check = ContextCompat.checkSelfPermission(this,permission);
-        return (check == PackageManager.PERMISSION_GRANTED);
     }
 }
