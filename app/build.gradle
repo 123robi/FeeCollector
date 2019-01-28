@@ -25,7 +25,7 @@ android {
         applicationId "eu.rkosir.feecollector"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 5
+        versionCode 6
         versionName "1.2.1"
         testInstrumentationRunner "android.support.navigation_menu.runner.AndroidJUnitRunner"
     }
