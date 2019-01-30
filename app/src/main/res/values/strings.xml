@@ -178,4 +178,8 @@
     <string name="change_password_repeat_pass">Repeat password</string>
     <string name="change_password_pass">Password</string>
     <string name="change_password_pass_current">Current password</string>
+    <string name="summary_numbers">Summary</string>
+    <string name="summary_total">Total</string>
+    <string name="summary_paid">Paid</string>
+    <string name="summary_notpaid">Not paid</string>
 </resources>

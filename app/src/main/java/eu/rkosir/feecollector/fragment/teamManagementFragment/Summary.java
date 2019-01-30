@@ -48,6 +48,7 @@ import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.Place;
+import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.MyYAxisValueFormatter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
@@ -64,8 +65,8 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	private Event nextEvent;
 	private GoogleMap mMap;
 	private String [] latlngArray;
-	private TextView mEventName, mEventDate, mEventTime, mEventDescription, mPlaceName;
-	private CardView mNextEvent, mMostViolated;
+	private TextView mEventName, mEventDate, mEventTime, mEventDescription, mPlaceName, mTotal, mNotPaid, mPaid;
+	private CardView mNextEvent, mMostViolated, mSummary;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	private BarChart mChart;
@@ -86,11 +87,15 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mSwipeRefreshLayout = view.findViewById(R.id.swiperefresh);
 		mNextEvent = view.findViewById(R.id.next_event_card);
 		mMostViolated = view.findViewById(R.id.most_violated_players);
+		mSummary = view.findViewById(R.id.summary);
 		mEventName = view.findViewById(R.id.event_name);
 		mEventDate = view.findViewById(R.id.event_date);
 		mEventTime = view.findViewById(R.id.event_time);
 		mEventDescription = view.findViewById(R.id.event_description);
 		mPlaceName = view.findViewById(R.id.event_location);
+		mTotal = view.findViewById(R.id.total);
+		mNotPaid = view.findViewById(R.id.notpaid);
+		mPaid = view.findViewById(R.id.paid);
 		mChart = view.findViewById(R.id.chart);
 		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null || SharedPreferencesSaver.getIcal(getApplicationContext()).equals("null")) {
 			mNextEvent.setVisibility(View.VISIBLE);
@@ -105,12 +110,14 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		super.onViewCreated(view, savedInstanceState);
 		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null || SharedPreferencesSaver.getIcal(getApplicationContext()).equals("null")) {
 			mSwipeRefreshLayout.setOnRefreshListener(() -> {
+				getSummary();
 				getMembers();
 				getNextEvent();
 			});
 		} else {
 			mSwipeRefreshLayout.setOnRefreshListener(() -> {
 				getMembers();
+				getSummary();
 			});
 		}
 
@@ -120,6 +127,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	public void onMapReady(GoogleMap googleMap) {
 		mMap = googleMap;
 		getNextEvent();
+		getSummary();
 
 	}
 
@@ -207,6 +215,50 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 		requestQueue.add(stringRequest);
+	}
+
+	private void getSummary() {
+		mSwipeRefreshLayout.setRefreshing(true);
+		String uri = String.format(AppConfig.URL_SUMMARY,
+				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				JSONArray total = object.getJSONArray("total");
+				JSONArray notpaid = object.getJSONArray("notpaid");
+				JSONArray paid = object.getJSONArray("paid");
+				JSONObject totalObject = total.getJSONObject(0);
+				JSONObject notpaidObject = notpaid.getJSONObject(0);
+				JSONObject paidObject = paid.getJSONObject(0);
+
+				if (totalObject.getString("sum").equals("null")) {
+				    mSummary.setVisibility(View.GONE);
+                } else {
+					mTotal.setText(totalObject.getString("sum") + " " + SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+				}
+				if (notpaidObject.getString("sum").equals("null")) {
+					mNotPaid.setText(0 + " " + SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+				} else {
+					mNotPaid.setText(notpaidObject.getString("sum") + " " + SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+				}
+				if (paidObject.getString("sum").equals("null")) {
+					mPaid.setText(0 + " " + SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+				} else {
+					mPaid.setText(paidObject.getString("sum") + " " + SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+				}
+
+			} catch (JSONException e) {
+				Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		});
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> mSwipeRefreshLayout.setRefreshing(false));
 	}
 
 	private void getMembers() {
