@@ -283,7 +283,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 
 	@Override
 	public boolean onLongClick(View v) {
-		if (SharedPreferencesSaver.isAdmin(getApplicationContext())) {
+		if (SharedPreferencesSaver.isAdmin(getApplicationContext()) && !is_in_action_mode) {
 			mToolbar.setTitle("0 items selected");
 			mToolbar.inflateMenu(R.menu.menu_action_mode);
 			is_in_action_mode = true;
