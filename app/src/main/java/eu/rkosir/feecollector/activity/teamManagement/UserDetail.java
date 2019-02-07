@@ -343,7 +343,56 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 			counter = 0;
 			selected.clear();
 		}
+		if (item.getItemId() == R.id.fee_delete) {
+			for(MemberFee fee : selected) {
+				deleteFee(fee);
+				if (mMemberFees.contains(fee)) {
+					mMemberFees.remove(fee);
+				}
+			}
+			mToolbar.getMenu().clear();
+			mToolbar.setTitle(myUser.getName());
+			is_in_action_mode = false;
+			mAdapter.notifyDataSetChanged();
+			counter = 0;
+			selected.clear();
+		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void deleteFee(MemberFee fee) {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_DELETE_FEES_OF_USER, response -> {
+			JSONObject object = null;
+			try {
+				object = new JSONObject(response);
+				if (!object.getBoolean("error")) {
+					Toast.makeText(getApplicationContext(),R.string.toast_fee_sucessfully_deleted,Toast.LENGTH_LONG).show();
+				} else {
+					Toast.makeText(getApplicationContext(),R.string.toast_uploading_error,Toast.LENGTH_LONG).show();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_size_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("id", String.valueOf(fee.getId()));
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+			if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	private void updateMembers(MemberFee fee) {
@@ -354,7 +403,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 			try {
 				object = new JSONObject(response);
 				if (!object.getBoolean("error")) {
-
+					Toast.makeText(getApplicationContext(),R.string.toast_fee_sucessfully_updated,Toast.LENGTH_LONG).show();
 				} else {
 					Toast.makeText(getApplicationContext(),R.string.toast_uploading_error,Toast.LENGTH_LONG).show();
 				}

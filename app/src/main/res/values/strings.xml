@@ -182,4 +182,7 @@
     <string name="summary_total">Total</string>
     <string name="summary_paid">Paid</string>
     <string name="summary_notpaid">Not paid</string>
+	<string name="user_detail_menu_delete">Delete Fee</string>
+    <string name="toast_fee_sucessfully_deleted">Fees were successfully deleted.</string>
+    <string name="toast_fee_sucessfully_updated">Your fees has been sucessfully updated.</string>
 </resources>

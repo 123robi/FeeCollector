@@ -29,6 +29,7 @@ public class AppConfig {
 	public static final String URL_SAVE_EVENT = "https://rkosir.eu/FeeCollector/eventsApi/add";
 	public static final String URL_GET_FEES_OF_USER = "https://rkosir.eu/FeeCollector/FeesApi/getFeeOfUserByEmail?connection_number=%1$s&email=%2$s";
 	public static final String URL_UPDATE_FEES_OF_USER = "https://rkosir.eu/FeeCollector/FeesApi/updateFeeOfUserByEmail";
+	public static final String URL_DELETE_FEES_OF_USER = "https://rkosir.eu/FeeCollector/FeesApi/deleteFeeOfUserByEmail";
 	public static final String URL_UPDATE_USER = "https://rkosir.eu/FeeCollector/usersApi/update";
 	public static final String URL_GET_TOP_3_FINED_USERS = "https://rkosir.eu/FeeCollector/FeesApi/getTop3FinedUsers?connection_number=%1$s";
 	public static final String URL_PLACES_ADD ="https://rkosir.eu/FeeCollector/placesApi/add";
