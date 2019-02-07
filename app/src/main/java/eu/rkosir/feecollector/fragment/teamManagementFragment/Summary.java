@@ -182,13 +182,16 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 
 					mEventName.setText("Next " + nextEvent.getName());
 					mEventDescription.setText(nextEvent.getDescription());
+					mEventDescription.setVisibility(View.VISIBLE);
 					mEventDate.setText(getDateFormat(nextEvent.getCalendar()));
 
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(AppConfig.parse.parse(nextEvent.getStartDateTime()));
 
 					mEventTime.setText(getTimeFormat(calendar));
+					mEventTime.setVisibility(View.VISIBLE);
 					mPlaceName.setText(place.getName());
+					mPlaceName.setVisibility(View.VISIBLE);
 
 					mNextEvent.setOnClickListener(view -> {
 						if (place != null) {
@@ -201,6 +204,9 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					});
 				} else {
 					mEventDate.setText("No next events!");
+					mEventTime.setVisibility(View.GONE);
+					mPlaceName.setVisibility(View.GONE);
+					mEventDescription.setVisibility(View.GONE);
 					getMembers();
 				}
 			} catch (JSONException e) {

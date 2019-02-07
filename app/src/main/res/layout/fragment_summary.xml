@@ -48,38 +48,61 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
 					android:padding="10dp">
-					<TextView
-						android:id="@+id/event_date"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:textStyle="bold"
-						android:textColor="@color/black"
-						android:textSize="22sp"
-						android:text="@string/summary_loading" />
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+						<TextView
+							android:id="@+id/event_date"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentLeft="true"
+							android:layout_alignParentTop="true"
+							android:textStyle="bold"
+							android:textColor="@color/black"
+							android:textSize="22sp"
+							android:text="@string/summary_loading" />
 
-					<TextView
-						android:id="@+id/event_time"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:textStyle="bold"
-						android:textSize="22sp"/>
+						<TextView
+							android:id="@+id/event_time"
+							android:visibility="gone"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentEnd="true"
+							android:layout_alignParentTop="true"
+							android:drawableLeft="@drawable/ic_access_time_black_16dp"
+							android:textSize="22sp"
+							android:textStyle="bold" />
+					</RelativeLayout>
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
 
-					<TextView
-						android:id="@+id/event_description"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_marginTop="5dp" />
+						<TextView
+							android:id="@+id/event_description"
+							android:visibility="gone"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentTop="true"
+							android:layout_toEndOf="@+id/event_location"
+							android:paddingStart="5dp"
+							android:drawableLeft="@drawable/ic_description_black_16dp"/>
 
-					<TextView
-						android:id="@+id/event_location"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"/>
+						<TextView
+							android:id="@+id/event_location"
+							android:visibility="gone"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_alignParentStart="true"
+							android:layout_alignParentTop="true"
+							android:drawableLeft="@drawable/ic_location_on_black_24dp"/>
+					</RelativeLayout>
+
 
 				</LinearLayout>
 
 				<fragment
 					android:id="@+id/map"
-					android:layout_marginTop="10dp"
+					android:layout_marginTop="5dp"
 					android:name="com.google.android.gms.maps.SupportMapFragment"
 					android:layout_width="match_parent"
 					android:layout_height="100dp" />
