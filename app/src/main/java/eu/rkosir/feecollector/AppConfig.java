@@ -32,6 +32,7 @@ public class AppConfig {
 	public static final String URL_DELETE_FEES_OF_USER = "https://rkosir.eu/FeeCollector/FeesApi/deleteFeeOfUserByEmail";
 	public static final String URL_UPDATE_USER = "https://rkosir.eu/FeeCollector/usersApi/update";
 	public static final String URL_GET_TOP_3_FINED_USERS = "https://rkosir.eu/FeeCollector/FeesApi/getTop3FinedUsers?connection_number=%1$s";
+	public static final String URL_GET_LAST_3_FINED_USERS = "https://rkosir.eu/FeeCollector/FeesApi/getLast3FinedUsers?connection_number=%1$s";
 	public static final String URL_PLACES_ADD ="https://rkosir.eu/FeeCollector/placesApi/add";
 	public static final String URL_SUMMARY = "https://rkosir.eu/FeeCollector/FeesApi/getSummaryFee?connection_number=%1$s";
 

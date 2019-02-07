@@ -9,10 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +48,9 @@ import java.util.Locale;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.adapters.ShowMemberFeesAdapter;
 import eu.rkosir.feecollector.entity.Event;
+import eu.rkosir.feecollector.entity.MemberFee;
 import eu.rkosir.feecollector.entity.Place;
 import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.MyYAxisValueFormatter;
@@ -66,8 +70,10 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	private GoogleMap mMap;
 	private String [] latlngArray;
 	private TextView mEventName, mEventDate, mEventTime, mEventDescription, mPlaceName, mTotal, mNotPaid, mPaid;
-	private CardView mNextEvent, mMostViolated, mSummary;
+	private CardView mNextEvent, mMostViolated, mSummary, mLastFinedPlayers;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private RelativeLayout mFinedPlayer1, mFinedPlayer2, mFinedPlayer3;
+	private TextView mSummaryName1, mSummaryName2, mSummaryName3, mSummaryCost1, mSummaryCost2, mSummaryCost3, mSummaryFee1, mSummaryFee2, mSummaryFee3;
 
 	private BarChart mChart;
 
@@ -102,6 +108,19 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		} else {
 			mNextEvent.setVisibility(View.GONE);
 		}
+		mLastFinedPlayers = view.findViewById(R.id.last_fined_players);
+		mFinedPlayer1 = view.findViewById(R.id.first_fee);
+		mFinedPlayer2 = view.findViewById(R.id.second_fee);
+		mFinedPlayer3 = view.findViewById(R.id.third_fee);
+		mSummaryName1 = view.findViewById(R.id.summary_name1);
+		mSummaryName2 = view.findViewById(R.id.summary_name2);
+		mSummaryName3 = view.findViewById(R.id.summary_name3);
+		mSummaryCost1 = view.findViewById(R.id.summary_cost1);
+		mSummaryCost2 = view.findViewById(R.id.summary_cost2);
+		mSummaryCost3 = view.findViewById(R.id.summary_cost3);
+		mSummaryFee1 = view.findViewById(R.id.summary_fee1);
+		mSummaryFee2 = view.findViewById(R.id.summary_fee2);
+		mSummaryFee3 = view.findViewById(R.id.summary_fee3);
 		return view;
 	}
 
@@ -112,11 +131,13 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 			mSwipeRefreshLayout.setOnRefreshListener(() -> {
 				getSummary();
 				getMembers();
+				getLastFinedPlayers();
 				getNextEvent();
 			});
 		} else {
 			mSwipeRefreshLayout.setOnRefreshListener(() -> {
 				getMembers();
+				getLastFinedPlayers();
 				getSummary();
 			});
 		}
@@ -128,7 +149,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		mMap = googleMap;
 		getNextEvent();
 		getSummary();
-
+		getLastFinedPlayers();
 	}
 
 	private void getNextEvent() {
@@ -339,6 +360,58 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		requestQueue.add(stringRequest);
 		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> mSwipeRefreshLayout.setRefreshing(false));
 	}
+
+	private void getLastFinedPlayers() {
+		String uri = String.format(AppConfig.URL_GET_LAST_3_FINED_USERS,
+				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+			JSONObject object = null;
+
+			try {
+				object = new JSONObject(response);
+				JSONArray memberFeesArray = object.getJSONArray("members");
+
+				if (memberFeesArray.length() > 0) {
+					mLastFinedPlayers.setVisibility(View.VISIBLE);
+				}
+
+				for(int i = 0; i < memberFeesArray.length(); i++) {
+					JSONObject matchData = memberFeesArray .getJSONObject(i);
+					JSONObject matchingData = matchData.getJSONObject("_matchingData");
+					JSONObject users = matchingData.getJSONObject("Users");
+					JSONObject fees = matchingData.getJSONObject("Fees");
+
+					if(i == 0) {
+						mFinedPlayer1.setVisibility(View.VISIBLE);
+						mSummaryName1.setText(users.getString("name"));
+						mSummaryCost1.setText(fees.getString("cost")+ SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+						mSummaryFee1.setText(fees.getString("name"));
+					} else if (i == 1) {
+						mFinedPlayer2.setVisibility(View.VISIBLE);
+						mSummaryName2.setText(users.getString("name"));
+						mSummaryCost2.setText(fees.getString("cost")+ SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+						mSummaryFee2.setText(fees.getString("name"));
+					} else if (i == 2) {
+						mFinedPlayer3.setVisibility(View.VISIBLE);
+						mSummaryName3.setText(users.getString("name"));
+						mSummaryCost3.setText(fees.getString("cost") + SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
+						mSummaryFee3.setText(fees.getString("name"));
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_unknown_error,Toast.LENGTH_LONG).show();
+		});
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+		});
+	}
+
+
 	private String getDateFormat(Calendar c) {
 		Date date = c.getTime();
 		return AppConfig.nextEventFormat.format(date) + " " + c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());

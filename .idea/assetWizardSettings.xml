@@ -57,7 +57,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/FUNLIFE.CZ/rkosir/Downloads/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_description_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/FUNLIFE.CZ/rkosir/Downloads/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/notification/ic_priority_high_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -68,7 +68,7 @@
                         <option name="values">
                           <map>
                             <entry key="height" value="16" />
-                            <entry key="outputName" value="ic_description_black_16dp" />
+                            <entry key="outputName" value="ic_priority_high_black_16dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$USER_HOME$/Downloads/round-home-24px.svg" />
                             <entry key="width" value="16" />
