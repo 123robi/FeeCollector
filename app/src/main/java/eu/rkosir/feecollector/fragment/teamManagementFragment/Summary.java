@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,11 +44,14 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
 import eu.rkosir.feecollector.AppConfig;
 import eu.rkosir.feecollector.R;
+import eu.rkosir.feecollector.adapters.LastFinedPlayersAdapter;
 import eu.rkosir.feecollector.adapters.ShowMemberFeesAdapter;
 import eu.rkosir.feecollector.entity.Event;
 import eu.rkosir.feecollector.entity.MemberFee;
@@ -70,10 +74,10 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 	private GoogleMap mMap;
 	private String [] latlngArray;
 	private TextView mEventName, mEventDate, mEventTime, mEventDescription, mPlaceName, mTotal, mNotPaid, mPaid;
-	private CardView mNextEvent, mMostViolated, mSummary, mLastFinedPlayers;
+	private CardView mNextEvent, mMostViolated, mSummary;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
-	private RelativeLayout mFinedPlayer1, mFinedPlayer2, mFinedPlayer3;
-	private TextView mSummaryName1, mSummaryName2, mSummaryName3, mSummaryCost1, mSummaryCost2, mSummaryCost3, mSummaryFee1, mSummaryFee2, mSummaryFee3;
+	private RecyclerView mRecyclerView;
+	private LastFinedPlayersAdapter mLastFinedPlayersAdapter;
 
 	private BarChart mChart;
 
@@ -108,19 +112,7 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 		} else {
 			mNextEvent.setVisibility(View.GONE);
 		}
-		mLastFinedPlayers = view.findViewById(R.id.last_fined_players);
-		mFinedPlayer1 = view.findViewById(R.id.first_fee);
-		mFinedPlayer2 = view.findViewById(R.id.second_fee);
-		mFinedPlayer3 = view.findViewById(R.id.third_fee);
-		mSummaryName1 = view.findViewById(R.id.summary_name1);
-		mSummaryName2 = view.findViewById(R.id.summary_name2);
-		mSummaryName3 = view.findViewById(R.id.summary_name3);
-		mSummaryCost1 = view.findViewById(R.id.summary_cost1);
-		mSummaryCost2 = view.findViewById(R.id.summary_cost2);
-		mSummaryCost3 = view.findViewById(R.id.summary_cost3);
-		mSummaryFee1 = view.findViewById(R.id.summary_fee1);
-		mSummaryFee2 = view.findViewById(R.id.summary_fee2);
-		mSummaryFee3 = view.findViewById(R.id.summary_fee3);
+		mRecyclerView = view.findViewById(R.id.lastFinedUser);
 		return view;
 	}
 
@@ -366,13 +358,15 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
+			LinkedHashMap<String, String> usersMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> feesMap = new LinkedHashMap<>();
 
 			try {
 				object = new JSONObject(response);
 				JSONArray memberFeesArray = object.getJSONArray("members");
 
 				if (memberFeesArray.length() > 0) {
-					mLastFinedPlayers.setVisibility(View.VISIBLE);
+					mRecyclerView.setVisibility(View.VISIBLE);
 				}
 
 				for(int i = 0; i < memberFeesArray.length(); i++) {
@@ -380,24 +374,13 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					JSONObject matchingData = matchData.getJSONObject("_matchingData");
 					JSONObject users = matchingData.getJSONObject("Users");
 					JSONObject fees = matchingData.getJSONObject("Fees");
-
-					if(i == 0) {
-						mFinedPlayer1.setVisibility(View.VISIBLE);
-						mSummaryName1.setText(users.getString("name"));
-						mSummaryCost1.setText(fees.getString("cost")+ SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
-						mSummaryFee1.setText(fees.getString("name"));
-					} else if (i == 1) {
-						mFinedPlayer2.setVisibility(View.VISIBLE);
-						mSummaryName2.setText(users.getString("name"));
-						mSummaryCost2.setText(fees.getString("cost")+ SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
-						mSummaryFee2.setText(fees.getString("name"));
-					} else if (i == 2) {
-						mFinedPlayer3.setVisibility(View.VISIBLE);
-						mSummaryName3.setText(users.getString("name"));
-						mSummaryCost3.setText(fees.getString("cost") + SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()));
-						mSummaryFee3.setText(fees.getString("name"));
-					}
+					usersMap.put(users.getString("name"),users.getString("email"));
+					feesMap.put(fees.getString("name"), fees.getString("cost"));
 				}
+
+				mLastFinedPlayersAdapter = new LastFinedPlayersAdapter(usersMap, feesMap,getApplicationContext());
+				mRecyclerView.setAdapter(mLastFinedPlayersAdapter);
+				mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

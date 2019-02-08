@@ -185,5 +185,4 @@
 	<string name="user_detail_menu_delete">Delete Fee</string>
     <string name="toast_fee_sucessfully_deleted">Fees were successfully deleted.</string>
     <string name="toast_fee_sucessfully_updated">Your fees has been sucessfully updated.</string>
-	<string name="summary_last_fined_players">Recent fined players</string>
 </resources>

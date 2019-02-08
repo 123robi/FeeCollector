@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/most_violated_players"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_marginStart="10dp"
+	android:layout_marginEnd="10dp"
+	android:layout_marginTop="5dp"
+	app:cardCornerRadius="2dp">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:padding="10dp">
+
+		<de.hdodenhof.circleimageview.CircleImageView
+			android:id="@+id/user_picture"
+			android:layout_width="35dp"
+			android:layout_height="35dp"
+			android:layout_alignParentStart="true"
+			android:layout_centerVertical="true"
+			android:src="@mipmap/ic_team_member_no_photo" />
+
+		<TextView
+			android:id="@+id/name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingStart="10dp"
+			android:layout_alignParentTop="true"
+			android:layout_toEndOf="@+id/user_picture"
+			android:text="Robert Kosir"
+			android:textSize="16sp"
+			android:textStyle="bold" />
+
+		<TextView
+			android:id="@+id/fee_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignStart="@+id/name"
+			android:layout_below="@+id/name"
+			android:layout_marginEnd="45dp"
+			android:maxLines="2"
+			android:paddingStart="10dp"
+			android:text="pozde trening"
+			android:textStyle="italic" />
+
+		<TextView
+			android:id="@+id/cost"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentEnd="true"
+			android:layout_centerVertical="true"
+			android:text="20XYL"
+			android:textColor="@color/send_message_action_orange_pressed"
+			android:textSize="16sp" />
+
+	</RelativeLayout>
+</android.support.v7.widget.CardView>
