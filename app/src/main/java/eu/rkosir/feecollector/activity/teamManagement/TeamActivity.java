@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -115,7 +116,16 @@ public class TeamActivity extends AppCompatActivity {
 		if (!SharedPreferencesSaver.isAdmin(this)) {
 			MenuItem item = menu.findItem(R.id.delete_team);
 			item.setVisible(false);
-		}
+            MenuItem addPayment = menu.findItem(R.id.payment);
+            addPayment.setVisible(false);
+
+		} else {
+            if(!SharedPreferencesSaver.getCurrencySymbol(this).equals("CZK")) {
+                Log.d("SYMBOL", SharedPreferencesSaver.getCurrencySymbol(this));
+                MenuItem addPayment = menu.findItem(R.id.payment);
+                addPayment.setVisible(false);
+            }
+        }
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -144,8 +154,10 @@ public class TeamActivity extends AppCompatActivity {
 			mBuilder.setView(mView);
 			AlertDialog dialog = mBuilder.create();
 			dialog.show();
-		} else if (item.getItemId() == R.id.refresh) {
-			mAdapter.getItemPosition(mAdapter.getItem(mViewPager.getCurrentItem()));
+		} else if (item.getItemId() == R.id.payment) {
+			Intent intent = new Intent(this, Payment.class);
+			this.startActivity(intent);
+			this.finish();
 		}
 		return super.onOptionsItemSelected(item);
 	}

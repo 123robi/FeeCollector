@@ -165,7 +165,7 @@
     <string name="send_notification_to">To</string>
     <string name="send_notification_success">You have successfully notified user.</string>
     <string name="send_notification_email_subject">Notification</string>
-	<string name="notification_send_radioButton_notification">Notification</string>
+    <string name="notification_send_radioButton_notification">Notification</string>
     <string name="notification_send_radioButton_sms">SMS</string>
     <string name="notification_send_radioButton_email">Email</string>
     <string name="notification_send_error_one_check">At least one has to be selected.</string>
@@ -173,8 +173,8 @@
     <!--Summary fragment-->
     <string name="summary_loading">Loading ...</string>
     <string name="summary_graph_title">Top members</string>
-	<string name="facebook_login">Login with facebook</string>
-	<string name="settings_ical">Use ical calendar</string>
+    <string name="facebook_login">Login with facebook</string>
+    <string name="settings_ical">Use ical calendar</string>
     <string name="change_password_repeat_pass">Repeat password</string>
     <string name="change_password_pass">Password</string>
     <string name="change_password_pass_current">Current password</string>
@@ -182,7 +182,12 @@
     <string name="summary_total">Total</string>
     <string name="summary_paid">Paid</string>
     <string name="summary_notpaid">Not paid</string>
-	<string name="user_detail_menu_delete">Delete Fee</string>
+    <string name="user_detail_menu_delete">Delete Fee</string>
     <string name="toast_fee_sucessfully_deleted">Fees were successfully deleted.</string>
     <string name="toast_fee_sucessfully_updated">Your fees has been sucessfully updated.</string>
+    <string name="team_menu_payment">Payment</string>
+    <string name="add_payment_acc_prefix">Account prefix</string>
+    <string name="add_payment_acc_number">Account number</string>
+    <string name="add_payment_bank_code">Bank code</string>
+    <string name="toast_successful_payment_creation">You havse successfully created your payment</string>
 </resources>

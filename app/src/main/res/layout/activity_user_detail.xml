@@ -227,17 +227,38 @@
 		</RelativeLayout>
 
 		</ScrollView>
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right">
+
 		<com.github.clans.fab.FloatingActionButton
-			android:id="@+id/send_notification"
-			app:fab_colorNormal="@color/send_message_action_orange"
-			app:fab_colorPressed="@color/send_message_action_orange_pressed"
+			android:visibility="gone"
+			android:id="@+id/pay"
+			app:fab_colorNormal="@color/floating_action_purple"
+			app:fab_colorPressed="@color/floating_action_purple_pressed"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_below="@id/send_notification"
 			android:layout_marginBottom="8dp"
 			android:layout_marginRight="8dp"
 			android:layout_marginLeft="10dp"
-			android:layout_gravity="bottom|right"
-			android:src="@drawable/ic_chat_black_24dp"
+			android:src="@drawable/ic_payment_black_24dp"
 			app:fab_label="@string/floating_action_button_event" />
+
+		<com.github.clans.fab.FloatingActionButton
+			android:id="@+id/send_notification"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginBottom="8dp"
+			android:src="@drawable/ic_chat_black_24dp"
+			app:fab_colorNormal="@color/send_message_action_orange"
+			app:fab_colorPressed="@color/send_message_action_orange_pressed"
+			app:fab_label="@string/floating_action_button_event" />
+	</RelativeLayout>
 	</FrameLayout>
+
+
 </LinearLayout>

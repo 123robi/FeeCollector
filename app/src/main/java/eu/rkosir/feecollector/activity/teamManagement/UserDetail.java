@@ -10,9 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,12 +27,14 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,8 +52,6 @@ import eu.rkosir.feecollector.helper.JsonObjectConverter;
 import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 
 public class UserDetail extends AppCompatActivity implements View.OnLongClickListener{
 	static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -62,12 +62,13 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 	private CircleImageView mCircleImageView;
 	private Bitmap bitmap;
 	private ProgressBar mProgressBar;
-	private FloatingActionButton mSendNotificaiton;
+	private FloatingActionButton mSendNotificaiton, mPay;
 	private List<MemberFee> mMemberFees;
 	private RecyclerView mRecyclerView;
 	private ShowMemberFeesAdapter mAdapter;
 	public boolean is_in_action_mode;
 	private ArrayList<MemberFee> selected;
+	private ArrayList<MemberFee> notPaid;
 	private int counter;
 
 	@Override
@@ -88,10 +89,12 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 
 		is_in_action_mode = false;
 		selected = new ArrayList<>();
+		notPaid = new ArrayList<>();
 		counter = 0;
 
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 		mSendNotificaiton = findViewById(R.id.send_notification);
+		mPay = findViewById(R.id.pay);
 		if (!SharedPreferencesSaver.isAdmin(getApplicationContext())) {
 			mSendNotificaiton.setVisibility(View.GONE);
 		}
@@ -151,6 +154,10 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 				selectPicture.setAction(Intent.ACTION_GET_CONTENT);
 				startActivityForResult(selectPicture, REQUEST_IMAGE_CAPTURE);
 			});
+			mPay.setVisibility(View.VISIBLE);
+			mPay.setOnClickListener(view -> {
+				getUrlQrImage();
+			});
 		}
 
 		if (myUser.getName() != null || !myUser.getName().equals("")) {
@@ -198,6 +205,7 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 					if (memberFee.getInt("paid") == 0) {
 						MemberFee addMemberFee = new MemberFee(memberFee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, false);
 						mMemberFees.add(addMemberFee);
+						notPaid.add(addMemberFee);
 					} else {
 						MemberFee addMemberFee = new MemberFee(memberFee.getInt("id"),fee.getString("name"), fee.getString("cost"), calendar, true);
 						mMemberFees.add(addMemberFee);
@@ -236,7 +244,48 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 
 		}
 	}
+	private void getUrlQrImage() {
+		mProgressBar.bringToFront();
+		mProgressBar.setVisibility(View.VISIBLE);
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, AppConfig.URL_GET_QR, response -> {
+			JSONObject object = null;
 
+			Intent intent = new Intent(this, FullScreenImage.class);
+			Log.d("TEST",response);
+			intent.putExtra("url",response);
+			startActivity(intent);
+
+
+		}, error -> {
+			Toast.makeText(getApplicationContext(),R.string.toast_size_error,Toast.LENGTH_LONG).show();
+		}){
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+				Map<String,String> params = new HashMap<>();
+				params.put("connection_number", SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
+				params.put("symbol", SharedPreferencesSaver.getCurrencyCode(getApplicationContext()));
+
+				double cost = 0.00;
+				String message = myUser.getName() + " " + SharedPreferencesSaver.getLastTeamName(getApplicationContext());
+				for(MemberFee memberFee : notPaid) {
+					cost += Double.parseDouble(memberFee.getAmount());
+				}
+				String normalized = Normalizer.normalize(message, Normalizer.Form.NFD)
+						.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+				params.put("cost", Double.toString(120.30));
+				params.put("message", normalized);
+				return params;
+			}
+		};
+
+		RequestQueue requestQueue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
+		requestQueue.add(stringRequest);
+		requestQueue.addRequestFinishedListener((RequestQueue.RequestFinishedListener<String>) request -> {
+				if (mProgressBar != null) {
+				mProgressBar.setVisibility(View.INVISIBLE);
+			}
+		});
+	}
 	private void uploadImage(){
 		mProgressBar.bringToFront();
 		mProgressBar.setVisibility(View.VISIBLE);
