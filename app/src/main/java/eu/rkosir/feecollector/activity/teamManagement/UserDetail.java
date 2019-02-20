@@ -154,10 +154,13 @@ public class UserDetail extends AppCompatActivity implements View.OnLongClickLis
 				selectPicture.setAction(Intent.ACTION_GET_CONTENT);
 				startActivityForResult(selectPicture, REQUEST_IMAGE_CAPTURE);
 			});
-			mPay.setVisibility(View.VISIBLE);
-			mPay.setOnClickListener(view -> {
-				getUrlQrImage();
-			});
+			if (SharedPreferencesSaver.getCurrencySymbol(getApplicationContext()).equals("CZK")) {
+				mPay.setVisibility(View.VISIBLE);
+				mPay.setOnClickListener(view -> {
+					getUrlQrImage();
+				});
+			}
+
 		}
 
 		if (myUser.getName() != null || !myUser.getName().equals("")) {
