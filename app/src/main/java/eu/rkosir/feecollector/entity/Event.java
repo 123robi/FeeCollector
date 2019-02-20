@@ -10,7 +10,7 @@ import java.util.Calendar;
 public class Event extends EventDay implements Parcelable {
 
 	public static final String MATCH = "Match";
-	public static final String TRANING = "Traning";
+	public static final String TRAINING = "Training";
 	public static final String EVENT = "Event";
 
 	private String startDateTime;

@@ -159,8 +159,7 @@ public class Events extends Fragment {
 
 		mAddEvent.setOnClickListener(view1 -> addEvent(Event.EVENT));
 		mAddMatch.setOnClickListener(view1 -> addEvent(Event.MATCH));
-		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRANING));
-		Log.d("ASDASDA", SharedPreferencesSaver.getIcal(getApplicationContext()));
+		mAddTraining.setOnClickListener(view1 -> addEvent(Event.TRAINING));
 		if (SharedPreferencesSaver.getIcal(getApplicationContext()) == null || SharedPreferencesSaver.getIcal(getApplicationContext()).equals("null")) {
 			getEvents();
 			getLocations();
