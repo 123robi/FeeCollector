@@ -46,6 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -358,9 +359,10 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 				SharedPreferencesSaver.getLastTeamID(getApplicationContext()));
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
 			JSONObject object = null;
-			LinkedHashMap<String, String> usersMap = new LinkedHashMap<>();
-			LinkedHashMap<String, String> feesMap = new LinkedHashMap<>();
-
+			LinkedList<String> userNames = new LinkedList<>();
+			LinkedList<String> userEmails = new LinkedList<>();
+			LinkedList<String> feesNames = new LinkedList<>();
+			LinkedList<String> feesCost = new LinkedList<>();
 			try {
 				object = new JSONObject(response);
 				JSONArray memberFeesArray = object.getJSONArray("members");
@@ -374,11 +376,13 @@ public class Summary extends Fragment implements OnMapReadyCallback {
 					JSONObject matchingData = matchData.getJSONObject("_matchingData");
 					JSONObject users = matchingData.getJSONObject("Users");
 					JSONObject fees = matchingData.getJSONObject("Fees");
-					usersMap.put(users.getString("name"),users.getString("email"));
-					feesMap.put(fees.getString("name"), fees.getString("cost"));
+					userNames.add(users.getString("name"));
+					userEmails.add(users.getString("email"));
+					feesNames.add(fees.getString("name"));
+					feesCost.add(fees.getString("cost"));
 				}
 
-				mLastFinedPlayersAdapter = new LastFinedPlayersAdapter(usersMap, feesMap,getApplicationContext());
+				mLastFinedPlayersAdapter = new LastFinedPlayersAdapter(userNames, userEmails, feesNames, feesCost, getApplicationContext());
 				mRecyclerView.setAdapter(mLastFinedPlayersAdapter);
 				mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 			} catch (JSONException e) {

@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -22,7 +23,6 @@ import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 
 public class LastFinedPlayersAdapter extends RecyclerView.Adapter<LastFinedPlayersAdapter.ViewHolder> {
 	private List<String> fees_name, costs, users_name, users_email;
-	private LinkedHashMap<String, String> users,fees;
 	private LastFinedPlayersAdapter.OnItemClickListener mListener;
 	private Context context;
 	public interface OnItemClickListener {
@@ -32,13 +32,11 @@ public class LastFinedPlayersAdapter extends RecyclerView.Adapter<LastFinedPlaye
 		mListener = listener;
 	}
 
-	public LastFinedPlayersAdapter(LinkedHashMap<String, String> users, LinkedHashMap<String, String> fees, Context context) {
-		this.users = users;
-		this.fees = fees;
-		this.fees_name = new ArrayList<>(fees.keySet());
-		this.costs = new ArrayList<>(fees.values());
-		this.users_name = new ArrayList<>(users.keySet());
-		this.users_email = new ArrayList<>(users.values());
+	public LastFinedPlayersAdapter(LinkedList<String> usersNames, LinkedList<String> usersEmails, LinkedList<String> feesName, LinkedList<String> feesCost, Context context) {
+		this.fees_name = feesName;
+		this.costs = feesCost;
+		this.users_name = usersNames;
+		this.users_email = usersEmails;
 		this.context = context;
 	}
 
@@ -76,6 +74,6 @@ public class LastFinedPlayersAdapter extends RecyclerView.Adapter<LastFinedPlaye
 
 	@Override
 	public int getItemCount() {
-		return users.size();
+		return users_email.size();
 	}
 }
