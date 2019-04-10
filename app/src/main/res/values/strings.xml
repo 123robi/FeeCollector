@@ -190,4 +190,5 @@
     <string name="add_payment_acc_number">Account number</string>
     <string name="add_payment_bank_code">Bank code</string>
     <string name="toast_successful_payment_creation">You havse successfully created your payment</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

@@ -6,8 +6,8 @@
 		<intent
 			android:action="change_password"/>
 	</Preference>
-	<SwitchPreference
-		android:defaultValue="true"
-		android:key="notification"
-		android:title="@string/settings_notification" />
+	<Preference android:title="@string/privacy_policy" >
+		<intent android:action="android.intent.action.VIEW"
+			android:data="https://www.rkosir.eu/privacy_policy.html" />
+	</Preference>
 </PreferenceScreen>
