@@ -17,6 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,15 +33,19 @@
 
         <activity
             android:name=".activity.RegistrationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.DashboardActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SettingsActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ChangePasswordActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="change_password" />
@@ -50,24 +55,30 @@
         </activity>
         <activity
             android:name=".activity.teamManagement.TeamActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.teamManagement.AddFee"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.teamManagement.AddMember"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.teamManagement.calendar.AddEvent"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
 
-        <activity android:name=".activity.teamManagement.calendar.ShowEvent" />
+        <activity android:name=".activity.teamManagement.calendar.ShowEvent"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.teamManagement.UserDetail"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
@@ -80,14 +91,17 @@
 
         <activity
             android:name=".activity.teamManagement.SendNotification"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d34ddf9903c9bc83720f039409c1453e6fb63e82" />
 
-        <activity android:name=".activity.teamManagement.Payment" />
-        <activity android:name=".activity.teamManagement.FullScreenImage"></activity>
+        <activity android:name=".activity.teamManagement.Payment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.teamManagement.FullScreenImage"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

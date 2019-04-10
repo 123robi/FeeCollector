@@ -129,16 +129,12 @@ public class LoginActivity extends AppCompatActivity {
 				}
 			});
 		});
-//		mLoginButton_facebook.setReadPermissions(Arrays.asList(
-//				"public_profile", "email"));
-//
 
 		mSignUp = findViewById(R.id.signUp);
 
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this, instanceIdResult -> {
-			Log.d("TOKEN", firebaseToken);
 			firebaseToken = instanceIdResult.getToken();
 			SharedPreferencesSaver.setFcmToken(this,firebaseToken);
 		});
