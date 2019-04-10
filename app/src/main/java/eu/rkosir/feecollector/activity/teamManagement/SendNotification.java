@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,18 +42,19 @@ import eu.rkosir.feecollector.helper.SharedPreferencesSaver;
 import eu.rkosir.feecollector.helper.VolleySingleton;
 
 public class SendNotification extends AppCompatActivity {
-    private static final int SMS_PERMISSION_CODE = 61231;
     private Toolbar mToolbar;
     private User myUser;
     private TextInputEditText mInputTo, mInputMessage;
     private ProgressBar mProgressBar;
     private CheckBox mCheckNotificaiton, mCheckEmail;
     private TextView merror;
+    private NotificationManagerCompat notificationManagerCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_notification);
+        notificationManagerCompat = NotificationManagerCompat.from(this);
 
         Intent intent = getIntent();
         if (intent != null) {

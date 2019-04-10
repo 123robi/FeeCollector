@@ -138,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
 		mProgressBar = findViewById(R.id.pb_loading_indicator);
 
 		FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( this, instanceIdResult -> {
+			Log.d("TOKEN", firebaseToken);
 			firebaseToken = instanceIdResult.getToken();
 			SharedPreferencesSaver.setFcmToken(this,firebaseToken);
 		});

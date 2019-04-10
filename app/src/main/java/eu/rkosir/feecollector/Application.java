@@ -27,10 +27,10 @@ public class Application extends android.app.Application {
 
 			NotificationChannel channel2 = new NotificationChannel(
 					CHANNEL_2_ID,
-					"New Events",
+					"Message",
 					NotificationManager.IMPORTANCE_HIGH
 			);
-			channel2.setDescription("Receiving notifications on new events");
+			channel2.setDescription("Receiving message by admins");
 
 			NotificationManager manager = getSystemService(NotificationManager.class);
 			manager.createNotificationChannel(channel1);
