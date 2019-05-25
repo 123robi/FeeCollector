@@ -93,6 +93,7 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 		Calendar calendarStart = Calendar.getInstance();
 		Calendar calendarEnd = Calendar.getInstance();
 
+		boolean isError = false;
 		try {
 			if (SharedPreferencesSaver.getIcal(context) == null || SharedPreferencesSaver.getIcal(context).equals("null")) {
 				calendarStart.setTime(AppConfig.parse.parse(events.get(position).getStartDateTime()));
@@ -104,7 +105,24 @@ public class ShowEventsAdapter extends RecyclerView.Adapter<ShowEventsAdapter.Vi
 				calendarEnd.add(Calendar.HOUR,1);
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			isError = true;
+		}
+
+		if (isError) {
+			try {
+				if (SharedPreferencesSaver.getIcal(context) == null || SharedPreferencesSaver.getIcal(context).equals("null")) {
+					calendarStart.setTime(AppConfig.df.parse(events.get(position).getStartDateTime()));
+					calendarEnd.setTime(AppConfig.df.parse(events.get(position).getEndDateTime()));
+				} else {
+					calendarStart.setTime(AppConfig.parseIcal.parse(events.get(position).getStartDateTime()));
+					calendarEnd.setTime(AppConfig.parseIcal.parse(events.get(position).getEndDateTime()));
+					calendarStart.add(Calendar.HOUR,1);
+					calendarEnd.add(Calendar.HOUR,1);
+				}
+				isError = false;
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		holder.mEventTime.setText(String.valueOf(getTimeFormat(calendarStart)));
 		holder.mEventTime.append(" - ");
